@@ -7,7 +7,9 @@ export default function Feed({ allTweets }: { allTweets: Tweet[] }) {
             {allTweets.map((tweet: Tweet) => {
                 return (
                     <div key={tweet.id}>
-                        {/* <h2>{tweet.userId}</h2> */}
+                        <h2>
+                            {tweet.user ? tweet.user.username : "Anonymous"}
+                        </h2>
                         <p>{tweet.tweet}</p>
                     </div>
                 );
