@@ -1,0 +1,19 @@
+.navBar {
+    display: flex;
+    background: skyblue;
+    justify-content: space-between;
+    align-items: center;
+    height: 4rem;
+    padding: 2rem;
+}
+
+.logo {
+    display: flex;
+}
+
+.navLinks {
+    display: flex;
+    gap: 4rem;
+    justify-content: space-around;
+    list-style: none;
+}

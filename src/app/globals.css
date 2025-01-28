@@ -1,42 +1,37 @@
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Global CSS Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 html,
 body {
-  max-width: 100vw;
-  overflow-x: hidden;
+    height: 100%;
+    font-family: Arial, sans-serif; /* Set a consistent font-family across the application */
 }
 
+/* Additional Global Styles */
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    line-height: 1.6; /* Improve readability by setting a consistent line height */
+    color: #333; /* Set a default text color */
+    background-color: #f4f4f4; /* Set a default background color */
 }
 
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-}
-
+/* Styling for Links */
 a {
-  color: inherit;
-  text-decoration: none;
+    text-decoration: none; /* Remove underline from links */
+    color: inherit; /* Inherit color from parent element */
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+/* Reset for Lists */
+ul,
+ol {
+    list-style: none; /* Remove default list styling */
+}
+
+/* Reset for Tables */
+table {
+    border-collapse: collapse; /* Collapse table borders for consistency */
+    width: 100%; /* Ensure tables take full width */
 }
