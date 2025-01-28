@@ -1,12 +1,15 @@
-import Image from "next/image";
-import styles from "./page.module.css";
 import NewTweetForm from "./components/NewTweetForm/NewTweetForm";
+import Feed from "./components/Feed/Feed";
+import prisma from "@/lib/prisma";
+import { Tweet } from "@/types";
 
-export default function Home() {
+export default async function Home() {
+    const allTweets: Tweet[] = await prisma.tweet.findMany();
+    const refreshTweets = () => {};
     return (
         <div>
             <NewTweetForm />
-            <h1>Today's Tweets</h1>
+            <Feed allTweets={allTweets} />
         </div>
     );
 }
