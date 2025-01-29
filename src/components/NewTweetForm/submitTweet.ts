@@ -1,10 +1,9 @@
 "use server";
-import prisma from "@/lib/prisma";
+import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
+// This is the server-action for submitting a tweet
 export async function submitTweet(formdata: FormData) {
-    "use server";
-
     const newTweet = formdata.get("newTweet");
     console.log("Form data:", newTweet);
 
@@ -16,8 +15,6 @@ export async function submitTweet(formdata: FormData) {
                     tweet: newTweetString,
                 },
             });
-            console.log("Tweet created:", response.tweet);
-
             revalidatePath("/");
         } catch (error) {
             console.error("Error creating tweet:", error);

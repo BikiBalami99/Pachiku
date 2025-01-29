@@ -1,5 +1,6 @@
 import Link from "next/link";
 import styles from "./Navbar.module.css";
+// import AuthButton from "@/components/Buttons/AuthButton";
 
 export default function Navbar() {
     return (
@@ -11,9 +12,7 @@ export default function Navbar() {
                 <li>
                     <Link href="/">Home</Link>
                 </li>
-                <li>
-                    <Link href="/profile">Profile</Link>
-                </li>
+                <li>{/* <AuthButton /> */}</li>
             </ul>
         </nav>
     );
