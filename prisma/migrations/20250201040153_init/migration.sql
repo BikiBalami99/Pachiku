@@ -1,19 +1,19 @@
 -- CreateTable
 CREATE TABLE "User" (
-    "id" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
     "username" TEXT NOT NULL,
     "email" TEXT NOT NULL,
-    "oauthProvider" TEXT,
-    "oauthProviderId" TEXT,
+    "password" TEXT NOT NULL,
+    "name" TEXT,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Tweet" (
-    "id" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
     "tweet" VARCHAR(256) NOT NULL,
-    "userId" TEXT,
+    "userId" INTEGER,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "likes" INTEGER NOT NULL DEFAULT 0,
 
@@ -22,10 +22,10 @@ CREATE TABLE "Tweet" (
 
 -- CreateTable
 CREATE TABLE "Comment" (
-    "id" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
     "comment" VARCHAR(256) NOT NULL,
-    "tweetId" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
+    "tweetId" INTEGER NOT NULL,
+    "userId" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Comment_pkey" PRIMARY KEY ("id")
@@ -36,9 +36,6 @@ CREATE UNIQUE INDEX "User_username_key" ON "User"("username");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
-
--- CreateIndex
-CREATE UNIQUE INDEX "User_oauthProviderId_key" ON "User"("oauthProviderId");
 
 -- AddForeignKey
 ALTER TABLE "Tweet" ADD CONSTRAINT "Tweet_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;

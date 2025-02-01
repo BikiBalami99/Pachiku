@@ -1,4 +1,4 @@
-import { Tweet } from "@/types";
+import { type Tweet } from "@prisma/client";
 
 export default function Feed({ allTweets }: { allTweets: Tweet[] }) {
     return (
