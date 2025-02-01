@@ -1,26 +1,45 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function SignUpPage() {
+    const router = useRouter();
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [dateOfBirth, setDateOfBirth] = useState("");
 
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
-        // Reset this to "" each time as if its falsy, we want error or success msg to not be shown
         setError("");
         setSuccess("");
 
-        // Make sure to use userEmail and userPassword as keys because thats how i setup the POST request
+        // Validate age (must be older than 13)
+        const birthDate = new Date(dateOfBirth);
+        const today = new Date();
+        const minBirthDate = new Date(
+            today.getFullYear() - 13,
+            today.getMonth(),
+            today.getDate()
+        );
+
+        if (birthDate >= minBirthDate) {
+            return setError("You must be at least 13 years old to sign up.");
+        }
+
         const requestBody = {
-            userEmail: email,
-            userPassword: password,
+            firstName,
+            lastName,
             username,
+            email,
+            password,
+            dateOfBirth, // Sending as string (YYYY-MM-DD)
         };
 
         const res = await fetch("/api/auth/signup", {
@@ -33,7 +52,10 @@ export default function SignUpPage() {
 
         const data = await res.json();
         if (!res.ok) return setError(data.error || "Failed to sign up");
-        return setSuccess("Sign-up successful! You can now sign in.");
+
+        // If the user signs up successfully, we redirect to the login page
+        setSuccess("Sign Up Successful. Redirecting to login page.");
+        router.push("/api/auth/signin");
     }
 
     return (
@@ -42,9 +64,26 @@ export default function SignUpPage() {
             <form onSubmit={handleSubmit}>
                 <input
                     type="text"
+                    name="firstName"
+                    placeholder="First Name"
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                    required
+                />
+
+                <input
+                    type="text"
+                    name="lastName"
+                    placeholder="Last Name"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                    required
+                />
+
+                <input
+                    type="text"
                     name="username"
-                    id="username"
-                    placeholder="User Name"
+                    placeholder="Username"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                     required
@@ -53,7 +92,6 @@ export default function SignUpPage() {
                 <input
                     type="email"
                     name="email"
-                    id="email"
                     placeholder="Email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -63,16 +101,25 @@ export default function SignUpPage() {
                 <input
                     type="password"
                     name="password"
-                    id="password"
                     placeholder="Password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
                 />
+
+                <input
+                    type="date"
+                    name="dateOfBirth"
+                    value={dateOfBirth}
+                    onChange={(e) => setDateOfBirth(e.target.value)}
+                    required
+                />
+
                 <button type="submit">Sign Up</button>
             </form>
-            {error && <p>{error}</p>}
-            {success && <p>{success}</p>}
+
+            {error && <p style={{ color: "red" }}>{error}</p>}
+            {success && <p style={{ color: "green" }}>{success}</p>}
         </div>
     );
 }

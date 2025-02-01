@@ -8,13 +8,15 @@ datasource db {
 }
 
 model User {
-    id       String    @id @default(uuid())
-    username String    @unique
-    email    String    @unique
-    password String
-    name     String?
-    tweets   Tweet[]
-    comments Comment[]
+    id          String    @id @default(uuid())
+    firstName   String
+    lastName    String
+    username    String    @unique
+    email       String    @unique
+    password    String
+    dateOfBirth DateTime
+    tweets      Tweet[]
+    comments    Comment[]
 }
 
 model Tweet {

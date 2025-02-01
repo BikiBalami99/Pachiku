@@ -1,14 +1,22 @@
 import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 import { prisma } from "@/lib/prisma";
-import { User } from "@prisma/client";
+import { type User } from "@prisma/client";
 
 export async function POST(req: Request) {
     try {
-        const { userEmail, userPassword, username } = await req.json();
+        const { firstName, lastName, username, email, password, dateOfBirth } =
+            await req.json();
 
         // Input validation
-        if (!userEmail || !userPassword || !username) {
+        if (
+            !firstName ||
+            !lastName ||
+            !username ||
+            !email ||
+            !password ||
+            !dateOfBirth
+        ) {
             return NextResponse.json({
                 error: "All fields are required",
                 status: 400,
@@ -17,7 +25,7 @@ export async function POST(req: Request) {
 
         // Finding if the user already exists
         const existingUser: User | null = await prisma.user.findUnique({
-            where: { email: userEmail },
+            where: { email: email },
         });
         if (existingUser) {
             return NextResponse.json({
@@ -27,14 +35,17 @@ export async function POST(req: Request) {
         }
 
         // Hashing the password
-        const hashedPassword = await bcrypt.hash(userPassword, 12);
+        const hashedPassword = await bcrypt.hash(password, 12);
 
         // Creating the new user
         const newUser: User = await prisma.user.create({
             data: {
-                email: userEmail,
-                password: hashedPassword,
+                firstName,
+                lastName,
                 username,
+                email,
+                password: hashedPassword,
+                dateOfBirth: new Date(dateOfBirth),
             },
         });
 
