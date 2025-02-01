@@ -1,4 +1,4 @@
-import { Tweet } from "@/types";
+import { type Tweet } from "@prisma/client";
 
 export default function Feed({ allTweets }: { allTweets: Tweet[] }) {
     return (
@@ -7,9 +7,7 @@ export default function Feed({ allTweets }: { allTweets: Tweet[] }) {
             {allTweets.map((tweet: Tweet) => {
                 return (
                     <div key={tweet.id}>
-                        <h2>
-                            {tweet.user ? tweet.user.username : "Anonymous"}
-                        </h2>
+                        <h2>{tweet.userId ? "username" : "Anonymous"}</h2>
                         <p>{tweet.tweet}</p>
                     </div>
                 );
