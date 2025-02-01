@@ -12,13 +12,18 @@ export default async function Home() {
         },
     });
     const session = await getServerSession();
-    
-    if (!session) return <p>Please sign in to Tweet</p>;
+
+    if (!session)
+        return (
+            <div>
+                <p>Please sign in or sign up to Tweet</p>
+                <Link href="/signup">
+                    <button>Sign up</button>
+                </Link>
+            </div>
+        );
     return (
         <div>
-            <Link href="/signup">
-                <button>Sign up</button>
-            </Link>
             <NewTweetForm />
             <Feed allTweets={allTweets} />
         </div>
