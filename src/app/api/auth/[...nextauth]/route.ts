@@ -1,46 +1,43 @@
-import NextAuth, { type NextAuthOptions } from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import { NextAuthOptions } from "next-auth";
+import NextAuth from "next-auth/next";
+import GoogleProvider from "next-auth/providers/google";
 import { prisma } from "@/lib/prisma";
-import { compare } from "bcrypt";
+
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID!;
+const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET!;
 
 export const authOptions: NextAuthOptions = {
-    adapter: PrismaAdapter(prisma),
     session: {
         strategy: "jwt",
     },
     providers: [
-        CredentialsProvider({
-            name: "Twitter account",
-            credentials: {
-                email: { label: "Email", type: "email" },
-                password: { label: "Password", type: "password" },
-            },
-            async authorize(credentials) {
-                if (!credentials?.email || !credentials.password) return null;
-
-                const user = await prisma.user.findUnique({
-                    where: {
-                        email: credentials.email,
-                    },
-                });
-
-                if (!user) return null;
-
-                const isAuthorized = await compare(
-                    credentials.password,
-                    user.password
-                );
-
-                if (!isAuthorized) return null;
-
-                return {
-                    ...user,
-                    id: user.id.toString(),
-                };
-            },
+        GoogleProvider({
+            clientId: GOOGLE_CLIENT_ID,
+            clientSecret: GOOGLE_CLIENT_SECRET,
         }),
     ],
+    callbacks: {
+        async signIn({ account, profile }) {
+            if (!profile?.email) {
+                throw new Error("No profile");
+            }
+
+            await prisma.user.upsert({
+                where: {
+                    email: profile.email,
+                },
+                create: {
+                    email: profile.email,
+                    name: profile.name,
+                },
+                update: {
+                    name: profile.name,
+                },
+            });
+
+            return true;
+        },
+    },
 };
 
 const handler = NextAuth(authOptions);
