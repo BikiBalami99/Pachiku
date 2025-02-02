@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 export default function SignUpPage() {
-    const router = useRouter();
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [username, setUsername] = useState("");
@@ -54,8 +53,7 @@ export default function SignUpPage() {
         if (!res.ok) return setError(data.error || "Failed to sign up");
 
         // If the user signs up successfully, we redirect to the login page
-        setSuccess("Sign Up Successful. Redirecting to login page.");
-        router.push("/api/auth/signin");
+        return setSuccess("Sign Up Successful. Redirecting to login page.");
     }
 
     return (

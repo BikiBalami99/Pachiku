@@ -23,10 +23,15 @@ export async function POST(req: Request) {
             });
         }
 
+        console.log("Checking if user already exists");
+
         // Finding if the user already exists
-        const existingUser: User | null = await prisma.user.findUnique({
+        const existingUser = await prisma.user.findFirst({
             where: { email: email },
         });
+
+        console.log("User check completed");
+
         if (existingUser) {
             return NextResponse.json({
                 error: "User already exists",
@@ -49,11 +54,17 @@ export async function POST(req: Request) {
             },
         });
 
-        return NextResponse.json({
-            message: "User created",
-            user: newUser,
-        });
+        console.log("New user created:", newUser);
+
+        return NextResponse.json(
+            {
+                message: "User created",
+                user: newUser,
+            },
+            { status: 201 }
+        );
     } catch (err: any) {
+        console.error("Error in signup route:", err);
         return NextResponse.json({
             error: "Something went wrong",
             status: 500,
