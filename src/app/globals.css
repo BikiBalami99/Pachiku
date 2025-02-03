@@ -1,4 +1,6 @@
 /* Global CSS Reset */
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+
 * {
     margin: 0;
     padding: 0;
@@ -8,7 +10,8 @@
 html,
 body {
     height: 100%;
-    font-family: Arial, sans-serif; /* Set a consistent font-family across the application */
+    font-family: "Roboto", serif;
+    font-optical-sizing: auto;
 }
 
 /* Additional Global Styles */
@@ -34,4 +37,62 @@ ol {
 table {
     border-collapse: collapse; /* Collapse table borders for consistency */
     width: 100%; /* Ensure tables take full width */
+}
+
+/* -------- Reset Ends Here ------------------ */
+
+/* Variables for colors */
+:root {
+    --primary-sky-blue: #01a6ff;
+    --secondary-sky-blue: #0073b0;
+    --primary-black: #181818;
+    --secondary-black: #313131;
+    --primary-white: #ffffff;
+    --slightly-dark-white: #f6f6f6;
+    --secondary-white: #eeeeee;
+    --primary-grey: #525252;
+    --primary-red: #f02626;
+}
+
+/* Global CSS styles */
+.button {
+    display: flex;
+    width: 8.1rem;
+    height: 2.5rem;
+    justify-content: center;
+    align-items: center;
+    border-radius: 12px;
+    box-shadow: 0px 0px 16px 0px rgba(255, 255, 255, 0.15) inset;
+    font-size: 20px;
+    font-weight: 500;
+
+    transition: background-color ease-in-out 150ms;
+}
+
+.primaryButton {
+    background: var(--primary-sky-blue);
+    color: #fff;
+}
+
+.primaryButton:hover {
+    background-color: var(--secondary-sky-blue);
+}
+
+.secondaryButton {
+    background: var(--secondary-sky-blue);
+    color: #fff;
+    box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.25) inset;
+}
+
+.secondaryButton:hover {
+    background-color: var(--secondary-black);
+}
+
+.whiteButton {
+    background: var(--primary-white);
+    color: #fff;
+}
+
+.whiteButton:hover {
+    background-color: var(--secondary-white);
 }
