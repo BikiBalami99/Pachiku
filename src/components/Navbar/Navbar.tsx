@@ -1,17 +1,50 @@
+"use client";
 import Link from "next/link";
 import styles from "./Navbar.module.css";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
 import Image from "next/image";
+import Hamburger from "../Hamburger/Hamburger";
+import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
 
-export default async function Navbar() {
-    const session = await getServerSession(authOptions);
+export default function Navbar() {
+    const { data: session } = useSession();
+    const [isExpanded, setIsExpanded] = useState(false);
+    const [navBarHeight, setNavBarHeight] = useState("4.5rem");
+    console.log(isExpanded);
+
+    useEffect(() => {
+        if (isExpanded) setNavBarHeight("23rem");
+        if (!isExpanded) setNavBarHeight("5.5rem");
+        // These are calculated values
+    }, [isExpanded]);
+
+    // If user is logged out
+    if (!session) {
+        return (
+            <nav className={styles.navBar}>
+                <Link href="/" className={styles.logo}>
+                    <h1 className={styles.heading}>Pachiku</h1>
+                </Link>
+                <Link
+                    className="button secondaryButton"
+                    href="/api/auth/signin"
+                >
+                    Sign in
+                </Link>
+            </nav>
+        );
+    }
+
+    // If user is logged in
     return (
-        <nav className={styles.navBar}>
+        <nav className={styles.navBar} style={{ height: navBarHeight }}>
             <Link href="/" className={styles.logo}>
-                <h1 className={styles.heading}>Pickiku Pachiku</h1>
+                <h1 className={styles.heading}>Pachiku</h1>
             </Link>
             <ul className={styles.navLinks}>
+                <li className={`${styles.icon} ${styles.hamburgerIcon}`}>
+                    <Hamburger toggleNavBarView={setIsExpanded} />
+                </li>
                 <li>
                     <Link className={styles.icon} href="/">
                         <Image
@@ -35,25 +68,24 @@ export default async function Navbar() {
 
                 {session && (
                     <li>
-                        <Link
-                            className="button secondaryButton"
-                            href="/api/auth/signout"
-                        >
-                            Sign out
+                        <Link className={styles.icon} href="/api/auth/signout">
+                            {/* PaddingLeft is set .2rem because the icon looked a bit off */}
+                            <Image
+                                style={{ paddingLeft: ".2rem" }}
+                                src="/icons/sign-out-icon.svg"
+                                width={25}
+                                height={20}
+                                alt="Home Icon"
+                            />
                         </Link>
                     </li>
                 )}
 
-                {!session && (
+                {/* {!session && (
                     <li>
-                        <Link
-                            className="button secondaryButton"
-                            href="/api/auth/signin"
-                        >
-                            Sign in
-                        </Link>
+                       
                     </li>
-                )}
+                )} */}
             </ul>
         </nav>
     );
