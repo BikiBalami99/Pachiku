@@ -8,24 +8,39 @@ datasource db {
 }
 
 model User {
-    id        String    @id @default(cuid())
-    email     String    @unique
-    name      String?
-    avatar    String?
-    createdAt DateTime  @default(now())
-    updatedAt DateTime  @updatedAt
-    Pachiku   Pachiku[]
-    Comment   Comment[]
+    id            String    @id @default(cuid())
+    email         String    @unique
+    firstName     String
+    lastName      String
+    avatar        String?
+    username      String
+    createdAt     DateTime  @default(now())
+    updatedAt     DateTime  @updatedAt
+    pachikus      Pachiku[]
+    comments      Comment[]
+    likedPachikus Like[]
 }
 
 model Pachiku {
     id        String    @id @default(uuid())
     pachiku   String    @db.VarChar(256)
-    user      User?     @relation(fields: [userId], references: [id])
-    userId    String?
+    user      User      @relation(fields: [userId], references: [id])
+    userId    String
     createdAt DateTime  @default(now())
     likes     Int       @default(0)
     comments  Comment[]
+    likedBy   Like[]
+}
+
+model Like {
+    id           String  @id @default(uuid())
+    likedBy      User    @relation(fields: [userId], references: [id])
+    userId       String
+    likedPachiku Pachiku @relation(fields: [pachikuId], references: [id])
+    pachikuId    String
+
+    @@index([userId])
+    @@index([pachikuId])
 }
 
 model Comment {
@@ -36,4 +51,7 @@ model Comment {
     user      User     @relation(fields: [userId], references: [id])
     userId    String
     createdAt DateTime @default(now())
+
+    @@index([userId])
+    @@index([pachikuId])
 }
