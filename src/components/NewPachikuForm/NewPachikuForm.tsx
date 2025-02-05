@@ -1,30 +1,30 @@
 "use client";
 import { useState } from "react";
-import { submitTweet } from "./submitTweet";
-import styles from "./NewTweetForm.module.css";
+import { submitPachiku } from "./submitPachiku";
+import styles from "./NewPachikuForm.module.css";
 
-export default function NewTweetForm() {
+export default function NewPachikuForm() {
     const [feedback, setFeedback] = useState<string | null>(null);
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
-        const response = await submitTweet(formData);
+        const response = await submitPachiku(formData);
         if (response.error) {
             setFeedback(response.error);
         } else if (response.success) {
-            setFeedback("Tweet submitted successfully!");
+            setFeedback("Pachiku submitted successfully!");
         }
     };
 
     return (
-        <form onSubmit={handleSubmit} className={styles.newTweetForm}>
+        <form onSubmit={handleSubmit} className={styles.newPachikuForm}>
             <div className={styles.imageAndForm}>
                 <div className={styles.image}></div>
                 <input
                     type="text"
-                    name="newTweet"
-                    id="newTweet"
+                    name="newPachiku"
+                    id="newPachiku"
                     defaultValue=""
                     placeholder="How was your day?"
                     className={styles.inputForm}

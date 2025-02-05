@@ -3,11 +3,11 @@ import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { revalidatePath } from "next/cache";
 
-// This is the server-action for submitting a tweet
-export async function submitTweet(
+// This is the server-action for submitting a pachiku
+export async function submitPachiku(
     formdata: FormData
 ): Promise<{ error?: string; success?: boolean }> {
-    const tweetText = formdata.get("newTweet")!.toString();
+    const pachikuText = formdata.get("newPachiku")!.toString();
 
     try {
         const session = await getServerSession();
@@ -33,7 +33,7 @@ export async function submitTweet(
 
         await prisma.pachiku.create({
             data: {
-                tweet: tweetText,
+                pachiku: pachikuText,
                 userId: user.id,
             },
         });
@@ -41,7 +41,7 @@ export async function submitTweet(
         revalidatePath("/");
         return { success: true };
     } catch (error) {
-        console.error("Error creating tweet:", error);
-        return { error: "Error creating tweet" };
+        console.error("Error creating pachiku:", error);
+        return { error: "Error creating pachiku" };
     }
 }

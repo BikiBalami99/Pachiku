@@ -1,12 +1,12 @@
-import AllTweets from "../AllTweets/AllTweets";
-import NewTweetForm from "../NewTweetForm/NewTweetForm";
+import AllPachikus from "../AllPachikus/AllPachikus";
+import NewPachikuForm from "../NewPachikuForm/NewPachikuForm";
 import styles from "./Feed.module.css";
 
 export default function Feed() {
     return (
         <div className={styles.feed}>
-            <NewTweetForm />
-            <AllTweets />
+            <NewPachikuForm />
+            <AllPachikus />
         </div>
     );
 }
