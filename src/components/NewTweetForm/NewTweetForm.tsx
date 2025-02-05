@@ -19,7 +19,6 @@ export default function NewTweetForm() {
 
     return (
         <form onSubmit={handleSubmit} className={styles.newTweetForm}>
-            <h2>New Tweet</h2>
             <div className={styles.imageAndForm}>
                 <div className={styles.image}></div>
                 <input
@@ -27,14 +26,14 @@ export default function NewTweetForm() {
                     name="newTweet"
                     id="newTweet"
                     defaultValue=""
-                    placeholder="What's happening?"
+                    placeholder="How was your day?"
                     className={styles.inputForm}
                 />
             </div>
             <div className={styles.feedbackAndButton}>
                 {feedback && <p>{feedback}</p>}
                 <button className="button primaryButton" type="submit">
-                    Tweet
+                    Pachiku
                 </button>
             </div>
         </form>

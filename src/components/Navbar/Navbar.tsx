@@ -2,7 +2,7 @@
 import Link from "next/link";
 import styles from "./Navbar.module.css";
 import Image from "next/image";
-import Hamburger from "../Hamburger/Hamburger";
+import Hamburger from "../UtilityComponents/Hamburger/Hamburger";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
