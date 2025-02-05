@@ -31,7 +31,7 @@ export async function submitTweet(
             };
         }
 
-        await prisma.tweet.create({
+        await prisma.pachiku.create({
             data: {
                 tweet: tweetText,
                 userId: user.id,
