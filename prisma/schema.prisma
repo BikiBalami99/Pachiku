@@ -14,11 +14,11 @@ model User {
     avatar    String?
     createdAt DateTime  @default(now())
     updatedAt DateTime  @updatedAt
-    Tweet     Tweet[]
+    Pachiku   Pachiku[]
     Comment   Comment[]
 }
 
-model Tweet {
+model Pachiku {
     id        String    @id @default(uuid())
     tweet     String    @db.VarChar(256)
     user      User?     @relation(fields: [userId], references: [id])
@@ -31,7 +31,7 @@ model Tweet {
 model Comment {
     id        String   @id @default(uuid())
     comment   String   @db.VarChar(256)
-    tweet     Tweet    @relation(fields: [tweetId], references: [id])
+    tweet     Pachiku  @relation(fields: [tweetId], references: [id])
     tweetId   String
     user      User     @relation(fields: [userId], references: [id])
     userId    String
