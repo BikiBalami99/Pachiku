@@ -10,7 +10,6 @@ export default function Navbar() {
     const { data: session } = useSession();
     const [isExpanded, setIsExpanded] = useState(false);
     const [navBarHeight, setNavBarHeight] = useState("4.5rem");
-    console.log(isExpanded);
 
     useEffect(() => {
         if (isExpanded) setNavBarHeight("23rem");

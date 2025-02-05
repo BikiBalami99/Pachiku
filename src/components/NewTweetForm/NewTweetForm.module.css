@@ -1,0 +1,61 @@
+.newTweetForm {
+    display: flex;
+    flex-direction: column;
+    border-radius: 1rem;
+    padding: 1rem;
+    background: var(--secondary-white);
+    box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.05) inset;
+    gap: 1rem;
+}
+
+.imageAndForm {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+    height: 6.375rem;
+    width: 100%;
+    align-items: center;
+
+    border-radius: 0.8rem;
+    background: var(--primary-white);
+}
+
+.image {
+    width: 3.25rem;
+    height: 3.25rem;
+    flex-shrink: 0;
+
+    border-radius: 3.125rem;
+    background: #7b7b7b;
+}
+
+.inputForm {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    padding: 1rem;
+
+    border: none;
+    border-radius: 0.8rem;
+    color: var(--primary-black);
+    font-size: 1.5rem;
+    font-weight: 400;
+}
+
+.inputForm:focus {
+    outline: 0px;
+}
+
+.feedbackAndButton {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0rem 1rem;
+}
+
+.feedbackAndButton p {
+    margin-right: auto;
+    color: var(--primary-gray);
+    font-size: large;
+}

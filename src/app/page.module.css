@@ -1,0 +1,10 @@
+.main {
+    display: flex;
+    height: 100%;
+    overflow: hidden; /* Prevent scrolling on the main container */
+}
+
+.main > * {
+    padding-top: 7.5rem;
+    /* Match padding-top with the height of Navbar + 1.5rem when not expanded */
+}

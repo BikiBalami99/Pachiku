@@ -1,11 +1,14 @@
 .navBar {
     display: flex;
-    background: var(--primary-sky-blue);
-    justify-content: space-between;
-    align-items: baseline;
-    padding: 1rem;
-    transition: height 200ms ease-in-out;
     overflow: hidden;
+    position: fixed;
+    justify-content: space-between;
+
+    width: 100%;
+    padding: 1rem;
+    background: var(--primary-sky-blue);
+
+    transition: height 200ms ease-in-out;
 }
 
 .logo {

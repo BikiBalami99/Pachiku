@@ -19,6 +19,11 @@ body {
     line-height: 1.6; /* Improve readability by setting a consistent line height */
     color: #333; /* Set a default text color */
     background-color: #f4f4f4; /* Set a default background color */
+
+    /* Making sure the screen doesnt scroll, only the components scroll */
+    height: 100svh;
+    display: flex;
+    flex-direction: column;
 }
 
 /* Styling for Links */
@@ -58,13 +63,16 @@ table {
 .button {
     display: flex;
     width: 8.1rem;
-    height: 2.5rem;
+    height: 3rem;
+    /*Make sure to match the height with height of navIcons*/
     justify-content: center;
     align-items: center;
     border-radius: 12px;
     box-shadow: 0px 0px 16px 0px rgba(255, 255, 255, 0.15) inset;
     font-size: 20px;
     font-weight: 500;
+    border: none;
+    outline: 0px;
 
     transition: background-color ease-in-out 150ms;
 }
@@ -76,6 +84,7 @@ table {
 
 .primaryButton:hover {
     background-color: var(--secondary-sky-blue);
+    cursor: pointer;
 }
 
 .secondaryButton {
@@ -86,6 +95,7 @@ table {
 
 .secondaryButton:hover {
     background-color: var(--secondary-black);
+    cursor: pointer;
 }
 
 .whiteButton {
@@ -95,4 +105,5 @@ table {
 
 .whiteButton:hover {
     background-color: var(--secondary-white);
+    cursor: pointer;
 }

@@ -1,0 +1,5 @@
+.rightPanel {
+    width: 40rem;
+    background-color: var(--secondary-white);
+    box-shadow: 2px 0px 8px 0px rgba(0, 0, 0, 0.05) inset;
+}

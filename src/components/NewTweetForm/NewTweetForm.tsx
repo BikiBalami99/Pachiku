@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { submitTweet } from "./submitTweet";
+import styles from "./NewTweetForm.module.css";
 
 export default function NewTweetForm() {
     const [feedback, setFeedback] = useState<string | null>(null);
@@ -17,12 +18,25 @@ export default function NewTweetForm() {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <label htmlFor="newTweet">New Tweet</label>
-            <br />
-            <input type="text" name="newTweet" id="newTweet" defaultValue="" />
-            <button type="submit">Tweet</button>
-            {feedback && <p>{feedback}</p>}
+        <form onSubmit={handleSubmit} className={styles.newTweetForm}>
+            <h2>New Tweet</h2>
+            <div className={styles.imageAndForm}>
+                <div className={styles.image}></div>
+                <input
+                    type="text"
+                    name="newTweet"
+                    id="newTweet"
+                    defaultValue=""
+                    placeholder="What's happening?"
+                    className={styles.inputForm}
+                />
+            </div>
+            <div className={styles.feedbackAndButton}>
+                {feedback && <p>{feedback}</p>}
+                <button className="button primaryButton" type="submit">
+                    Tweet
+                </button>
+            </div>
         </form>
     );
 }
