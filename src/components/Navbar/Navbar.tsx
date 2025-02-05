@@ -24,10 +24,13 @@ export default function Navbar() {
                 <Link href="/" className={styles.logo}>
                     <h1 className={styles.heading}>Pachiku</h1>
                 </Link>
+
                 <Link
-                    className="button secondaryButton"
+                    style={{ marginTop: "0.25rem" }}
+                    className="button primaryButton"
                     href="/api/auth/signin"
                 >
+                    {/* marginTop: "0.25rem" to center the Sign In button without affect the Logo's position*/}
                     Sign in
                 </Link>
             </nav>

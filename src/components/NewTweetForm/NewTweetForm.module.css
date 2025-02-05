@@ -3,7 +3,7 @@
     flex-direction: column;
     border-radius: 1rem;
     padding: 1rem;
-    background: var(--secondary-white);
+    background: var(--primary-sky-blue);
     box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.05) inset;
     gap: 1rem;
 }

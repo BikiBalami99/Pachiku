@@ -3,8 +3,8 @@
     overflow: hidden;
     position: fixed;
     justify-content: space-between;
-
     width: 100%;
+    min-height: 5.5rem;
     padding: 1rem;
     background: var(--primary-sky-blue);
 

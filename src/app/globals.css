@@ -48,10 +48,12 @@ table {
 
 /* Variables for colors */
 :root {
-    --primary-sky-blue: #01a6ff;
-    --secondary-sky-blue: #0073b0;
+    --primary-sky-blue: #00a1ff;
+    --secondary-sky-blue: #004b77;
+    --light-sky-blue: #f1faff;
+    --dark-sky-blue: #092433;
     --primary-black: #181818;
-    --secondary-black: #313131;
+    --secondary-black: #1b1b1b;
     --primary-white: #ffffff;
     --slightly-dark-white: #f6f6f6;
     --secondary-white: #eeeeee;
@@ -78,23 +80,23 @@ table {
 }
 
 .primaryButton {
-    background: var(--primary-sky-blue);
-    color: #fff;
-}
-
-.primaryButton:hover {
-    background-color: var(--secondary-sky-blue);
-    cursor: pointer;
-}
-
-.secondaryButton {
     background: var(--secondary-sky-blue);
     color: #fff;
     box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.25) inset;
 }
 
-.secondaryButton:hover {
+.primaryButton:hover {
     background-color: var(--secondary-black);
+    cursor: pointer;
+}
+
+.secondaryButton {
+    background: var(--primary-sky-blue);
+    color: #fff;
+}
+
+.secondaryButton:hover {
+    background-color: var(--secondary-sky-blue);
     cursor: pointer;
 }
 
