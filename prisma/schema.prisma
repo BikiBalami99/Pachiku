@@ -22,14 +22,15 @@ model User {
 }
 
 model Pachiku {
-    id        String    @id @default(uuid())
-    pachiku   String    @db.VarChar(256)
-    user      User      @relation(fields: [userId], references: [id])
-    userId    String
-    createdAt DateTime  @default(now())
-    likes     Int       @default(0)
-    comments  Comment[]
-    likedBy   Like[]
+    id            String    @id @default(uuid())
+    pachiku       String    @db.VarChar(256)
+    user          User      @relation(fields: [userId], references: [id])
+    userId        String
+    createdAt     DateTime  @default(now())
+    likes         Int       @default(0)
+    numOfComments Int       @default(0)
+    comments      Comment[]
+    likedBy       Like[]
 }
 
 model Like {

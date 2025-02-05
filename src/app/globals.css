@@ -17,8 +17,6 @@ body {
 /* Additional Global Styles */
 body {
     line-height: 1.6; /* Improve readability by setting a consistent line height */
-    color: #333; /* Set a default text color */
-    background-color: #f4f4f4; /* Set a default background color */
 
     /* Making sure the screen doesnt scroll, only the components scroll */
     height: 100svh;

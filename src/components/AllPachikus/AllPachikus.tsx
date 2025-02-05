@@ -9,7 +9,7 @@ export default async function AllPachikus() {
     });
 
     return (
-        <div>
+        <section>
             <ul>
                 {allPachikus.map(async (pachiku) => {
                     // Assert that pachiku.userId exists
@@ -22,27 +22,17 @@ export default async function AllPachikus() {
                             id: pachiku.userId.toString(),
                         },
                     });
+
                     if (!user) return;
                     return (
-                        // <li key={pachiku.id}>
-                        //     <h3>{user.name}</h3> <p>{pachiku.tweet}</p>
-                        //     <p>{pachiku.likes} likes</p>
-                        //     <button>Like</button>
-                        //     <h4>Comments</h4>
-                        //     <ul>
-                        //         {pachiku.comments.length > 0
-                        //             ? pachiku.comments.map((comment) => (
-                        //                   <li key={comment.id}>
-                        //                       <p>{comment.comment}</p>
-                        //                   </li>
-                        //               ))
-                        //             : "No comments yet"}
-                        //     </ul>
-                        // </li>
-                        <Pachiku />
+                        <Pachiku
+                            key={pachiku.id}
+                            user={user}
+                            pachiku={pachiku}
+                        />
                     );
                 })}
             </ul>
-        </div>
+        </section>
     );
 }
