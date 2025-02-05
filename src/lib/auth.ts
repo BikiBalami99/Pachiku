@@ -1,6 +1,8 @@
 import { NextAuthOptions } from "next-auth";
+import { randomUUID } from "crypto";
 
-import GoogleProvider from "next-auth/providers/google";
+import GoogleProvider, { type GoogleProfile } from "next-auth/providers/google";
+
 import { prisma } from "@/lib/prisma";
 
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID!;
@@ -22,16 +24,26 @@ export const authOptions: NextAuthOptions = {
                 throw new Error("No profile");
             }
 
+            const { email, given_name, family_name, picture } =
+                profile as GoogleProfile;
+
+            const defaultUserName = `user-${randomUUID()}`;
+            const avatar = picture ?? null;
+
             await prisma.user.upsert({
                 where: {
                     email: profile.email,
                 },
                 create: {
-                    email: profile.email,
-                    name: profile.name,
+                    email,
+                    firstName: given_name,
+                    lastName: family_name,
+                    username: defaultUserName,
+                    avatar,
                 },
                 update: {
-                    name: profile.name,
+                    firstName: given_name,
+                    lastName: family_name,
                 },
             });
 
