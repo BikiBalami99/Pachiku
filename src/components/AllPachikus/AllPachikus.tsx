@@ -4,7 +4,7 @@ import Pachiku from "../APachikuComponents/Pachiku/Pachiku";
 export default async function AllPachikus() {
     const allPachikus = await prisma.pachiku.findMany({
         include: {
-            comments: true, // Include comments in the query
+            comments: true,
         },
     });
 
