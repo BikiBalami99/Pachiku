@@ -6,7 +6,9 @@ import {
     CommentIcon,
     HeartIcon,
     ShareIcon,
-} from "@/assets/IconsAsComponents/LikeCommentShareIcons";
+} from "@/components/APachikuComponents/LikeCommentShareComponents/LikeCommentShareComponents";
+import { getServerSession } from "next-auth";
+import { prisma } from "@/lib/prisma";
 // import AllComments from "../AllComments/AllComments";
 
 type PachikuProps = {
@@ -14,15 +16,25 @@ type PachikuProps = {
     pachiku: PachikuType & { comments: Comment[] }; // Ensure comments are included
 };
 
-export default function Pachiku({ user, pachiku }: PachikuProps) {
+export default async function Pachiku({ user, pachiku }: PachikuProps) {
     const timeSince = getTimeSince(pachiku.createdAt);
 
     const imageLink = user.avatar ? user.avatar : "/icons/no-avatar-icon.svg";
-    // const allComments: Comment[] = pachiku.comments;
+
+    const userHeartPachikuCheck = await prisma.like.findUnique({
+        where: { userId_pachikuId: { userId: user.id, pachikuId: pachiku.id } },
+    });
+
+    let userLikesThisPachiku: boolean;
+    if (userHeartPachikuCheck) {
+        userLikesThisPachiku = true;
+    } else {
+        userLikesThisPachiku = false;
+    }
 
     return (
         <li className={styles.pachiku} key={pachiku.id}>
-            <div className={styles.body}>
+            <section className={styles.body}>
                 <div className={styles.avatarContainer}>
                     <Image
                         src={imageLink}
@@ -42,12 +54,15 @@ export default function Pachiku({ user, pachiku }: PachikuProps) {
                     </div>
                     {pachiku.pachiku}
                 </div>
-            </div>
+            </section>
 
-            <div className={styles.likesCommentsShare}>
+            <section className={styles.likesCommentsShare}>
                 <div className={styles.likes}>
-                    <HeartIcon />
-                    {pachiku.likes}
+                    <HeartIcon
+                        pachikuId={pachiku.id}
+                        initialHeartState={userLikesThisPachiku}
+                        initialNumOfLikes={pachiku.likes}
+                    />
                 </div>
                 <div>
                     <CommentIcon />
@@ -57,8 +72,7 @@ export default function Pachiku({ user, pachiku }: PachikuProps) {
                     <ShareIcon />
                     Share
                 </div>
-            </div>
-            {/* <AllComments allComments={allComments} /> */}
+            </section>
         </li>
     );
 }

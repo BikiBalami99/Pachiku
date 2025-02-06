@@ -40,6 +40,7 @@ model Like {
     likedPachiku Pachiku @relation(fields: [pachikuId], references: [id])
     pachikuId    String
 
+    @@unique([userId, pachikuId]) // Enforce uniqueness
     @@index([userId])
     @@index([pachikuId])
 }

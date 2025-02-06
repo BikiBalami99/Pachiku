@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import Pachiku from "../Pachiku/Pachiku";
+import Pachiku from "../APachikuComponents/Pachiku/Pachiku";
 
 export default async function AllPachikus() {
     const allPachikus = await prisma.pachiku.findMany({
