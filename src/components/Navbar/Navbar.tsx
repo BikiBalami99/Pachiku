@@ -73,7 +73,7 @@ export default function Navbar() {
                         <Link className={styles.icon} href="/api/auth/signout">
                             {/* PaddingLeft is set .2rem because the icon looked a bit off */}
                             <Image
-                                style={{ paddingLeft: ".2rem" }}
+                                className={styles.signOutIcon}
                                 src="/icons/sign-out-icon.svg"
                                 width={25}
                                 height={20}
@@ -82,12 +82,6 @@ export default function Navbar() {
                         </Link>
                     </li>
                 )}
-
-                {/* {!session && (
-                    <li>
-                       
-                    </li>
-                )} */}
             </ul>
         </nav>
     );

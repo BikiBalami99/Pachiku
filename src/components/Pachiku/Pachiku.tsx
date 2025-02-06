@@ -2,6 +2,11 @@ import styles from "./Pachiku.module.css";
 import Image from "next/image";
 import { type User, Comment, Pachiku as PachikuType } from "@prisma/client";
 import { getTimeSince } from "@/utils/getTimeSince";
+import {
+    CommentIcon,
+    HeartIcon,
+    ShareIcon,
+} from "@/assets/IconsAsComponents/LikeCommentShareIcons";
 // import AllComments from "../AllComments/AllComments";
 
 type PachikuProps = {
@@ -41,30 +46,15 @@ export default function Pachiku({ user, pachiku }: PachikuProps) {
 
             <div className={styles.likesCommentsShare}>
                 <div className={styles.likes}>
-                    <Image
-                        src="/icons/heart-icon.svg"
-                        width={16}
-                        height={16}
-                        alt="Heart Icon"
-                    ></Image>
+                    <HeartIcon />
                     {pachiku.likes}
                 </div>
                 <div>
-                    <Image
-                        src="/icons/comments-icon.svg"
-                        width={16}
-                        height={16}
-                        alt="Comments Icon"
-                    ></Image>
+                    <CommentIcon />
                     {pachiku.comments.length}
                 </div>
                 <div>
-                    <Image
-                        src="/icons/share-icon.svg"
-                        width={16}
-                        height={16}
-                        alt="Share Icon"
-                    ></Image>
+                    <ShareIcon />
                     Share
                 </div>
             </div>

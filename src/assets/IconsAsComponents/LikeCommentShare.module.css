@@ -1,0 +1,72 @@
+/* ------------- Heart Icon section ----------------- */
+
+.heartIcon {
+    stroke: var(--primary-grey);
+    fill: var(--primary-white);
+
+    stroke-width: 2px;
+    stroke-linejoin: round;
+    fill: none;
+
+    transition: transform 100ms ease-in-out, fill 100ms ease-in-out;
+}
+
+.heartIcon:hover {
+    stroke: var(--primary-red);
+    transform: scale(1.15);
+    cursor: pointer;
+}
+
+.heartIcon:active {
+    /* Click animation */
+    cursor: pointer;
+    transform: scale(0.5);
+}
+
+.heartIconClicked {
+    fill: var(--primary-red);
+    stroke: none;
+}
+
+/*  -----------------Comment Icon section ----------------- */
+
+.commentIcon {
+    stroke: var(--primary-grey);
+    fill: var(--primary-white);
+    stroke-width: 2px;
+    stroke-linejoin: round;
+    transition: transform 100ms ease-in-out, fill 100ms ease-in-out;
+}
+
+.commentIcon:hover {
+    transform: scale(1.2);
+    cursor: pointer;
+}
+
+.commentIcon:active {
+    /* Click animation */
+    cursor: pointer;
+    transform: scale(0.5);
+}
+
+/* ----------------- Comment Icon section ----------------- */
+
+.shareIcon {
+    stroke: var(--primary-grey);
+    stroke-width: 2px;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+    fill: none;
+    transition: transform 100ms ease-in-out, stroke-width 100ms ease-in-out;
+}
+
+.shareIcon:hover {
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
+.shareIcon:active {
+    /* Click animation */
+    cursor: pointer;
+    transform: scale(0.5);
+}
