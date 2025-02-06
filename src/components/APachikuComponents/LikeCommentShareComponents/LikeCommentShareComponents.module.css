@@ -7,9 +7,8 @@
     stroke-width: 2px;
     stroke-linejoin: round;
     fill: none;
-    border: none;
 
-    transition: transform 100ms ease-in-out, fill 100ms ease-in-out;
+    transition: transform 100ms ease-in-out, fill 200ms ease-in-out;
 }
 
 .heartIcon:hover {
@@ -27,6 +26,14 @@
 .heartIconClicked {
     fill: var(--primary-red);
     stroke: none;
+}
+
+.heartIconDeactivated {
+    pointer-events: none;
+    opacity: 0.5;
+    stroke: var(--primary-grey);
+    fill: var(--primary-grey);
+    cursor: default;
 }
 
 /*  -----------------Comment Icon section ----------------- */
