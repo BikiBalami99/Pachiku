@@ -7,7 +7,6 @@ import {
     HeartIcon,
     ShareIcon,
 } from "@/components/APachikuComponents/LikeCommentShareComponents/LikeCommentShareComponents";
-import { getServerSession } from "next-auth";
 import { prisma } from "@/lib/prisma";
 // import AllComments from "../AllComments/AllComments";
 

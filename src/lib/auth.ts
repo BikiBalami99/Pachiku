@@ -2,7 +2,6 @@ import { NextAuthOptions } from "next-auth";
 import { randomUUID } from "crypto";
 import GoogleProvider, { type GoogleProfile } from "next-auth/providers/google";
 import { prisma } from "@/lib/prisma";
-import { User } from "@prisma/client"; // Import Prisma's User type
 
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID!;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET!;

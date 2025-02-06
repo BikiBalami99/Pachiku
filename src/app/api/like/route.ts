@@ -60,7 +60,7 @@ export async function POST(request: Request) {
 
             return NextResponse.json({ liked: true });
         }
-    } catch (error) {
+    } catch {
         return NextResponse.json({ error: "Database error" }, { status: 500 });
     }
 }
