@@ -3,11 +3,12 @@ import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 
-// Handle POST request for liking/unliking a post
+// This route handles either liking or unliking a pachiku
+
 export async function POST(request: Request) {
     const session = await getServerSession(authOptions);
     if (!session || !session.user) {
-        return NextResponse.json({ error: "Unauthorized" }, { status: 400 });
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const { pachikuId } = await request.json();
@@ -26,41 +27,43 @@ export async function POST(request: Request) {
         });
 
         if (existingLike) {
+            // Unlike the pachiku
             await prisma.like.delete({
                 where: { userId_pachikuId: { userId, pachikuId } },
             });
 
-            await prisma.pachiku.update({
-                where: {
-                    id: pachikuId,
-                },
-                data: {
-                    likes: {
-                        decrement: 1,
-                    },
-                },
+            const updatedPachiku = await prisma.pachiku.update({
+                where: { id: pachikuId },
+                data: { likes: { decrement: 1 } },
+                select: { likes: true },
             });
 
-            return NextResponse.json({ liked: false });
+            return NextResponse.json({
+                liked: false,
+                newLikesCount: updatedPachiku.likes,
+            });
         } else {
+            // Like the pachiku
             await prisma.like.create({
                 data: { userId, pachikuId },
             });
 
-            await prisma.pachiku.update({
-                where: {
-                    id: pachikuId,
-                },
-                data: {
-                    likes: {
-                        increment: 1,
-                    },
-                },
+            const updatedPachiku = await prisma.pachiku.update({
+                where: { id: pachikuId },
+                data: { likes: { increment: 1 } },
+                select: { likes: true },
             });
 
-            return NextResponse.json({ liked: true });
+            return NextResponse.json({
+                liked: true,
+                newLikesCount: updatedPachiku.likes,
+            });
         }
-    } catch {
-        return NextResponse.json({ error: "Database error" }, { status: 500 });
+    } catch (error) {
+        console.error("Database error:", error);
+        return NextResponse.json(
+            { error: "Internal server error" },
+            { status: 500 }
+        );
     }
 }

@@ -3,33 +3,26 @@ import Image from "next/image";
 import { type User, Comment, Pachiku as PachikuType } from "@prisma/client";
 import { getTimeSince } from "@/utils/getTimeSince";
 import {
-    CommentIcon,
     HeartIcon,
+    CommentIcon,
     ShareIcon,
 } from "@/components/APachikuComponents/LikeCommentShareComponents/LikeCommentShareComponents";
 import { prisma } from "@/lib/prisma";
-// import AllComments from "../AllComments/AllComments";
 
 type PachikuProps = {
     user: User;
-    pachiku: PachikuType & { comments: Comment[] }; // Ensure comments are included
+    pachiku: PachikuType & { comments: Comment[] };
 };
 
 export default async function Pachiku({ user, pachiku }: PachikuProps) {
     const timeSince = getTimeSince(pachiku.createdAt);
-
-    const imageLink = user.avatar ? user.avatar : "/icons/no-avatar-icon.svg";
+    const imageLink = user.avatar || "/icons/no-avatar-icon.svg";
 
     const userHeartPachikuCheck = await prisma.like.findUnique({
         where: { userId_pachikuId: { userId: user.id, pachikuId: pachiku.id } },
     });
 
-    let userLikesThisPachiku: boolean;
-    if (userHeartPachikuCheck) {
-        userLikesThisPachiku = true;
-    } else {
-        userLikesThisPachiku = false;
-    }
+    const userLikesThisPachiku = !!userHeartPachikuCheck;
 
     return (
         <li className={styles.pachiku} key={pachiku.id}>
@@ -39,7 +32,7 @@ export default async function Pachiku({ user, pachiku }: PachikuProps) {
                         src={imageLink}
                         width={48}
                         height={48}
-                        alt={`${user.firstName}'s avatar image`}
+                        alt={`${user.firstName}'s avatar`}
                     />
                 </div>
                 <div>
@@ -51,18 +44,16 @@ export default async function Pachiku({ user, pachiku }: PachikuProps) {
                         <p>・</p>
                         <p>{timeSince} ago</p>
                     </div>
-                    {pachiku.pachiku}
+                    <p>{pachiku.pachiku}</p>
                 </div>
             </section>
 
             <section className={styles.likesCommentsShare}>
-                <div className={styles.likes}>
-                    <HeartIcon
-                        pachikuId={pachiku.id}
-                        initialHeartState={userLikesThisPachiku}
-                        initialNumOfLikes={pachiku.likes}
-                    />
-                </div>
+                <HeartIcon
+                    pachikuId={pachiku.id}
+                    initialHeartState={userLikesThisPachiku}
+                    initialNumOfLikes={pachiku.likes}
+                />
                 <div>
                     <CommentIcon />
                     {pachiku.comments.length}
