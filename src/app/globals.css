@@ -20,6 +20,7 @@ body {
 
     /* Making sure the screen doesnt scroll, only the components scroll */
     height: 100svh;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
 }
