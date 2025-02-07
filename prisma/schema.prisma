@@ -19,6 +19,8 @@ model User {
     pachikus      Pachiku[]
     comments      Comment[]
     likedPachikus Like[]
+
+    @@index([email]) // Optimize lookups when signing in with email
 }
 
 model Pachiku {
@@ -31,6 +33,9 @@ model Pachiku {
     numOfComments Int       @default(0)
     comments      Comment[]
     likedBy       Like[]
+
+    @@index([likes]) // Helps in fast updates when incrementing/decrementing likes
+    @@index([createdAt]) // Optimize sorting by time
 }
 
 model Like {
@@ -41,8 +46,8 @@ model Like {
     pachikuId    String
 
     @@unique([userId, pachikuId]) // Enforce uniqueness
-    @@index([userId])
-    @@index([pachikuId])
+    @@index([userId, pachikuId]) // Optimize searches on user + liked post
+    @@index([pachikuId, userId]) // Optimize searches on post + user
 }
 
 model Comment {
