@@ -46,7 +46,11 @@ export default async function PachikuPage({
     return (
         <div className={styles.pachikuPage}>
             <Pachiku user={user} pachiku={pachiku} />
-            <AllComments allComments={pachiku.comments} />
+            <AllComments
+                user={user}
+                pachiku={pachiku}
+                allComments={pachiku.comments}
+            />
         </div>
     );
 }
