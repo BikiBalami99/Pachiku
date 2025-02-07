@@ -8,6 +8,7 @@ import {
     ShareIcon,
 } from "@/components/APachikuComponents/LikeCommentShareComponents/LikeCommentShareComponents";
 import { prisma } from "@/lib/prisma";
+import Link from "next/link";
 
 type PachikuProps = {
     user: User;
@@ -55,13 +56,15 @@ export default async function Pachiku({ user, pachiku }: PachikuProps) {
                     initialNumOfLikes={pachiku.likes}
                 />
                 <div>
-                    <CommentIcon />
-                    {pachiku.comments.length}
+                    <CommentIcon allComments={pachiku.comments} />
                 </div>
                 <div>
                     <ShareIcon />
                     Share
                 </div>
+                <Link href={`/pachiku-page/${pachiku.id}`}>
+                    View this pachiku
+                </Link>
             </section>
         </li>
     );

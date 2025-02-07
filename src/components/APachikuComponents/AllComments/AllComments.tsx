@@ -5,6 +5,10 @@ type AllCommentsProps = {
 };
 
 export default function AllComments({ allComments }: AllCommentsProps) {
+    if (allComments.length === 0) {
+        return <h2>No Comments Yet</h2>;
+    }
+
     return (
         <ul>
             {allComments.length > 0 &&
