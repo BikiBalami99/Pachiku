@@ -17,7 +17,7 @@ type PachikuProps = {
 
 export default async function Pachiku({ user, pachiku }: PachikuProps) {
     const timeSince = getTimeSince(pachiku.createdAt);
-    const imageLink = user.avatar || "/icons/no-avatar-icon.svg";
+    const imageLink = user.image || "/icons/no-image-icon.svg";
 
     const userHeartPachikuCheck = await prisma.like.findUnique({
         where: { userId_pachikuId: { userId: user.id, pachikuId: pachiku.id } },
@@ -28,14 +28,13 @@ export default async function Pachiku({ user, pachiku }: PachikuProps) {
     return (
         <li className={styles.pachiku} key={pachiku.id}>
             <section className={styles.body}>
-                <div className={styles.avatarContainer}>
-                    <Image
-                        src={imageLink}
-                        width={48}
-                        height={48}
-                        alt={`${user.firstName}'s avatar`}
-                    />
-                </div>
+                <Image
+                    src={imageLink}
+                    width={48}
+                    height={48}
+                    alt={`${user.firstName}'s avatar`}
+                    className={styles.image}
+                />
                 <div>
                     <div className={styles.userInfoContainer}>
                         <h3>

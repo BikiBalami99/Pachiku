@@ -21,10 +21,6 @@
 }
 
 .image {
-    width: 3.25rem;
-    height: 3.25rem;
-    flex-shrink: 0;
-
     border-radius: 3.125rem;
     background: #7b7b7b;
 }

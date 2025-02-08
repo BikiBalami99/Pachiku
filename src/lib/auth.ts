@@ -26,7 +26,7 @@ export const authOptions: NextAuthOptions = {
                 profile as GoogleProfile;
 
             const defaultUserName = `user-${randomUUID()}`;
-            const avatar = picture ?? null;
+            const image = picture ?? "/icons/no-image-icon.svg";
 
             await prisma.user.upsert({
                 where: {
@@ -37,7 +37,7 @@ export const authOptions: NextAuthOptions = {
                     firstName: given_name,
                     lastName: family_name,
                     username: defaultUserName,
-                    avatar,
+                    image,
                 },
                 update: {
                     firstName: given_name,

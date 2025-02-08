@@ -15,14 +15,9 @@
     gap: 1.5rem;
 }
 
-.avatarContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.image {
     border-radius: 50rem;
-    overflow: hidden;
-    width: 3rem;
-    height: 3rem;
+    box-shadow: 0px 0px 10px 10px black inset;
 }
 
 .userInfoContainer {

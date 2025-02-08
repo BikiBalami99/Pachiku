@@ -2,6 +2,8 @@ import { type User, Comment, Pachiku as PachikuType } from "@prisma/client";
 import NewCommentForm from "../NewCommentForm/NewCommentForm";
 import { prisma } from "@/lib/prisma";
 
+export const dynamic = "force-dynamic";
+
 type AllCommentsProps = {
     allComments: Comment[];
     user: User;

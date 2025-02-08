@@ -2,9 +2,18 @@
 import { useState } from "react";
 import { submitPachiku } from "./submitPachiku";
 import styles from "./NewPachikuForm.module.css";
+import { useSession } from "next-auth/react";
+import Image from "next/image";
 
 export default function NewPachikuForm() {
     const [feedback, setFeedback] = useState<string | null>(null);
+    const { data: session } = useSession();
+    if (!session || !session.user) {
+        return <h1>Please sign in</h1>;
+    }
+    const { user } = session;
+    console.log(user);
+    const userAvatarLink = user.image || "/icons/no-avatar-icon.svg";
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -20,7 +29,13 @@ export default function NewPachikuForm() {
     return (
         <form onSubmit={handleSubmit} className={styles.newPachikuForm}>
             <div className={styles.imageAndForm}>
-                <div className={styles.image}></div>
+                <Image
+                    src={userAvatarLink}
+                    alt="Avatar of the user"
+                    width={52}
+                    height={52}
+                    className={styles.image}
+                />
                 <input
                     type="text"
                     name="newPachiku"
