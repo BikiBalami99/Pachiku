@@ -2,6 +2,7 @@
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { revalidatePath } from "next/cache";
+import { fetchUser } from "@/utils/fetchUser";
 
 // This is the server-action for submitting a pachiku
 export async function submitPachiku(
@@ -21,10 +22,7 @@ export async function submitPachiku(
 
         const userEmail: string = session.user.email;
 
-        const user = await prisma.user.findUnique({
-            where: { email: userEmail },
-        });
-
+        const user = await fetchUser(userEmail);
         if (!user) {
             return {
                 error: "User invalid, please sign out and sign in again.",
