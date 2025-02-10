@@ -1,7 +1,7 @@
 import { fetchAllPachikus } from "@/utils/fetchAllPachikus";
 import Pachiku from "../APachikuComponents/Pachiku/Pachiku";
 import { type PachikuWithDetails } from "@/types/pachiku";
-import { fetchUser } from "@/utils/fetchUser";
+import { fetchUserWithUserId } from "@/utils/fetchUser";
 
 export default async function AllPachikus() {
     let allPachikus: PachikuWithDetails[];
@@ -21,9 +21,8 @@ export default async function AllPachikus() {
                             throw new Error("pachiku.userId does not exist");
                         }
 
-                        const user = await fetch(
-                            `${process.env.NEXTAUTH_URL}/api/user?userId=${pachiku.userId}`
-                        );
+                        const user = await fetchUserWithUserId(pachiku.userId);
+
                         if (!user.ok) return null;
 
                         const userData = await user.json();

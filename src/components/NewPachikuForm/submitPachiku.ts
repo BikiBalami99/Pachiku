@@ -2,7 +2,7 @@
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { revalidatePath } from "next/cache";
-import { fetchUser } from "@/utils/fetchUser";
+import { fetchUserWithEmail } from "@/utils/fetchUser";
 
 // This is the server-action for submitting a pachiku
 export async function submitPachiku(
@@ -22,7 +22,7 @@ export async function submitPachiku(
 
         const userEmail: string = session.user.email;
 
-        const user = await fetchUser(userEmail);
+        const user = await fetchUserWithEmail(userEmail);
         console.log("Got user ", user);
         if (!user) {
             return {
