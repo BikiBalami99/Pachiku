@@ -23,6 +23,7 @@ export async function submitPachiku(
         const userEmail: string = session.user.email;
 
         const user = await fetchUser(userEmail);
+        console.log("Got user ", user);
         if (!user) {
             return {
                 error: "User invalid, please sign out and sign in again.",

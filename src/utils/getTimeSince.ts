@@ -1,8 +1,16 @@
-export function getTimeSince(date: Date) {
+export function getTimeSince(date: Date | string) {
+    // Convert string to Date if necessary
+    const parsedDate = typeof date === "string" ? new Date(date) : date;
+
+    // Check if parsedDate is a valid Date
+    if (!(parsedDate instanceof Date) || isNaN(parsedDate.getTime())) {
+        throw new Error("Invalid date provided");
+    }
+
     const now = new Date();
 
-    // Difference in milli seconds
-    const diffInMs = now.getTime() - date.getTime();
+    // Difference in milliseconds
+    const diffInMs = now.getTime() - parsedDate.getTime();
 
     const diffInMinutes = Math.floor(diffInMs / (1000 * 60)); // Convert to minutes
     const hours = Math.floor(diffInMinutes / 60); // Calculate hours

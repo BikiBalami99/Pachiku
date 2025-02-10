@@ -4,16 +4,16 @@ import { prisma } from "@/lib/prisma";
 export async function GET(req: Request) {
     try {
         const { searchParams } = new URL(req.url);
-        const email = searchParams.get("email");
+        const userId = searchParams.get("userId");
 
-        if (!email) {
+        if (!userId) {
             return NextResponse.json(
                 { error: "Email is required" },
                 { status: 400 }
             );
         }
 
-        const user = await prisma.user.findUnique({ where: { email } });
+        const user = await prisma.user.findUnique({ where: { id: userId } });
 
         if (!user) {
             return NextResponse.json(
