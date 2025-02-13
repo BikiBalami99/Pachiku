@@ -1,4 +1,4 @@
-import { fetchAllPachikus } from "@/utils/fetchAllPachikus";
+import { fetchAllPachikus } from "@/utils/getPachiku";
 import Pachiku from "../APachikuComponents/Pachiku/Pachiku";
 import { type PachikuWithDetails } from "@/types/pachiku";
 import { getServerSession } from "next-auth";

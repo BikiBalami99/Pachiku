@@ -1,19 +1,21 @@
 import Pachiku from "@/components/APachikuComponents/Pachiku/Pachiku";
-import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
-import { type Comment, Pachiku as PachikuType } from "@prisma/client";
 import Link from "next/link";
 import styles from "./PachikuPage.module.css";
 import AllComments from "@/components/APachikuComponents/AllComments/AllComments";
 import { getAuthor } from "@/utils/getAuthor";
+import { authOptions } from "@/lib/auth";
+import { getSpecificPachiku } from "@/utils/getPachiku";
+import { notFound } from "next/navigation";
 
+// Page to view specific pachiku only in one page.
 export default async function PachikuPage({
     params,
 }: {
     params: Promise<{ pachikuId: string }>;
 }) {
     const { pachikuId } = await params; // Extract pachikuId from params
-    const session = await getServerSession();
+    const session = await getServerSession(authOptions); //Make sure to pass authOptions in getServerSession always
 
     if (!session || !session.user) {
         return (
@@ -27,16 +29,11 @@ export default async function PachikuPage({
     }
 
     const user = session.user;
-    const pachiku: (PachikuType & { comments: Comment[] }) | null =
-        await prisma.pachiku.findUnique({
-            where: { id: pachikuId },
-            include: { comments: true },
-        });
-
-    if (!pachiku) {
-        return <div>Pachiku not found</div>;
-    }
+    const pachiku = await getSpecificPachiku(pachikuId);
     const author = await getAuthor(pachiku);
+    if (!pachiku || !author) {
+        notFound();
+    }
 
     return (
         <div className={styles.pachikuPage}>

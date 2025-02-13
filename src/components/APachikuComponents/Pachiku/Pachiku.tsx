@@ -32,6 +32,7 @@ export default async function Pachiku({
             userId_pachikuId: { userId: currentUser.id, pachikuId: pachiku.id },
         },
     });
+    
     const userLikesThisPachiku = !!userHeartPachikuCheck;
 
     return (
