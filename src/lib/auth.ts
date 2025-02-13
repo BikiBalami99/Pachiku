@@ -16,6 +16,7 @@ export const authOptions: NextAuthOptions = {
             clientSecret: GOOGLE_CLIENT_SECRET,
         }),
     ],
+
     callbacks: {
         async signIn({ profile }) {
             if (!profile?.email) {
@@ -28,7 +29,7 @@ export const authOptions: NextAuthOptions = {
             const defaultUserName = `user-${randomUUID()}`;
             const image = picture ?? "/icons/no-image-icon.svg";
 
-            await prisma.user.upsert({
+            const upsertedUser = await prisma.user.upsert({
                 where: {
                     email: profile.email,
                 },
@@ -45,27 +46,9 @@ export const authOptions: NextAuthOptions = {
                 },
             });
 
+            console.log("Upserted User: ", upsertedUser);
+
             return true;
-        },
-
-        async jwt({ token, user }) {
-            if (user) {
-                const dbUser = await prisma.user.findUnique({
-                    where: { email: user.email! },
-                });
-
-                if (dbUser) {
-                    token.id = dbUser.id; // Attach user ID to the token
-                }
-            }
-            return token;
-        },
-
-        async session({ session, token }) {
-            if (session.user) {
-                session.user.id = token.id as string; // Attach user ID to the session
-            }
-            return session;
         },
     },
 };

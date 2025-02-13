@@ -1,44 +1,66 @@
 "use server";
-import { prisma } from "@/lib/prisma";
+import { Pachiku } from "@prisma/client";
 import { getServerSession } from "next-auth";
 import { revalidatePath } from "next/cache";
-import { fetchUserWithEmail } from "@/utils/fetchUser";
+
+interface SubmitPachikuResponseType {
+    success?: boolean;
+    error?: string;
+    data?: Pachiku; // Can be more specific if you know the data structure
+}
 
 // This is the server-action for submitting a pachiku
 export async function submitPachiku(
     formdata: FormData
-): Promise<{ error?: string; success?: boolean }> {
+): Promise<SubmitPachikuResponseType> {
     const pachikuText = formdata.get("newPachiku")!.toString();
 
     try {
         const session = await getServerSession();
+
+        // Edge cases handling
         if (!session) {
-            return { error: "Please sign in" };
+            return { success: false, error: "Please sign in" };
         }
 
-        if (!session.user || !session.user.email) {
-            return { error: "Something wrong with your account." };
-        }
-
-        const userEmail: string = session.user.email;
-
-        const user = await fetchUserWithEmail(userEmail);
-        console.log("Got user ", user);
-        if (!user) {
+        if (!session.user) {
             return {
-                error: "User invalid, please sign out and sign in again.",
+                success: false,
+                error: "Session.user does not exist",
             };
         }
 
-        await prisma.pachiku.create({
-            data: {
-                pachiku: pachikuText,
-                userId: user.id,
-            },
-        });
+        const userId = session.user.id;
+        const createPachikuResponse = await fetch(
+            `${process.env.NEXTAUTH_URL}/api/pachiku`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ pachikuText, userId }),
+            }
+        );
 
+        // If failed response
+        if (!createPachikuResponse.ok) {
+            const errorData = await createPachikuResponse.json();
+            return {
+                success: false,
+                error:
+                    errorData.error ||
+                    "Unknown error during POST request in the submit pachiku function.",
+            };
+        }
+
+        // If OK response
+        const responseData = await createPachikuResponse.json();
         revalidatePath("/");
-        return { success: true };
+
+        return {
+            success: true,
+            data: responseData,
+        };
     } catch (error) {
         console.error("Error creating pachiku:", error);
         return { error: "Error creating pachiku" };

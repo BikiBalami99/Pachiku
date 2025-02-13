@@ -1,42 +1,32 @@
 import { fetchAllPachikus } from "@/utils/fetchAllPachikus";
 import Pachiku from "../APachikuComponents/Pachiku/Pachiku";
 import { type PachikuWithDetails } from "@/types/pachiku";
-import { fetchUserWithUserId } from "@/utils/fetchUser";
+import { getServerSession } from "next-auth";
+import { getUserByUserId } from "@/utils/getUser";
+import { randomUUID } from "crypto";
 
 export default async function AllPachikus() {
-    let allPachikus: PachikuWithDetails[];
+    const allPachikus: PachikuWithDetails[] = await fetchAllPachikus();
+    const session = await getServerSession();
+    if (!session) return <h2>Please sign in to see Pachikus.</h2>;
 
-    try {
-        allPachikus = await fetchAllPachikus();
-    } catch (error) {
-        console.error("Error fetching Pachikus:", error);
-        return <p>Error loading Pachikus.</p>;
-    }
     return (
-        <section>
-            <ul>
-                {await Promise.all(
-                    allPachikus.map(async (pachiku: PachikuWithDetails) => {
-                        if (!pachiku.userId) {
-                            throw new Error("pachiku.userId does not exist");
-                        }
+        <ul>
+            {allPachikus.map(async (pachiku) => {
+                const author = await getUserByUserId(pachiku.userId);
+                if (author.error)
+                    // IDK why this needs a key but the app wont build without it
+                    return <h2 key={randomUUID()}>{author.error}</h2>;
 
-                        const user = await fetchUserWithUserId(pachiku.userId);
-
-                        if (!user.ok) return null;
-
-                        const userData = await user.json();
-
-                        return (
-                            <Pachiku
-                                key={pachiku.id}
-                                user={userData}
-                                pachiku={pachiku}
-                            />
-                        );
-                    })
-                )}
-            </ul>
-        </section>
+                return (
+                    <Pachiku
+                        key={pachiku.id}
+                        author={author.data}
+                        currentUser={session.user}
+                        pachiku={pachiku}
+                    />
+                );
+            })}
+        </ul>
     );
 }

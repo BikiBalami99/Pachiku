@@ -29,3 +29,38 @@ export async function GET(request: Request) {
 
     return NextResponse.json(pachiku);
 }
+
+export async function POST(request: Request) {
+    const { pachikuText, userId } = await request.json();
+
+    // Error handling
+    if (!pachikuText) {
+        return NextResponse.json(
+            { error: "No pachikuText provided in POST request." },
+            { status: 400 }
+        );
+    }
+
+    if (!userId) {
+        return NextResponse.json(
+            { error: "No UserId provided in POST request" },
+            { status: 400 }
+        );
+    }
+
+    try {
+        const response = await prisma.pachiku.create({
+            data: {
+                pachiku: pachikuText,
+                userId,
+            },
+        });
+
+        return NextResponse.json(
+            { message: "Pachiku created successfully", data: response },
+            { status: 201 }
+        );
+    } catch (error) {
+        return NextResponse.json({ error }, { status: 500 });
+    }
+}

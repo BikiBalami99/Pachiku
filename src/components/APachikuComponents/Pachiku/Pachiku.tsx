@@ -11,18 +11,27 @@ import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 
 type PachikuProps = {
-    user: User;
+    author: User;
     pachiku: PachikuType & { comments: Comment[] };
+    currentUser: User;
 };
 
-export default async function Pachiku({ user, pachiku }: PachikuProps) {
+export default async function Pachiku({
+    author,
+    pachiku,
+    currentUser,
+}: PachikuProps) {
+    // author is the author of the post while currentUser is the user who is signed in
+
     const timeSince = getTimeSince(pachiku.createdAt);
-    const imageLink = user.image || "/icons/no-image-icon.svg";
+    const imageLink = author.image || "/icons/no-image-icon.svg";
 
+    // Checks if the current user likes this post or not
     const userHeartPachikuCheck = await prisma.like.findUnique({
-        where: { userId_pachikuId: { userId: user.id, pachikuId: pachiku.id } },
+        where: {
+            userId_pachikuId: { userId: currentUser.id, pachikuId: pachiku.id },
+        },
     });
-
     const userLikesThisPachiku = !!userHeartPachikuCheck;
 
     return (
@@ -32,15 +41,15 @@ export default async function Pachiku({ user, pachiku }: PachikuProps) {
                     src={imageLink}
                     width={48}
                     height={48}
-                    alt={`${user.firstName}'s avatar`}
+                    alt={`${author.firstName}'s avatar`}
                     className={styles.image}
                 />
                 <div>
                     <div className={styles.userInfoContainer}>
                         <h3>
-                            {user.firstName} {user.lastName}
+                            {author.firstName} {author.lastName}
                         </h3>
-                        <h4>@{user.username}</h4>
+                        <h4>@{author.username}</h4>
                         <p>・</p>
                         <p>{timeSince} ago</p>
                     </div>

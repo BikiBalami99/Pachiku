@@ -5,6 +5,7 @@ import { type Comment, Pachiku as PachikuType } from "@prisma/client";
 import Link from "next/link";
 import styles from "./PachikuPage.module.css";
 import AllComments from "@/components/APachikuComponents/AllComments/AllComments";
+import { getAuthor } from "@/utils/getAuthor";
 
 export default async function PachikuPage({
     params,
@@ -25,14 +26,7 @@ export default async function PachikuPage({
         );
     }
 
-    const sessionUser = session.user; // May not contain full user details
-
-    const user = await prisma.user.findUnique({
-        where: { email: sessionUser.email }, // Fetch full user object
-    });
-
-    if (!user) return <div>User not found</div>;
-
+    const user = session.user;
     const pachiku: (PachikuType & { comments: Comment[] }) | null =
         await prisma.pachiku.findUnique({
             where: { id: pachikuId },
@@ -42,10 +36,11 @@ export default async function PachikuPage({
     if (!pachiku) {
         return <div>Pachiku not found</div>;
     }
+    const author = await getAuthor(pachiku);
 
     return (
         <div className={styles.pachikuPage}>
-            <Pachiku user={user} pachiku={pachiku} />
+            <Pachiku author={author} pachiku={pachiku} currentUser={user} />
             <AllComments
                 user={user}
                 pachiku={pachiku}
