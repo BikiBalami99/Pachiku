@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
+// Get the user by email
 export async function GET(
     req: Request,
     { params }: { params: Promise<{ email: string }> }

@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
+// Get all pachikus (used in feed) and include the comments and likedBy
 export async function GET() {
     try {
         const allPachiku = await prisma.pachiku.findMany({

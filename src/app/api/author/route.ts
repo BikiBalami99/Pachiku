@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
+// get the author of a pachiku. the userId is given from a pachiku.userId.
 export async function GET(req: Request) {
     const url = new URL(req.url);
     const userId = url.searchParams.get("userId");

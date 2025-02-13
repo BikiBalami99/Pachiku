@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 
+// To make a new comment on a specific pachiku
 export async function POST(request: Request) {
     const { newComment, userId, pachikuId } = await request.json();
     try {
