@@ -30,6 +30,7 @@ export async function GET(request: Request) {
     return NextResponse.json(pachiku);
 }
 
+// To create a new Pachiku
 export async function POST(request: Request) {
     const { pachikuText, userId } = await request.json();
 

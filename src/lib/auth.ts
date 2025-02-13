@@ -2,6 +2,7 @@ import { NextAuthOptions } from "next-auth";
 import { randomUUID } from "crypto";
 import GoogleProvider, { type GoogleProfile } from "next-auth/providers/google";
 import { prisma } from "@/lib/prisma";
+import { User } from "@prisma/client";
 
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID!;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET!;
@@ -49,6 +50,23 @@ export const authOptions: NextAuthOptions = {
             console.log("Upserted User: ", upsertedUser);
 
             return true;
+        },
+        async jwt({ token }) {
+            // Fetch user from DB on every JWT update
+            const dbUser = await prisma.user.findUnique({
+                where: { email: token.email! },
+            });
+            if (dbUser) {
+                token.user = dbUser;
+            }
+            return token;
+        },
+        async session({ session, token }) {
+            // Assign database user to session
+            if (token.user) {
+                session.user = token.user as User;
+            }
+            return session;
         },
     },
 };

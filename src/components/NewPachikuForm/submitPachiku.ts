@@ -1,4 +1,5 @@
 "use server";
+import { authOptions } from "@/lib/auth";
 import { Pachiku } from "@prisma/client";
 import { getServerSession } from "next-auth";
 import { revalidatePath } from "next/cache";
@@ -6,7 +7,7 @@ import { revalidatePath } from "next/cache";
 interface SubmitPachikuResponseType {
     success?: boolean;
     error?: string;
-    data?: Pachiku; // Can be more specific if you know the data structure
+    data?: Pachiku;
 }
 
 // This is the server-action for submitting a pachiku
@@ -16,7 +17,7 @@ export async function submitPachiku(
     const pachikuText = formdata.get("newPachiku")!.toString();
 
     try {
-        const session = await getServerSession();
+        const session = await getServerSession(authOptions);
 
         // Edge cases handling
         if (!session) {
@@ -31,6 +32,7 @@ export async function submitPachiku(
         }
 
         const userId = session.user.id;
+        console.log("User id got from session:", session.user);
         const createPachikuResponse = await fetch(
             `${process.env.NEXTAUTH_URL}/api/pachiku`,
             {
