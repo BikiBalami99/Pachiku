@@ -12,7 +12,6 @@ export default function NewPachikuForm() {
         return <h1>Please sign in</h1>;
     }
     const { user } = session;
-    console.log(user);
     const userAvatarLink = user.image || "/icons/no-avatar-icon.svg";
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {

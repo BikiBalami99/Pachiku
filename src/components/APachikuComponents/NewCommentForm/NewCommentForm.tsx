@@ -15,7 +15,7 @@ export default function NewCommentForm({
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
 
-        const response = await fetch("/api/comment", {
+        await fetch("/api/comment", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -26,9 +26,6 @@ export default function NewCommentForm({
                 pachikuId: pachiku.id,
             }),
         });
-
-        const result = await response.json();
-        console.log("Result of posting new comment: ", result);
     }
 
     return (

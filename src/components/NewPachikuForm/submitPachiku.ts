@@ -32,7 +32,6 @@ export async function submitPachiku(
         }
 
         const userId = session.user.id;
-        console.log("User id got from session:", session.user);
         const createPachikuResponse = await fetch(
             `${process.env.NEXTAUTH_URL}/api/pachiku`,
             {

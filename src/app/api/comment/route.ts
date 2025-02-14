@@ -14,9 +14,8 @@ export async function POST(request: Request) {
             },
         });
         revalidatePath(`/pachiku-page/${pachikuId}`);
-        console.log("revalidated path", `/pachiku-page/${pachikuId}`);
     } catch (error) {
-        console.log("Error posting new comment");
+        console.log("Error posting new comment at api/comment POST request.");
         return NextResponse.json({ message: `error ${error}`, status: 500 });
     }
 

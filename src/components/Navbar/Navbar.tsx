@@ -76,7 +76,7 @@ export default function Navbar() {
                                 className={styles.signOutIcon}
                                 src="/icons/sign-out-icon.svg"
                                 width={25}
-                                height={20}
+                                height={25}
                                 alt="Home Icon"
                             />
                         </Link>

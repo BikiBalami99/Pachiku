@@ -6,12 +6,11 @@ export async function GET(
     req: Request,
     { params }: { params: Promise<{ userId: string }> }
 ) {
-    console.log("We hit userID handler");
     const { userId } = await params;
 
     if (!userId || typeof userId !== "string") {
         return NextResponse.json(
-            { error: "Invalid userId parameter" },
+            { error: "Invalid userId parameter provided at user/by-id/" },
             { status: 400 }
         );
     }
@@ -23,7 +22,9 @@ export async function GET(
         return NextResponse.json(user, { status: 200 });
     } catch (error) {
         return NextResponse.json(
-            { error: `Failed to fetch user by userId. Error: ${error}` },
+            {
+                error: `Failed to fetch user by userId at user/by-id/. Error: ${error}`,
+            },
             { status: 500 }
         );
     }

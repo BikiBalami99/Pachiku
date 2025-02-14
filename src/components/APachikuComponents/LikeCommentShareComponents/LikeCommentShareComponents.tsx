@@ -21,7 +21,6 @@ export function HeartIcon({
 
     // Handle click with debounce and error handling
     const handleClick = async () => {
-        console.log("clicked");
         if (isSubmitting) return; // Prevent double-taps
         setIsSubmitting(true);
 
