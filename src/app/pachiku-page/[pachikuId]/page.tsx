@@ -41,7 +41,7 @@ export default async function PachikuPage({
 
         return (
             <div className={styles.pachikuPage}>
-                <Pachiku author={author} pachiku={pachiku} currentUser={user} />
+                <Pachiku pachiku={pachiku} currentUser={user} />
                 <AllComments
                     user={user}
                     pachiku={pachiku}

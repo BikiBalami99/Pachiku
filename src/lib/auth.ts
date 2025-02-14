@@ -34,7 +34,7 @@ export const authOptions: NextAuthOptions = {
             const defaultUserName = `user-${randomUUID()}`;
             const image = picture ?? "/icons/no-image-icon.svg";
 
-            const upsertedUser = await prisma.user.upsert({
+            await prisma.user.upsert({
                 where: { email },
                 create: {
                     email,
@@ -45,8 +45,6 @@ export const authOptions: NextAuthOptions = {
                 },
                 update: { firstName: given_name, lastName: family_name },
             });
-
-            console.log("Upserted User: ", upsertedUser);
 
             return true;
         },

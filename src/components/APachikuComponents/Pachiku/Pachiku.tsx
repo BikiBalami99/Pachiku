@@ -1,6 +1,6 @@
 import styles from "./Pachiku.module.css";
 import Image from "next/image";
-import { type User, Comment, Pachiku as PachikuType } from "@prisma/client";
+import { type User } from "@prisma/client";
 import { getTimeSince } from "@/utils/getTimeSince";
 import {
     HeartIcon,
@@ -9,19 +9,17 @@ import {
 } from "@/components/APachikuComponents/LikeCommentShareComponents/LikeCommentShareComponents";
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
+import { getAuthor } from "@/utils/getAuthor";
+import { PachikuWithDetails } from "@/types/pachiku";
 
 type PachikuProps = {
-    author: User;
-    pachiku: PachikuType & { comments: Comment[] };
+    pachiku: PachikuWithDetails;
     currentUser: User;
 };
 
-export default async function Pachiku({
-    author,
-    pachiku,
-    currentUser,
-}: PachikuProps) {
+export default async function Pachiku({ pachiku, currentUser }: PachikuProps) {
     // author is the author of the post while currentUser is the user who is signed in
+    const author = await getAuthor(pachiku);
 
     const timeSince = getTimeSince(pachiku.createdAt);
     const imageLink = author.image || "/icons/no-image-icon.svg";
@@ -32,7 +30,6 @@ export default async function Pachiku({
             userId_pachikuId: { userId: currentUser.id, pachikuId: pachiku.id },
         },
     });
-    
     const userLikesThisPachiku = !!userHeartPachikuCheck;
 
     return (
