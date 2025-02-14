@@ -1,21 +1,21 @@
 export async function fetchAllPachikus() {
-    const response = await fetch(
-        `${process.env.NEXTAUTH_URL}/api/pachiku/allPachikus`
-    );
-    console.log("response from fetchAllPachikus: ", response);
+    try {
+        // const baseUrl = process.env.NEXTAUTH_URL;
+        const response = await fetch(
+            `http://localhost:3000/api/pachiku/allPachikus`
+        );
 
-    if (!response.ok) {
-        const errorText = await response.text();
-        console.error(
-            "Error fetching all pachikus:",
-            response.status,
-            errorText
-        );
-        throw new Error(
-            "Failed to fetch all pachikus from fetchAllPachikus function."
-        );
+        if (!response.ok) {
+            throw new Error(
+                `Failed to fetch all pachikus: ${response.statusText}`
+            );
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error("Error fetching all pachikus:", error);
+        throw error;
     }
-    return response.json();
 }
 
 export async function getSpecificPachiku(pachikuId: string) {

@@ -14,35 +14,43 @@ export default async function PachikuPage({
 }: {
     params: Promise<{ pachikuId: string }>;
 }) {
-    const { pachikuId } = await params; // Extract pachikuId from params
-    const session = await getServerSession(authOptions); //Make sure to pass authOptions in getServerSession always
+    try {
+        const { pachikuId } = await params; // Extract pachikuId from params
+        const session = await getServerSession(authOptions); //Make sure to pass authOptions in getServerSession always
 
-    if (!session || !session.user) {
+        if (!session || !session.user) {
+            return (
+                <section>
+                    <h2>Please Sign in to view this</h2>
+                    <Link
+                        className="button primaryButton"
+                        href="/api/auth/signin"
+                    >
+                        Sign in
+                    </Link>
+                </section>
+            );
+        }
+
+        const user = session.user;
+        const pachiku = await getSpecificPachiku(pachikuId);
+        const author = await getAuthor(pachiku);
+        if (!pachiku || !author) {
+            notFound();
+        }
+
         return (
-            <section>
-                <h2>Please Sign in to view this</h2>
-                <Link className="button primaryButton" href="/api/auth/signin">
-                    Sign in
-                </Link>
-            </section>
+            <div className={styles.pachikuPage}>
+                <Pachiku author={author} pachiku={pachiku} currentUser={user} />
+                <AllComments
+                    user={user}
+                    pachiku={pachiku}
+                    allComments={pachiku.comments}
+                />
+            </div>
         );
-    }
-
-    const user = session.user;
-    const pachiku = await getSpecificPachiku(pachikuId);
-    const author = await getAuthor(pachiku);
-    if (!pachiku || !author) {
+    } catch (error) {
+        console.error("Error rendering PachikuPage:", error);
         notFound();
     }
-
-    return (
-        <div className={styles.pachikuPage}>
-            <Pachiku author={author} pachiku={pachiku} currentUser={user} />
-            <AllComments
-                user={user}
-                pachiku={pachiku}
-                allComments={pachiku.comments}
-            />
-        </div>
-    );
 }

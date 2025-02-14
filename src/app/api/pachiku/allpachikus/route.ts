@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 
 // Get all pachikus (used in feed) and include the comments and likedBy
 export async function GET() {
+    console.log("We hitting the GET request");
     try {
         const allPachiku = await prisma.pachiku.findMany({
             include: {
