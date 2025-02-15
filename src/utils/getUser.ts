@@ -23,3 +23,29 @@ export async function getUserByUserId(userId: string) {
         return { error: "Network error fetching user:" };
     }
 }
+
+export async function getUserByEmail(email: string) {
+    if (!email) return { error: "Invalid email" };
+
+    try {
+        const res = await fetch(
+            `${process.env.NEXTAUTH_URL}/api/user/by-email/${email}`
+        );
+
+        if (!res.ok) {
+            const errorData = await res.json().catch(() => ({}));
+            // Handlred potential invalid JSON
+            return {
+                error:
+                    errorData.error ||
+                    `Error fetching user: ${errorData.statusText}`,
+            };
+        }
+
+        const data = await res.json();
+        return { data };
+    } catch (error) {
+        console.error("Network error fetching user: ", error);
+        return { error: "Network error fetching user:" };
+    }
+}

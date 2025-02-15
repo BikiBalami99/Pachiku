@@ -30,8 +30,8 @@ export async function submitPachiku(
                 error: "Session.user does not exist",
             };
         }
+        const email = session.user.email;
 
-        const userId = session.user.id;
         const createPachikuResponse = await fetch(
             `${process.env.NEXTAUTH_URL}/api/pachiku`,
             {
@@ -39,7 +39,7 @@ export async function submitPachiku(
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ pachikuText, userId }),
+                body: JSON.stringify({ pachikuText, email }),
             }
         );
 

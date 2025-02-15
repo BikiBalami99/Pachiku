@@ -2,12 +2,9 @@ import { NextAuthOptions } from "next-auth";
 import { randomUUID } from "crypto";
 import GoogleProvider, { type GoogleProfile } from "next-auth/providers/google";
 import { prisma } from "@/lib/prisma";
-import { User } from "@prisma/client";
 
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID!;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET!;
-
-
 
 export const authOptions: NextAuthOptions = {
     session: {
@@ -45,18 +42,6 @@ export const authOptions: NextAuthOptions = {
             });
 
             return true;
-        },
-        async jwt({ token, user }) {
-            if (user) {
-                token.user = user;
-            }
-            return token;
-        },
-        async session({ session, token }) {
-            if (token.user) {
-                session.user = token.user as User;
-            }
-            return session;
         },
     },
 };

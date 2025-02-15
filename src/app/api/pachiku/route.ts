@@ -31,7 +31,7 @@ export async function GET(request: Request) {
 
 // To create a new Pachiku
 export async function POST(request: Request) {
-    const { pachikuText, userId } = await request.json();
+    const { pachikuText, email } = await request.json();
 
     // Error handling
     if (!pachikuText) {
@@ -41,9 +41,21 @@ export async function POST(request: Request) {
         );
     }
 
-    if (!userId) {
+    if (!email) {
         return NextResponse.json(
-            { error: "No UserId provided in POST request" },
+            { error: "No email provided in POST request" },
+            { status: 400 }
+        );
+    }
+
+    // Check if the userId exists in the User table
+    const author = await prisma.user.findUnique({
+        where: { email },
+    });
+
+    if (!author) {
+        return NextResponse.json(
+            { error: "That user does not exist" },
             { status: 400 }
         );
     }
@@ -52,7 +64,7 @@ export async function POST(request: Request) {
         const response = await prisma.pachiku.create({
             data: {
                 pachiku: pachikuText,
-                userId,
+                userId: author.id,
             },
         });
 
