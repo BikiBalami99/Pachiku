@@ -4,7 +4,7 @@ CREATE TABLE "User" (
     "email" TEXT NOT NULL,
     "firstName" TEXT NOT NULL,
     "lastName" TEXT NOT NULL,
-    "avatar" TEXT,
+    "image" TEXT,
     "username" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -19,6 +19,7 @@ CREATE TABLE "Pachiku" (
     "userId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "likes" INTEGER NOT NULL DEFAULT 0,
+    "numOfComments" INTEGER NOT NULL DEFAULT 0,
 
     CONSTRAINT "Pachiku_pkey" PRIMARY KEY ("id")
 );
@@ -47,10 +48,22 @@ CREATE TABLE "Comment" (
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
-CREATE INDEX "Like_userId_idx" ON "Like"("userId");
+CREATE INDEX "User_email_idx" ON "User"("email");
 
 -- CreateIndex
-CREATE INDEX "Like_pachikuId_idx" ON "Like"("pachikuId");
+CREATE INDEX "Pachiku_likes_idx" ON "Pachiku"("likes");
+
+-- CreateIndex
+CREATE INDEX "Pachiku_createdAt_idx" ON "Pachiku"("createdAt");
+
+-- CreateIndex
+CREATE INDEX "Like_userId_pachikuId_idx" ON "Like"("userId", "pachikuId");
+
+-- CreateIndex
+CREATE INDEX "Like_pachikuId_userId_idx" ON "Like"("pachikuId", "userId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Like_userId_pachikuId_key" ON "Like"("userId", "pachikuId");
 
 -- CreateIndex
 CREATE INDEX "Comment_userId_idx" ON "Comment"("userId");

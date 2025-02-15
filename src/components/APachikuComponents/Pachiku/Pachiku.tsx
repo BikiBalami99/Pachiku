@@ -20,6 +20,10 @@ type PachikuProps = {
 export default async function Pachiku({ pachiku, currentUser }: PachikuProps) {
     // author is the author of the post while currentUser is the user who is signed in
     const author = await getAuthor(pachiku);
+    if (!author) {
+        console.error("Author not found");
+        return null;
+    }
 
     const timeSince = getTimeSince(pachiku.createdAt);
     const imageLink = author.image || "/icons/no-image-icon.svg";
