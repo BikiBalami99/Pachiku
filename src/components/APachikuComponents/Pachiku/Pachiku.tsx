@@ -88,7 +88,10 @@ export default function Pachiku({ pachiku }: PachikuProps) {
                     initialNumOfLikes={pachiku.likes}
                 />
                 <div>
-                    <CommentIcon allComments={pachiku.comments} />
+                    <CommentIcon
+                        pachikuId={pachiku.id}
+                        allComments={pachiku.comments}
+                    />
                 </div>
                 <div>
                     <ShareIcon />

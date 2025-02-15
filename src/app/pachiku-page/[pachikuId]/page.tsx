@@ -2,7 +2,7 @@ import Pachiku from "@/components/APachikuComponents/Pachiku/Pachiku";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
 import styles from "./PachikuPage.module.css";
-import AllComments from "@/components/APachikuComponents/AllComments/AllComments";
+import AllComments from "@/components/CommentsComponents/AllComments/AllComments";
 import { getAuthor } from "@/utils/getAuthor";
 import { authOptions } from "@/lib/auth";
 import { getSpecificPachiku } from "@/utils/getPachiku";

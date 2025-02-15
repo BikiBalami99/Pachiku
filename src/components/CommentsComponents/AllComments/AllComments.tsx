@@ -1,7 +1,6 @@
 import { Comment, Pachiku as PachikuType } from "@prisma/client";
 import NewCommentForm from "../NewCommentForm/NewCommentForm";
 import { prisma } from "@/lib/prisma";
-import { useUserContext } from "@/contexts/UserContext";
 
 export const dynamic = "force-dynamic";
 
@@ -14,10 +13,9 @@ export default function AllComments({
     allComments,
     pachiku,
 }: AllCommentsProps) {
-    const { user } = useUserContext();
     return (
         <section>
-            {user && <NewCommentForm user={user} pachiku={pachiku} />}
+            <NewCommentForm pachiku={pachiku} />
             {allComments.length === 0 ? (
                 <h2>No Comments Yet</h2>
             ) : (
