@@ -4,13 +4,10 @@ import { getAllPachikus } from "@/utils/getPachiku";
 import Pachiku from "../APachikuComponents/Pachiku/Pachiku";
 import { useSession } from "next-auth/react";
 import { PachikuWithDetails } from "@/types/pachiku";
-import { useUserContext } from "@/contexts/UserContext";
 
 export default function AllPachikus() {
     const { data: session } = useSession();
     const [allPachikus, setAllPachikus] = useState<PachikuWithDetails[]>([]);
-    const { user } = useUserContext();
-    console.log(user);
 
     // Fetch pachikus
     useEffect(() => {
