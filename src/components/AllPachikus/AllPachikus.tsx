@@ -1,21 +1,20 @@
 "use client";
-
 import { useEffect, useState } from "react";
 import { getAllPachikus } from "@/utils/getPachiku";
 import Pachiku from "../APachikuComponents/Pachiku/Pachiku";
 import { useSession } from "next-auth/react";
 import { PachikuWithDetails } from "@/types/pachiku";
+import { useUserContext } from "@/contexts/UserContext";
 
 export default function AllPachikus() {
     const { data: session } = useSession();
     const [allPachikus, setAllPachikus] = useState<PachikuWithDetails[]>([]);
+    const { user } = useUserContext();
+    console.log(user);
 
+    // Fetch pachikus
     useEffect(() => {
-        const fetchPachikus = async () => {
-            const data = await getAllPachikus();
-            setAllPachikus(data);
-        };
-        fetchPachikus();
+        getAllPachikus().then((allPachikus) => setAllPachikus(allPachikus));
     }, []);
 
     if (!session) {
@@ -32,7 +31,7 @@ export default function AllPachikus() {
                 <Pachiku
                     key={pachiku.id}
                     pachiku={pachiku}
-                    currentUser={session.user}
+                    currentUser={user}
                 />
             ))}
         </ul>

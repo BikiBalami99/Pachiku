@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import styles from "./Pachiku.module.css";
 import Image from "next/image";
 import { type User } from "@prisma/client";
@@ -7,34 +10,43 @@ import {
     CommentIcon,
     ShareIcon,
 } from "@/components/APachikuComponents/LikeCommentShareComponents/LikeCommentShareComponents";
-import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import { getAuthor } from "@/utils/getAuthor";
 import { PachikuWithDetails } from "@/types/pachiku";
+import { getUserLikesPachiku } from "@/utils/getUserLikesPachiku";
 
 type PachikuProps = {
     pachiku: PachikuWithDetails;
-    currentUser: User;
+    currentUser: User | null;
 };
 
-export default async function Pachiku({ pachiku, currentUser }: PachikuProps) {
-    // author is the author of the post while currentUser is the user who is signed in
-    const author = await getAuthor(pachiku);
-    if (!author) {
-        console.error("Author not found");
-        return null;
-    }
+export default function Pachiku({ pachiku, currentUser }: PachikuProps) {
+    const [author, setAuthor] = useState<User | null>(null);
+    const [userLikesThisPachiku, setUserLikesThisPachiku] = useState(false);
+
+    useEffect(() => {
+        if (!currentUser) return; // Guard clause for when currentUser is null
+
+        let isMounted = false;
+        isMounted = true;
+
+        getAuthor(pachiku).then((authorData) => {
+            if (isMounted) setAuthor(authorData);
+        });
+
+        getUserLikesPachiku(currentUser.id, pachiku.id).then((like) => {
+            if (isMounted) setUserLikesThisPachiku(!!like);
+        });
+
+        return () => {
+            isMounted = false;
+        };
+    }, [pachiku, currentUser]);
+
+    if (!author || !currentUser) return null; // Return null if author or currentUser is not available
 
     const timeSince = getTimeSince(pachiku.createdAt);
     const imageLink = author.image || "/icons/no-image-icon.svg";
-
-    // Checks if the current user likes this post or not
-    const userHeartPachikuCheck = await prisma.like.findUnique({
-        where: {
-            userId_pachikuId: { userId: currentUser.id, pachikuId: pachiku.id },
-        },
-    });
-    const userLikesThisPachiku = !!userHeartPachikuCheck;
 
     return (
         <li className={styles.pachiku} key={pachiku.id}>
