@@ -10,7 +10,6 @@ import {
     CommentIcon,
     ShareIcon,
 } from "@/components/APachikuComponents/LikeCommentShareComponents/LikeCommentShareComponents";
-import Link from "next/link";
 import { getAuthor } from "@/utils/getAuthor";
 import { PachikuWithDetails } from "@/types/pachiku";
 import { getUserLikesPachiku } from "@/utils/getUserLikesPachiku";
@@ -94,12 +93,8 @@ export default function Pachiku({ pachiku }: PachikuProps) {
                     />
                 </div>
                 <div>
-                    <ShareIcon />
-                    Share
+                    <ShareIcon pachikuId={pachiku.id} />
                 </div>
-                <Link href={`/pachiku-page/${pachiku.id}`}>
-                    View this pachiku
-                </Link>
             </section>
         </li>
     );

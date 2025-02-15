@@ -78,3 +78,17 @@
     cursor: pointer;
     transform: scale(0.5);
 }
+
+.linkCopiedAlert {
+    position: absolute;
+    bottom: 200%;
+    margin-top: 0.5rem;
+    background-color: var(--secondary-black);
+    color: var(--primary-white);
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    width: 100%;
+
+    transition: opacity 300ms ease-in-out;
+}
