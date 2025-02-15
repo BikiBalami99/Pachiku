@@ -28,11 +28,7 @@ export default function AllPachikus() {
     return (
         <ul>
             {allPachikus.map((pachiku) => (
-                <Pachiku
-                    key={pachiku.id}
-                    pachiku={pachiku}
-                    currentUser={user}
-                />
+                <Pachiku key={pachiku.id} pachiku={pachiku} />
             ))}
         </ul>
     );

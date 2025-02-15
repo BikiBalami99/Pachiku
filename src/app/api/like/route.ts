@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { getUserByEmail } from "@/utils/getUser";
 
 // This route handles either liking or unliking a pachiku
 export async function POST(request: Request) {
@@ -18,7 +19,8 @@ export async function POST(request: Request) {
         );
     }
 
-    const userId = session.user.id;
+    const user = await getUserByEmail(session.user.email);
+    const userId = user.id;
 
     try {
         const existingLike = await prisma.like.findUnique({

@@ -32,7 +32,6 @@ export default async function PachikuPage({
             );
         }
 
-        const user = session.user;
         const pachiku = await getSpecificPachiku(pachikuId);
         const author = await getAuthor(pachiku);
         if (!pachiku || !author) {
@@ -41,12 +40,8 @@ export default async function PachikuPage({
 
         return (
             <div className={styles.pachikuPage}>
-                <Pachiku pachiku={pachiku} currentUser={user} />
-                <AllComments
-                    user={user}
-                    pachiku={pachiku}
-                    allComments={pachiku.comments}
-                />
+                <Pachiku pachiku={pachiku} />
+                <AllComments pachiku={pachiku} allComments={pachiku.comments} />
             </div>
         );
     } catch (error) {

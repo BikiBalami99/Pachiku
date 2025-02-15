@@ -14,26 +14,34 @@ import Link from "next/link";
 import { getAuthor } from "@/utils/getAuthor";
 import { PachikuWithDetails } from "@/types/pachiku";
 import { getUserLikesPachiku } from "@/utils/getUserLikesPachiku";
+import { useUserContext } from "@/contexts/UserContext";
 
 type PachikuProps = {
     pachiku: PachikuWithDetails;
-    currentUser: User | null;
 };
 
-export default function Pachiku({ pachiku, currentUser }: PachikuProps) {
+export default function Pachiku({ pachiku }: PachikuProps) {
     const [author, setAuthor] = useState<User | null>(null);
     const [userLikesThisPachiku, setUserLikesThisPachiku] = useState(false);
+    const { user: currentUser } = useUserContext();
 
+    // Fetch author
     useEffect(() => {
-        if (!currentUser) return; // Guard clause for when currentUser is null
-
-        let isMounted = false;
-        isMounted = true;
-
+        let isMounted = true;
         getAuthor(pachiku).then((authorData) => {
             if (isMounted) setAuthor(authorData);
         });
 
+        return () => {
+            isMounted = false;
+        };
+    }, [pachiku]);
+
+    // Check if the current user likes this pachiku
+    useEffect(() => {
+        if (!currentUser) return;
+
+        let isMounted = true;
         getUserLikesPachiku(currentUser.id, pachiku.id).then((like) => {
             if (isMounted) setUserLikesThisPachiku(!!like);
         });
@@ -50,6 +58,7 @@ export default function Pachiku({ pachiku, currentUser }: PachikuProps) {
 
     return (
         <li className={styles.pachiku} key={pachiku.id}>
+            {/* Body of the pachiku, name, username, time and the pachiku itself */}
             <section className={styles.body}>
                 <Image
                     src={imageLink}
@@ -71,6 +80,7 @@ export default function Pachiku({ pachiku, currentUser }: PachikuProps) {
                 </div>
             </section>
 
+            {/* Likes comments and share */}
             <section className={styles.likesCommentsShare}>
                 <HeartIcon
                     pachikuId={pachiku.id}
