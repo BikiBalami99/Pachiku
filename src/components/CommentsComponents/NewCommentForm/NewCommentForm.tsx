@@ -1,39 +1,24 @@
-"use client";
+import { createComment } from "@/app/actions";
+import { type Pachiku as PachikuType } from "@prisma/client";
+import { getServerSession } from "next-auth";
 
-import { useUserContext } from "@/contexts/UserContext";
-import { Pachiku as PachikuType } from "@prisma/client";
-import { useState } from "react";
-
-export default function NewCommentForm({ pachiku }: { pachiku: PachikuType }) {
-    const { user } = useUserContext();
-
-    const [newComment, setNewComment] = useState("");
-
-    async function handleSubmit(e: React.FormEvent) {
-        e.preventDefault();
-
-        if (user) {
-            await fetch("/api/comment", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    newComment: newComment,
-                    userId: user.id,
-                    pachikuId: pachiku.id,
-                }),
-            });
-        }
-    }
+export default async function NewCommentForm({
+    pachiku,
+}: {
+    pachiku: PachikuType;
+}) {
+    const session = await getServerSession();
+    if (!session || !session.user) return <h3>Please sign in to comment</h3>;
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form action={createComment}>
+            <input type="hidden" name="pachikuId" value={pachiku.id} />
             <input
                 type="text"
+                name="newComment"
+                id="newComment"
                 placeholder="New Comment"
-                value={newComment}
-                onChange={(e) => setNewComment(e.target.value)}
+                required
             />
             <button type="submit">Comment</button>
         </form>

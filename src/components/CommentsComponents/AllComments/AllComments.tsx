@@ -1,18 +1,21 @@
+"use server";
+
 import { Comment, Pachiku as PachikuType } from "@prisma/client";
 import NewCommentForm from "../NewCommentForm/NewCommentForm";
 import { prisma } from "@/lib/prisma";
-
-export const dynamic = "force-dynamic";
+import { getServerSession } from "next-auth";
+import { deleteComment } from "@/app/actions";
 
 type AllCommentsProps = {
     allComments: Comment[];
     pachiku: PachikuType & { comments: Comment[] };
 };
 
-export default function AllComments({
+export default async function AllComments({
     allComments,
     pachiku,
 }: AllCommentsProps) {
+    const session = await getServerSession();
     return (
         <section>
             <NewCommentForm pachiku={pachiku} />
@@ -27,6 +30,10 @@ export default function AllComments({
                             },
                         });
 
+                        // Showing the delete button only if the user logged in commented this comment
+                        const isTheUserTheCommenter =
+                            commentedBy?.email === session?.user.email;
+
                         return (
                             <li key={comment.id}>
                                 <h4>
@@ -34,6 +41,22 @@ export default function AllComments({
                                     {commentedBy ? commentedBy.firstName : ""}
                                 </h4>
                                 {comment.comment}
+                                {isTheUserTheCommenter && (
+                                    <form action={deleteComment}>
+                                        <input
+                                            type="hidden"
+                                            name="pachikuId"
+                                            value={pachiku.id}
+                                        />
+                                        <input
+                                            type="hidden"
+                                            name="commentId"
+                                            id="commentId"
+                                            value={comment.id}
+                                        />
+                                        <button>Delete</button>
+                                    </form>
+                                )}
                             </li>
                         );
                     })}
