@@ -5,6 +5,7 @@ import { getUserByEmail } from "@/utils/getUser";
 import { getServerSession } from "next-auth";
 import { revalidatePath } from "next/cache";
 
+// To create a comment
 export async function createComment(formData: FormData) {
     "use server";
 
@@ -16,6 +17,8 @@ export async function createComment(formData: FormData) {
 
     const newComment = formData.get("newComment")?.toString().trim();
     const pachikuId = formData.get("pachikuId")?.toString();
+    // 🚨 thePachikuId comes from the from form a type="hidden" input
+
     if (!newComment || !pachikuId) return;
 
     try {
@@ -33,11 +36,13 @@ export async function createComment(formData: FormData) {
     }
 }
 
+// To delete a comment
 export async function deleteComment(formData: FormData) {
     "use server";
     const session = await getServerSession();
     const commentId = formData.get("commentId")?.toString();
     const pachikuId = formData.get("pachikuId")?.toString();
+    // 🚨 thePachikuId and commentId comes from the from form a type="hidden" input
 
     if (!session?.user || !(formData instanceof FormData))
         throw new Error("Unauthorized");
@@ -66,5 +71,54 @@ export async function deleteComment(formData: FormData) {
         revalidatePath(`/pachiku-page/${pachikuId}`);
     } catch (error) {
         console.error("Error deleting the comment: ", error);
+    }
+}
+
+// To update user info in dashboard
+type UpdateUserResult =
+    | { success: false; error: string }
+    | { success: true; message: string };
+
+export async function updateUser(
+    formData: FormData
+): Promise<UpdateUserResult> {
+    "use server";
+    const firstName = formData.get("firstName")?.toString();
+    const lastName = formData.get("lastName")?.toString();
+    const username = formData.get("username")?.toString();
+    const id = formData.get("id")?.toString();
+
+    if (!firstName || !lastName || !username || !id) {
+        return {
+            error: "Failed to receive information to updateUser.",
+            success: false,
+        };
+    }
+
+    try {
+        const existingUser = await prisma.user.findUnique({
+            where: { username },
+        });
+
+        if (existingUser && existingUser.id !== id) {
+            return { error: "Username already taken.", success: false };
+        }
+
+        await prisma.user.update({
+            where: { id },
+            data: {
+                firstName,
+                lastName,
+                username,
+            },
+        });
+
+        revalidatePath("/dashboard");
+        return { message: "Successful", success: true };
+    } catch (error) {
+        return {
+            error: `Something went wrong while trying to update user. ${error}`,
+            success: false,
+        };
     }
 }

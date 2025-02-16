@@ -38,7 +38,7 @@ export const authOptions: NextAuthOptions = {
                     username: defaultUserName,
                     image,
                 },
-                update: { firstName: given_name, lastName: family_name },
+                update: { image },
             });
 
             return true;
