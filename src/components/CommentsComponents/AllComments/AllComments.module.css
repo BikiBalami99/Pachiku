@@ -1,0 +1,38 @@
+.allComments {
+    display: flex;
+    flex-direction: column;
+
+    height: 100%;
+    padding: 0.75rem;
+
+    overflow: hidden; /* Prevents full container from scrolling */
+    border-radius: 0.5rem;
+    background: var(--slightly-dark-white);
+}
+
+.allCommentsUL {
+    flex: 1; /* Makes it take up remaining space */
+    overflow-y: auto; /* Enables scrolling only for the comments list */
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    gap: 1rem;
+
+    /* Hide scrollbar track but keep the scrollbar thumb */
+    scrollbar-width: thin; /* Firefox */
+    scrollbar-color: var(--primary-grey) transparent; /* Thumb color, track transparent */
+}
+
+/* WebKit Browsers (Chrome, Safari) */
+.allCommentsUL::-webkit-scrollbar {
+    width: 8px; /* Adjust as needed */
+}
+
+.allCommentsUL::-webkit-scrollbar-thumb {
+    background: var(--primary-grey); /* Color of the scrollbar */
+    border-radius: 4px;
+}
+
+.allCommentsUL::-webkit-scrollbar-track {
+    background: transparent; /* Hides the track */
+}

@@ -3,6 +3,8 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    min-height: 100%;
+    max-height: 85svh; /* Subject to change. this was a guess*/
     padding: 2rem 10%;
+    margin-top: 5rem;
+    background-color: white;
 }

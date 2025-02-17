@@ -1,0 +1,29 @@
+.pachikuPost {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 2.5rem;
+    width: 70svw;
+
+    max-height: 80%; /* Limits height to 100% of the parent */
+
+    box-sizing: border-box; /* Ensures padding is included in width/height */
+    overflow: hidden; /* Prevents overflow */
+
+    border-radius: 1rem;
+    background: var(--primary-white, #fff);
+    box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.6) inset;
+}
+
+.pachikuPost > li,
+.pachikuPost > section {
+    box-shadow: 0px 0px 8px 1px rgba(0, 0, 0, 0.2);
+}
+
+@media screen and (max-width: 530px) {
+    .pachikuPost {
+        border-radius: 0;
+        width: 100%;
+        max-height: 100%;
+    }
+}

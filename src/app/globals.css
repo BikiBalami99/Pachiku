@@ -9,7 +9,6 @@
 
 html,
 body {
-    height: 100%;
     font-family: "Roboto", serif;
     font-optical-sizing: auto;
 }
@@ -58,6 +57,7 @@ table {
     --secondary-white: #eeeeee;
     --primary-grey: #525252;
     --primary-red: #f02626;
+    --secondary-red: #c00202;
 }
 
 /* Global CSS styles */

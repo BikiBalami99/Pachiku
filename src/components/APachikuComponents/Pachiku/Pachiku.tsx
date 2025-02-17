@@ -19,6 +19,8 @@ type PachikuProps = {
     pachiku: PachikuWithDetails;
 };
 
+// This component is the Pachiku that comes in the feed without any comments and is used in PachikuPost as the top part of the Pachiku.
+
 export default function Pachiku({ pachiku }: PachikuProps) {
     const [author, setAuthor] = useState<User | null>(null);
     const [userLikesThisPachiku, setUserLikesThisPachiku] = useState(false);

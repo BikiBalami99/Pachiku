@@ -1,14 +1,16 @@
 "use server";
 
-import { Comment, Pachiku as PachikuType } from "@prisma/client";
+import { Comment } from "@prisma/client";
 import NewCommentForm from "../NewCommentForm/NewCommentForm";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
-import { deleteComment } from "@/app/actions";
+import styles from "./AllComments.module.css";
+import CommentComponent from "../Comment/CommentComponent";
+import { PachikuWithDetails } from "@/types/pachiku";
 
 type AllCommentsProps = {
     allComments: Comment[];
-    pachiku: PachikuType & { comments: Comment[] };
+    pachiku: PachikuWithDetails;
 };
 
 export default async function AllComments({
@@ -16,52 +18,44 @@ export default async function AllComments({
     pachiku,
 }: AllCommentsProps) {
     const session = await getServerSession();
+
     return (
-        <section>
+        <section className={styles.allComments}>
+            <h3>All Comments</h3>
             {allComments.length === 0 ? (
                 <h2>No Comments Yet</h2>
             ) : (
-                <ul>
+                <ul className={styles.allCommentsUL}>
                     {allComments.map(async (comment: Comment) => {
+                        // Finding the commenter of this comment
                         const commentedBy = await prisma.user.findUnique({
                             where: {
                                 id: comment.userId,
                             },
                         });
 
-                        // Showing the delete button only if the user logged in commented this comment
+                        if (!commentedBy)
+                            throw new Error(
+                                "Could not find author of the comment"
+                            );
+
+                        // Showing the delete button only if the user logged in commented this comment using this boolean
                         const isTheUserTheCommenter =
-                            commentedBy?.email === session?.user.email;
+                            commentedBy.email === session?.user.email;
 
                         return (
-                            <li key={comment.id}>
-                                <h4>
-                                    Commented by:
-                                    {commentedBy ? commentedBy.firstName : ""}
-                                </h4>
-                                {comment.comment}
-                                {isTheUserTheCommenter && (
-                                    <form action={deleteComment}>
-                                        <input
-                                            type="hidden"
-                                            name="pachikuId"
-                                            value={pachiku.id}
-                                        />
-                                        <input
-                                            type="hidden"
-                                            name="commentId"
-                                            id="commentId"
-                                            value={comment.id}
-                                        />
-                                        <button>Delete</button>
-                                    </form>
-                                )}
-                            </li>
+                            <CommentComponent
+                                key={comment.id}
+                                comment={comment}
+                                commentedBy={commentedBy}
+                                isTheUserTheCommenter={isTheUserTheCommenter}
+                                pachiku={pachiku}
+                            />
                         );
                     })}
                 </ul>
             )}
-            <NewCommentForm pachiku={pachiku} />
+            {session && <NewCommentForm pachiku={pachiku} />}
         </section>
     );
 }

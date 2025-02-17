@@ -1,6 +1,5 @@
 import { getServerSession } from "next-auth";
 import Link from "next/link";
-import styles from "./PachikuPage.module.css";
 import { authOptions } from "@/lib/auth";
 import { getSpecificPachiku } from "@/utils/getPachiku";
 import { notFound } from "next/navigation";
@@ -42,9 +41,7 @@ export default async function PachikuPage({
 
         return (
             <PachikuModal>
-                <div className={styles.pachikuPage}>
-                    <PachikuPost pachiku={pachiku} />
-                </div>
+                <PachikuPost pachiku={pachiku} />
             </PachikuModal>
         );
     } catch (error) {

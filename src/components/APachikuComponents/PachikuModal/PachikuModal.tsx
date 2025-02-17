@@ -26,7 +26,9 @@ export default function PachikuModal({
 
     return (
         <dialog ref={dialogRef} className={styles.modal}>
-            <button onClick={handleClose}>&times;</button>
+            <button className={styles.closeButton} onClick={handleClose}>
+                &times;
+            </button>
             {children}
         </dialog>
     );

@@ -1,10 +1,50 @@
 .modal {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 100;
-    border: 10px solid red;
-    background-color: white;
-    padding: 1rem;
+    height: 100svh;
+    margin: auto;
+
+    display: flex;
+    position: relative;
+    align-items: center;
+    background-color: transparent;
+    border: none;
+}
+
+.modal::backdrop {
+    background-color: var(--secondary-white);
+    opacity: 1;
+}
+
+.closeButton {
+    position: absolute;
+    top: 10svh;
+    right: 0;
+    margin: 1rem;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    height: 3rem;
+    width: 3rem;
+
+    border-radius: 100rem;
+    font-size: 2rem;
+    color: var(--primary-white);
+    border: 2px solid white;
+    background-color: var(--primary-sky-blue);
+
+    scale: 1;
+    transition: scale ease-in-out 100ms;
+}
+
+.closeButton:focus,
+.closeButton:active {
+    background-color: var(--secondary-sky-blue);
+}
+
+@media (hover: hover) {
+    .closeButton:hover {
+        scale: 1.1;
+        cursor: pointer;
+    }
 }
