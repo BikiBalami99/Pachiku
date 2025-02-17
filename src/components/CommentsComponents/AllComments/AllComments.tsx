@@ -18,7 +18,6 @@ export default async function AllComments({
     const session = await getServerSession();
     return (
         <section>
-            <NewCommentForm pachiku={pachiku} />
             {allComments.length === 0 ? (
                 <h2>No Comments Yet</h2>
             ) : (
@@ -62,6 +61,7 @@ export default async function AllComments({
                     })}
                 </ul>
             )}
+            <NewCommentForm pachiku={pachiku} />
         </section>
     );
 }

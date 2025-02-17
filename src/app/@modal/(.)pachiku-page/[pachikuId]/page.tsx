@@ -6,6 +6,7 @@ import { getSpecificPachiku } from "@/utils/getPachiku";
 import { notFound } from "next/navigation";
 import { PachikuWithDetails } from "@/types/pachiku";
 import PachikuPost from "@/components/APachikuComponents/PachikuPost/PachikuPost";
+import PachikuModal from "@/components/APachikuComponents/PachikuModal/PachikuModal";
 
 // Page to view specific pachiku only in one page.
 export default async function PachikuPage({
@@ -19,15 +20,17 @@ export default async function PachikuPage({
 
         if (!session || !session.user) {
             return (
-                <section>
-                    <h2>Please Sign in to view this</h2>
-                    <Link
-                        className="button primaryButton"
-                        href="/api/auth/signin"
-                    >
-                        Sign in
-                    </Link>
-                </section>
+                <PachikuModal>
+                    <section>
+                        <h2>Please Sign in to view this</h2>
+                        <Link
+                            className="button primaryButton"
+                            href="/api/auth/signin"
+                        >
+                            Sign in
+                        </Link>
+                    </section>
+                </PachikuModal>
             );
         }
 
@@ -38,9 +41,11 @@ export default async function PachikuPage({
         }
 
         return (
-            <div className={styles.pachikuPage}>
-                <PachikuPost pachiku={pachiku} />
-            </div>
+            <PachikuModal>
+                <div className={styles.pachikuPage}>
+                    <PachikuPost pachiku={pachiku} />
+                </div>
+            </PachikuModal>
         );
     } catch (error) {
         console.error("Error rendering PachikuPage:", error);

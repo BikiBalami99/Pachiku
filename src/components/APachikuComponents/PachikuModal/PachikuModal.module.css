@@ -1,0 +1,10 @@
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 100;
+    border: 10px solid red;
+    background-color: white;
+    padding: 1rem;
+}
