@@ -59,24 +59,24 @@ export default function Pachiku({ pachiku }: PachikuProps) {
         <li className={styles.pachiku} key={pachiku.id}>
             {/* Body of the pachiku, name, username, time and the pachiku itself */}
             <section className={styles.body}>
-                <Image
-                    src={imageLink}
-                    width={48}
-                    height={48}
-                    alt={`${author.firstName}'s avatar`}
-                    className={styles.image}
-                />
-                <div>
-                    <div className={styles.userInfoContainer}>
-                        <h3>
+                <div className={styles.userInfoContainer}>
+                    <Image
+                        src={imageLink}
+                        width={48}
+                        height={48}
+                        alt={`${author.firstName}'s avatar`}
+                        className={styles.image}
+                    />
+                    <div className={styles.textInfo}>
+                        <h3 className={styles.fullName}>
                             {author.firstName} {author.lastName}
                         </h3>
-                        <h4>@{author.username}</h4>
-                        <p>・</p>
-                        <p>{timeSince} ago</p>
+                        <h4 className={styles.username}>@{author.username}</h4>
+                        <p className={styles.timeSince}>{timeSince}</p>
                     </div>
-                    <p>{pachiku.pachiku}</p>
                 </div>
+
+                <p className={styles.pachikuText}>{pachiku.pachiku}</p>
             </section>
 
             {/* Likes comments and share */}
@@ -86,15 +86,11 @@ export default function Pachiku({ pachiku }: PachikuProps) {
                     initialHeartState={userLikesThisPachiku}
                     initialNumOfLikes={pachiku.likes}
                 />
-                <div>
-                    <CommentIcon
-                        pachikuId={pachiku.id}
-                        allComments={pachiku.comments}
-                    />
-                </div>
-                <div>
-                    <ShareIcon pachikuId={pachiku.id} />
-                </div>
+                <CommentIcon
+                    pachikuId={pachiku.id}
+                    allComments={pachiku.comments}
+                />
+                <ShareIcon pachikuId={pachiku.id} />
             </section>
         </li>
     );

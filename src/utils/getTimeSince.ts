@@ -21,8 +21,8 @@ export function getTimeSince(date: Date | string) {
         // If the difference is more than 24 hours, return in "Xd" format
         return `${days}d`;
     } else if (hours > 0) {
-        // If the difference is 1 hour or more but less than 24 hours, return in "Xh Ym" format
-        return `${hours}h ${minutes}m`;
+        // If the difference is 1 hour or more but less than 24 hours, return just hours ("Xh")
+        return `${hours}h`;
     } else {
         // If the difference is less than 1 hour, return in "Ym" format
         return `${minutes}m`;

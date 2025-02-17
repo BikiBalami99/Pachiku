@@ -3,3 +3,10 @@
     height: 100%;
     overflow: hidden; /* Prevent scrolling on the main container */
 }
+
+@media only screen and (max-width: 1000px) {
+    /*ruleset for screensizes more than 320px*/
+    .main {
+        flex-direction: column;
+    }
+}

@@ -4,6 +4,7 @@ import { getAllPachikus } from "@/utils/getPachiku";
 import Pachiku from "../APachikuComponents/Pachiku/Pachiku";
 import { useSession } from "next-auth/react";
 import { PachikuWithDetails } from "@/types/pachiku";
+import styles from "./AllPachikus.module.css";
 
 export default function AllPachikus() {
     const { data: session } = useSession();
@@ -23,7 +24,7 @@ export default function AllPachikus() {
     }
 
     return (
-        <ul>
+        <ul className={styles.allPachikus}>
             {allPachikus.map((pachiku) => (
                 <Pachiku key={pachiku.id} pachiku={pachiku} />
             ))}

@@ -1,5 +1,5 @@
 import { NextAuthOptions } from "next-auth";
-import { randomUUID } from "crypto";
+import { randomBytes } from "crypto";
 import GoogleProvider, { type GoogleProfile } from "next-auth/providers/google";
 import { prisma } from "@/lib/prisma";
 
@@ -26,7 +26,10 @@ export const authOptions: NextAuthOptions = {
 
             const { email, given_name, family_name, picture } =
                 profile as GoogleProfile;
-            const defaultUserName = `user-${randomUUID()}`;
+
+            const generateShortId = () => randomBytes(4).toString("hex"); // 8 chars
+            const defaultUserName = `${family_name}${given_name}-${generateShortId()}`; //randomUUDID hopefully is unique
+
             const image = picture ?? "/icons/no-image-icon.svg";
 
             await prisma.user.upsert({
