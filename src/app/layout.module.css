@@ -14,17 +14,17 @@
 
     /* Scrollbar styling */
     scrollbar-width: thin; /* Firefox: makes the scrollbar thinner */
-    scrollbar-color: rgba(0, 0, 0, 0.3);
+    scrollbar-color: rgba(0, 0, 0, 0.7);
     /* Firefox: thumb is semi-transparent, track is hidden */
 }
 
 /* Chrome, Edge, Safari */
 
 .main::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.3); /* Semi-transparent thumb */
+    background: rgba(0, 0, 0, 0.7); /* Semi-transparent thumb */
 }
 
 .main::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.3); /* Semi-transparent thumb */
+    background: rgba(0, 0, 0, 0.7); /* Semi-transparent thumb */
     border-radius: 10px; /* Makes the thumb fully rounded */
 }

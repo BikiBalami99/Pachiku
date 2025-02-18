@@ -4,8 +4,7 @@
     justify-content: space-between;
 
     width: 100%;
-    min-height: 5.5rem;
-    padding: 1rem;
+    padding: 0.75rem;
 
     border-radius: 0.75rem;
     background: var(
@@ -20,11 +19,17 @@
 .logo {
     display: flex;
     align-items: center;
-    height: fit-content;
+    height: 3.7rem;
 }
 
 .logo h1 {
-    font-size: xx-large;
+    color: var(--primary-white, #fff);
+    text-shadow: 0px 0px 6px rgba(0, 0, 0, 0.15);
+    font-family: Roboto;
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: 900;
+    line-height: normal;
 }
 
 .heading {

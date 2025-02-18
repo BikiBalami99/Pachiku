@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import styles from "./Pachiku.module.css";
-import Image from "next/image";
 import { type User } from "@prisma/client";
 import { getTimeSince } from "@/utils/getTimeSince";
 import {
@@ -14,6 +13,7 @@ import { getAuthor } from "@/utils/getAuthor";
 import { PachikuWithDetails } from "@/types/pachiku";
 import { getUserLikesPachiku } from "@/utils/getUserLikesPachiku";
 import { useUserContext } from "@/contexts/UserContext";
+import UserImage from "../UserImage/UserImage";
 
 type PachikuProps = {
     pachiku: PachikuWithDetails;
@@ -62,13 +62,11 @@ export default function Pachiku({ pachiku }: PachikuProps) {
             {/* Body of the pachiku, name, username, time and the pachiku itself */}
             <section className={styles.body}>
                 <div className={styles.userInfoContainer}>
-                    <Image
+                    <UserImage
                         src={imageLink}
-                        width={48}
-                        height={48}
-                        alt={`${author.firstName}'s avatar`}
-                        className={styles.image}
+                        userFirstName={author.firstName}
                     />
+
                     <div className={styles.textInfo}>
                         <h3 className={styles.fullName}>
                             {author.firstName} {author.lastName}

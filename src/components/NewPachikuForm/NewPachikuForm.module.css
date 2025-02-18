@@ -51,11 +51,10 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    padding: 0rem 1rem;
 }
 
 .feedbackAndButton p {
     margin-right: auto;
-    color: var(--primary-gray);
+    color: var(--primary-white);
     font-size: large;
 }

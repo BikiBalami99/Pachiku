@@ -3,7 +3,7 @@ import { useState } from "react";
 import { submitPachiku } from "./submitPachiku";
 import styles from "./NewPachikuForm.module.css";
 import { useSession } from "next-auth/react";
-import Image from "next/image";
+import UserImage from "../APachikuComponents/UserImage/UserImage";
 
 export default function NewPachikuForm() {
     const [feedback, setFeedback] = useState<string | null>(null);
@@ -28,12 +28,9 @@ export default function NewPachikuForm() {
     return (
         <form onSubmit={handleSubmit} className={styles.newPachikuForm}>
             <div className={styles.imageAndForm}>
-                <Image
+                <UserImage
                     src={userAvatarLink}
-                    alt="Avatar of the user"
-                    width={52}
-                    height={52}
-                    className={styles.image}
+                    userFirstName={"current user"}
                 />
                 <textarea
                     name="newPachiku"

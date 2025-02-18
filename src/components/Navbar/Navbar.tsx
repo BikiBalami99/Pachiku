@@ -12,8 +12,8 @@ export default function Navbar() {
     const [navBarHeight, setNavBarHeight] = useState("4.5rem");
 
     useEffect(() => {
-        if (isExpanded) setNavBarHeight("23rem");
-        if (!isExpanded) setNavBarHeight("5.5rem");
+        if (isExpanded) setNavBarHeight("21.5rem");
+        if (!isExpanded) setNavBarHeight("5rem");
         // These are calculated values
     }, [isExpanded]);
 
