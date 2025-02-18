@@ -1,22 +1,25 @@
 .newPachikuForm {
     display: flex;
     flex-direction: column;
+    align-items: flex-end;
+    align-self: stretch;
+    padding: 0.75rem;
+    gap: 0.75rem;
     border-radius: 1rem;
-    padding: 1rem;
-    background: var(--primary-sky-blue);
-    box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.05) inset;
-    gap: 1rem;
+    background: var(
+        --primary-sky-blue,
+        linear-gradient(180deg, #00a1ff 0%, #0090e4 100%)
+    );
+    box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.2) inset;
 }
 
 .imageAndForm {
     display: flex;
-    gap: 1rem;
-    padding: 1rem;
-    height: 6.375rem;
-    width: 100%;
     align-items: center;
-
-    border-radius: 0.8rem;
+    gap: 0.74rem;
+    padding: 0.74rem;
+    width: 100%;
+    border-radius: 0.75rem;
     background: var(--primary-white);
 }
 
@@ -29,13 +32,14 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    height: 3rem;
     width: 100%;
-    padding: 1rem;
+    padding: 0.75rem;
 
     border: none;
-    border-radius: 0.8rem;
+    border-radius: 0.75rem;
     color: var(--primary-black);
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     font-weight: 400;
 }
 

@@ -35,13 +35,13 @@ export default function NewPachikuForm() {
                     height={52}
                     className={styles.image}
                 />
-                <input
-                    type="text"
+                <textarea
                     name="newPachiku"
                     id="newPachiku"
                     defaultValue=""
                     placeholder="How was your day?"
                     className={styles.inputForm}
+                    maxLength={256}
                 />
             </div>
             <div className={styles.feedbackAndButton}>

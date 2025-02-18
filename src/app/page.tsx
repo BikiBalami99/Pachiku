@@ -1,14 +1,12 @@
-import Feed from "@/components/Feed/Feed";
-import LeftPanel from "@/components/LeftPanel/LeftPanel";
-import RightPanel from "@/components/RightPanel/RightPanel";
+import AllPachikus from "@/components/AllPachikus/AllPachikus";
+import NewPachikuForm from "@/components/NewPachikuForm/NewPachikuForm";
 import styles from "./page.module.css";
 
 export default async function Home() {
     return (
-        <main className={styles.main}>
-            <LeftPanel />
-            <Feed />
-            <RightPanel />
-        </main>
+        <div className={styles.feed}>
+            <NewPachikuForm />
+            <AllPachikus />
+        </div>
     );
 }

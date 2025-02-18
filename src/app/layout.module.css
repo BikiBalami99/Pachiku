@@ -1,0 +1,30 @@
+/* main is the part that consists of submit pachiku form and all pachikus. */
+.main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: fit-content;
+    max-height: 100%;
+    overflow-y: scroll;
+
+    border-radius: 0.75rem;
+    background: var(--slightly-dark-white, #f0f0f0);
+    box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.25) inset;
+    padding: 0.75rem;
+
+    /* Scrollbar styling */
+    scrollbar-width: thin; /* Firefox: makes the scrollbar thinner */
+    scrollbar-color: rgba(0, 0, 0, 0.3);
+    /* Firefox: thumb is semi-transparent, track is hidden */
+}
+
+/* Chrome, Edge, Safari */
+
+.main::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3); /* Semi-transparent thumb */
+}
+
+.main::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.3); /* Semi-transparent thumb */
+    border-radius: 10px; /* Makes the thumb fully rounded */
+}

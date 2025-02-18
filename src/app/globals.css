@@ -14,15 +14,6 @@ body {
 }
 
 /* Additional Global Styles */
-body {
-    line-height: 1.6; /* Improve readability by setting a consistent line height */
-
-    /* Making sure the screen doesnt scroll, only the components scroll */
-    height: 100svh;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-}
 
 /* Styling for Links */
 a {
@@ -44,9 +35,26 @@ table {
 
 /* -------- Reset Ends Here ------------------ */
 
+/* Layout for body */
+body {
+    display: grid;
+    justify-content: center;
+    grid-template-rows: auto auto 1fr; /* First and second rows auto, extra space at the bottom */
+    row-gap: 1rem; /* Ensures the 1rem gap between first and second row */
+    min-height: 100svh;
+    max-height: 100svh;
+
+    line-height: 1.6;
+    width: 100vw;
+    padding: 0.75rem;
+
+    /* Adjust padding to balance hidden Next.js items causing extra bottom gap */
+    padding-top: 1.5rem;
+}
+
 /* Variables for colors */
 :root {
-    --primary-sky-blue: #00a1ff;
+    --primary-sky-blue: linear-gradient(180deg, #00a1ff 0%, #0090e4 100%);
     --secondary-sky-blue: #004b77;
     --light-sky-blue: #f1faff;
     --dark-sky-blue: #092433;

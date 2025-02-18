@@ -3,6 +3,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar/Navbar";
 import AuthProvider from "./AuthProvider";
 import { UserProvider } from "@/contexts/UserContext";
+import styles from "./layout.module.css";
 
 export const metadata: Metadata = {
     title: "Twitter Clone",
@@ -22,8 +23,10 @@ export default function RootLayout({
                 <AuthProvider>
                     <UserProvider>
                         <Navbar />
-                        {children}
-                        {modal}
+                        <main className={styles.main}>
+                            {children}
+                            {modal}
+                        </main>
                     </UserProvider>
                 </AuthProvider>
             </body>
