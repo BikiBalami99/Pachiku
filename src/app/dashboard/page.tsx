@@ -5,7 +5,7 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import styles from "./page.module.css";
 import AllPachikusList from "@/components/AllPachikusList/AllPachikus";
-import DashboardForm from "@/components/DashboardForm/DashboardForm";
+import UserUpdateForm from "@/components/UserUpdateForm/UserUpdateForm";
 
 export default async function Dashboard() {
     const session = await getServerSession();
@@ -20,7 +20,7 @@ export default async function Dashboard() {
 
     return (
         <section className={styles.dashboardPage}>
-            <DashboardForm user={user} />
+            <UserUpdateForm user={user} />
             <h2>Your Pachikus</h2>
             <AllPachikusList user={user} />
         </section>

@@ -3,10 +3,10 @@
 import { updateUser } from "@/app/actions";
 import { User } from "@prisma/client";
 import { useEffect, useState } from "react";
-import styles from "./DashboardForm.module.css";
+import styles from "./UserUpdateForm.module.css";
 import UserImage from "../APachikuComponents/UserImage/UserImage";
 
-export default function DashboardForm({ user }: { user: User }) {
+export default function UserUpdateForm({ user }: { user: User }) {
     const [alertMessage, setAlertMessage] = useState("");
 
     async function clientUpdateUser(formData: FormData) {
