@@ -1,22 +1,24 @@
 .modal {
     height: 100svh;
+    width: 90%;
+    height: 80%;
     margin: auto;
 
     display: flex;
     position: relative;
-    align-items: center;
-    background-color: transparent;
     border: none;
+    border-radius: 0.75rem;
+    padding: 0.75rem;
 }
 
 .modal::backdrop {
     background-color: var(--secondary-white);
-    opacity: 1;
+    opacity: 0.9;
 }
 
 .closeButton {
     position: absolute;
-    top: 10svh;
+    top: 0;
     right: 0;
     margin: 1rem;
 
