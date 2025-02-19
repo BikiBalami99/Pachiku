@@ -17,13 +17,16 @@ import UserImage from "../UserImage/UserImage";
 
 type PachikuProps = {
     pachiku: PachikuWithDetails;
+    userLikesThisPachiku: boolean;
 };
 
 // This component is the Pachiku that comes in the feed without any comments and is used in PachikuPost as the top part of the Pachiku.
 
-export default function Pachiku({ pachiku }: PachikuProps) {
+export default function Pachiku({
+    pachiku,
+    userLikesThisPachiku,
+}: PachikuProps) {
     const [author, setAuthor] = useState<User | null>(null);
-    const [userLikesThisPachiku, setUserLikesThisPachiku] = useState(false);
     const { user: currentUser } = useUserContext();
 
     // Fetch author
@@ -37,20 +40,6 @@ export default function Pachiku({ pachiku }: PachikuProps) {
             isMounted = false;
         };
     }, [pachiku]);
-
-    // Check if the current user likes this pachiku
-    useEffect(() => {
-        if (!currentUser) return;
-
-        let isMounted = true;
-        getUserLikesPachiku(currentUser.id, pachiku.id).then((like) => {
-            if (isMounted) setUserLikesThisPachiku(!!like);
-        });
-
-        return () => {
-            isMounted = false;
-        };
-    }, [pachiku, currentUser]);
 
     if (!author || !currentUser) return null; // Return null if author or currentUser is not available
 
