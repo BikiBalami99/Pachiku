@@ -3,7 +3,7 @@
 import { updateUser } from "@/app/actions";
 import { User } from "@prisma/client";
 import { useEffect, useState } from "react";
-import styles from "./Dashboard.module.css";
+import styles from "./DashboardForm.module.css";
 import UserImage from "../APachikuComponents/UserImage/UserImage";
 
 export default function DashboardForm({ user }: { user: User }) {

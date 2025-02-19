@@ -3,9 +3,9 @@ import { getUserByEmail } from "@/utils/getUser";
 import { User } from "@prisma/client";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import DashboardForm from "@/components/DashboardForm/DashboardForm";
 import styles from "./page.module.css";
 import AllPachikusList from "@/components/AllPachikusList/AllPachikus";
+import DashboardForm from "@/components/DashboardForm/DashboardForm";
 
 export default async function Dashboard() {
     const session = await getServerSession();
