@@ -2,16 +2,22 @@
 
 import { useEffect, useState } from "react";
 import Pachiku from "../APachikuComponents/Pachiku/Pachiku";
-import { useSession } from "next-auth/react";
 import { PachikuWithDetails } from "@/types/pachiku";
-import styles from "./AllPachikus.module.css";
+import styles from "./AllPachikusList.module.css";
+import { useSession } from "next-auth/react";
 import { useUserContext } from "@/contexts/UserContext";
 import { getAllPachikuData } from "@/utils/getAllPachikuData";
+import { getPachikuOfUser } from "@/utils/getPachiku";
+import { User } from "@prisma/client";
 
-export default function AllPachikus() {
+interface PachikuListProps {
+    user?: User; // Optional: If provided, display Pachikus for this user
+}
+
+export default function AllPachikusList({ user }: PachikuListProps) {
     const { data: session } = useSession();
     const { user: currentUser } = useUserContext();
-    const [allPachikus, setAllPachikus] = useState<PachikuWithDetails[]>([]);
+    const [pachikus, setPachikus] = useState<PachikuWithDetails[]>([]);
     const [userLikes, setUserLikes] = useState<{
         [pachikuId: string]: boolean;
     }>({});
@@ -20,11 +26,17 @@ export default function AllPachikus() {
     useEffect(() => {
         async function loadData() {
             try {
-                const { pachikus, userLikes } = await getAllPachikuData(
-                    currentUser
-                ); 
-                setAllPachikus(pachikus);
-                setUserLikes(userLikes);
+                let data;
+                if (user) {
+                    // Fetch Pachikus for a specific user
+                    data = await getPachikuOfUser(user, currentUser!);
+                } else {
+                    // Fetch all Pachikus
+                    data = await getAllPachikuData(currentUser);
+                }
+
+                setPachikus(data.pachikus);
+                setUserLikes(data.userLikes);
             } catch (error) {
                 console.error("Error loading pachiku data:", error);
             } finally {
@@ -33,7 +45,11 @@ export default function AllPachikus() {
         }
 
         loadData();
-    }, [currentUser]);
+    }, [user, currentUser]);
+
+    if (!currentUser) {
+        return <h2>Please sign in</h2>;
+    }
 
     if (!session || !currentUser) {
         return <h2>Please sign in</h2>;
@@ -43,13 +59,13 @@ export default function AllPachikus() {
         return <h2>Loading Pachikus...</h2>;
     }
 
-    if (!allPachikus || allPachikus.length === 0) {
+    if (!pachikus || pachikus.length === 0) {
         return <h2>No Pachikus available</h2>;
     }
 
     return (
-        <ul className={styles.allPachikus}>
-            {allPachikus.map((pachiku) => (
+        <ul className={styles.allPachikusList}>
+            {pachikus.map((pachiku) => (
                 <Pachiku
                     key={pachiku.id}
                     pachiku={pachiku}

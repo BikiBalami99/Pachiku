@@ -3,6 +3,7 @@ import { getUserLikesPachiku } from "@/utils/getUserLikesPachiku";
 import { PachikuWithDetails } from "@/types/pachiku";
 import { User } from "@prisma/client";
 
+// Use to populate all pachikus in the main feed. Has the pachiku info + whether the current user likes that pachiku or not
 export async function getAllPachikuData(currentUser: User | null): Promise<{
     pachikus: PachikuWithDetails[];
     userLikes: { [pachikuId: string]: boolean };

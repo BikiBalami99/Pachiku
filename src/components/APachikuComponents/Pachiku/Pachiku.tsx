@@ -11,7 +11,6 @@ import {
 } from "@/components/APachikuComponents/LikeCommentShareComponents/LikeCommentShareComponents";
 import { getAuthor } from "@/utils/getAuthor";
 import { PachikuWithDetails } from "@/types/pachiku";
-import { getUserLikesPachiku } from "@/utils/getUserLikesPachiku";
 import { useUserContext } from "@/contexts/UserContext";
 import UserImage from "../UserImage/UserImage";
 

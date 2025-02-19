@@ -1,4 +1,6 @@
+import { PachikuWithDetails } from "@/types/pachiku";
 import { User } from "@prisma/client";
+import { getUserLikesPachiku } from "./getUserLikesPachiku";
 
 export async function getSpecificPachiku(pachikuId: string) {
     const url = `${process.env.NEXTAUTH_URL}/api/pachiku?pachikuId=${pachikuId}`;
@@ -55,15 +57,57 @@ export async function getAllPachikus() {
     }
 }
 
-export async function getPachikuOfUser(user: User) {
+// Used only in user's dashboard or another user's dashboard
+export async function getPachikuOfUser(
+    user: User,
+    currentUser: User
+): Promise<{
+    pachikus: PachikuWithDetails[];
+    userLikes: { [pachikuId: string]: boolean };
+}> {
     // client side only
     const url = `${process.env.NEXT_PUBLIC_API_URL}/api/all-pachikus-of-user?userId=${user.id}`;
-
     const response = await fetch(url);
-
     if (!response.ok) {
         throw new Error("Failed to fetch all pachikus of user.");
     }
 
-    return response.json();
+    try {
+        const pachikus: PachikuWithDetails[] = await response.json();
+        let userLikes: { [pachikuId: string]: boolean } = {};
+
+        if (currentUser) {
+            const likes = await Promise.all(
+                pachikus.map((pachiku: PachikuWithDetails) =>
+                    getUserLikesPachiku(currentUser.id, pachiku.id).catch(
+                        (error) => {
+                            console.error(
+                                `Error fetching like status for pachiku ${pachiku.id}: ${error}`
+                            );
+                        }
+                    )
+                )
+            );
+
+            // populates the userLikes with objects with each key being a pachikuId and its value as boolean whether current user likes that pachiku or not
+            userLikes = pachikus.reduce(
+                (
+                    acc: { [pachikuId: string]: boolean },
+                    pachiku: PachikuWithDetails,
+                    index: number
+                ) => {
+                    if (likes[index] !== null) {
+                        acc[pachiku.id] = !!likes[index];
+                    }
+                    return acc;
+                },
+                {} as { [pachikuId: string]: boolean } // Explicit initial value type
+            );
+        }
+
+        return { pachikus, userLikes };
+    } catch (error) {
+        console.error("Error fetching pachikus:", error);
+        throw error; // Re-throw the error to be handled by the component
+    }
 }
