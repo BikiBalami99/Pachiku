@@ -51,6 +51,7 @@ body {
 /* Variables for colors */
 :root {
     --primary-sky-blue: linear-gradient(180deg, #00a1ff 0%, #0090e4 100%);
+    --primary-sky-blue-color: #00a1ff;
     --secondary-sky-blue: #004b77;
     --light-sky-blue: #f1faff;
     --dark-sky-blue: #092433;

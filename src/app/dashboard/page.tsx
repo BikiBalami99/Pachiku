@@ -3,8 +3,9 @@ import { getUserByEmail } from "@/utils/getUser";
 import { User } from "@prisma/client";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import DashBoardForm from "@/components/DashBoardForm/DashBoardForm";
-// import styles from "./page.module.css";
+import DashboardForm from "@/components/DashboardForm/DashboardForm";
+import AllPachikusOfUser from "@/components/AllPachikusOfUser/AllPachikusOfUser";
+import styles from "./page.module.css";
 
 export default async function Dashboard() {
     const session = await getServerSession();
@@ -17,5 +18,11 @@ export default async function Dashboard() {
     // Getting full user info as session dont have it all
     const user: User = await getUserByEmail(session.user.email);
 
-    return <DashBoardForm user={user} />;
+    return (
+        <section className={styles.dashboardPage}>
+            <DashboardForm user={user} />
+            <h2>Your Pachikus</h2>
+            <AllPachikusOfUser user={user} />
+        </section>
+    );
 }

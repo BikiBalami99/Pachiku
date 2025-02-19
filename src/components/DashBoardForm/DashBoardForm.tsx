@@ -3,8 +3,10 @@
 import { updateUser } from "@/app/actions";
 import { User } from "@prisma/client";
 import { useEffect, useState } from "react";
+import styles from "./Dashboard.module.css";
+import UserImage from "../APachikuComponents/UserImage/UserImage";
 
-export default function DashBoardForm({ user }: { user: User }) {
+export default function DashboardForm({ user }: { user: User }) {
     const [alertMessage, setAlertMessage] = useState("");
 
     async function clientUpdateUser(formData: FormData) {
@@ -23,20 +25,23 @@ export default function DashBoardForm({ user }: { user: User }) {
     }, [alertMessage]);
 
     return (
-        <>
-            <form action={clientUpdateUser}>
-                <input
-                    type="text"
-                    name="firstName"
-                    defaultValue={user.firstName}
-                    required
-                />
-                <input
-                    type="text"
-                    name="lastName"
-                    defaultValue={user.lastName}
-                    required
-                />
+        <section className={styles.dashboardForm}>
+            <UserImage src={user.image} userFirstName={user.firstName} />
+            <form action={clientUpdateUser} className={styles.form}>
+                <div className={styles.firstRow}>
+                    <input
+                        type="text"
+                        name="firstName"
+                        defaultValue={user.firstName}
+                        required
+                    />
+                    <input
+                        type="text"
+                        name="lastName"
+                        defaultValue={user.lastName}
+                        required
+                    />
+                </div>
                 <input
                     type="text"
                     name="username"
@@ -44,11 +49,13 @@ export default function DashBoardForm({ user }: { user: User }) {
                     required
                 />
                 <input type="hidden" name="id" value={user.id} />
-                <button type="submit">Update</button>
+                <div>
+                    <p>{alertMessage}</p>
+                    <button type="submit" className="button primaryButton">
+                        Update
+                    </button>
+                </div>
             </form>
-            <div>
-                <p>{alertMessage}</p>
-            </div>
-        </>
+        </section>
     );
 }
