@@ -38,18 +38,14 @@ table {
 /* Layout for body */
 body {
     display: grid;
-    justify-content: center;
     grid-template-rows: auto auto 1fr; /* First and second rows auto, extra space at the bottom */
-    row-gap: 1rem; /* Ensures the 1rem gap between first and second row */
     min-height: 100svh;
     max-height: 100svh;
 
     line-height: 1.6;
     width: 100vw;
     padding: 0.75rem;
-
-    /* Adjust padding to balance hidden Next.js items causing extra bottom gap */
-    padding-top: 1.5rem;
+    overflow: hidden;
 }
 
 /* Variables for colors */

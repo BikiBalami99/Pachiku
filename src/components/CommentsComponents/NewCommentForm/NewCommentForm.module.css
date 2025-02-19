@@ -9,10 +9,12 @@
     justify-content: center;
     align-items: flex-end;
     gap: 0.75rem;
+    z-index: 200;
 
-    border-radius: 0.5rem;
+    border-radius: 0.75rem;
     background: var(--primary-sky-blue, #00a1ff);
-    box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.25) inset;
+    box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.25) inset,
+        0px -20px 30px 4px rgba(255, 255, 255, 1); /* White fading shadow on top */
 }
 
 .imageAndInput {
@@ -22,7 +24,7 @@
     width: 100%;
 }
 
-.userImage {
+.imageAndInput img {
     border-radius: 3.125rem;
     border: 2px solid #fff;
     background: #7b7b7b;
@@ -30,20 +32,21 @@
 
 .imageAndInput input {
     display: flex;
-    height: 3.3125rem;
+    height: 4rem;
     padding: 0.5rem;
     justify-content: center;
     width: 100%;
-
-    border-radius: 0.5rem;
-    border: none;
-    background: #fff;
 
     color: var(--primary-black);
     font-size: 1.25rem;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
+
+    border: none;
+    border-radius: 0.875rem;
+    background: var(--primary-white);
+    box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.4);
 }
 
 .imageAndInput input:focus {

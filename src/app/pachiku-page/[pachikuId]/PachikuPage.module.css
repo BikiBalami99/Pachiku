@@ -1,9 +1,0 @@
-.pachikuPage {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    max-height: 100%;
-    padding-top: 5rem;
-    background-color: var(--secondary-sky-blue);
-}

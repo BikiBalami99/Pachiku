@@ -8,6 +8,7 @@
     overflow: hidden; /* Prevents full container from scrolling */
     border-radius: 0.5rem;
     background: var(--slightly-dark-white);
+    box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.1) inset;
 }
 
 .allCommentsUL {
@@ -15,7 +16,8 @@
     overflow-y: auto; /* Enables scrolling only for the comments list */
     display: flex;
     flex-direction: column;
-    padding: 1rem;
+    padding: 0.5rem; /*Dont remove this or else the shadow is gone*/
+    padding-bottom: 1rem;
     gap: 1rem;
 
     /* Hide scrollbar track but keep the scrollbar thumb */

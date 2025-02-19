@@ -23,7 +23,7 @@ export default async function AllComments({
         <section className={styles.allComments}>
             <h3>All Comments</h3>
             {allComments.length === 0 ? (
-                <h2>No Comments Yet</h2>
+                <h2 style={{ marginBottom: "1rem" }}>No Comments Yet</h2>
             ) : (
                 <ul className={styles.allCommentsUL}>
                     {allComments.map(async (comment: Comment) => {

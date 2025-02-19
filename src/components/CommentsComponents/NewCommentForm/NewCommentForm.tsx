@@ -3,7 +3,7 @@ import { User, type Pachiku as PachikuType } from "@prisma/client";
 import { getServerSession } from "next-auth";
 import styles from "./NewCommentForm.module.css";
 import { getUserByEmail } from "@/utils/getUser";
-import Image from "next/image";
+import UserImage from "@/components/APachikuComponents/UserImage/UserImage";
 
 export default async function NewCommentForm({
     pachiku,
@@ -26,12 +26,9 @@ export default async function NewCommentForm({
         <form action={createComment} className={styles.commentForm}>
             <input type="hidden" name="pachikuId" value={pachiku.id} />
             <div className={styles.imageAndInput}>
-                <Image
+                <UserImage
                     src={currentUser.image}
-                    alt="Current user image"
-                    width={48}
-                    height={48}
-                    className={styles.userImage}
+                    userFirstName={currentUser.firstName}
                 />
                 <input
                     type="text"
