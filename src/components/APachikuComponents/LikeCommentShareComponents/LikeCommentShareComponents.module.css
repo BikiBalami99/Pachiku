@@ -21,37 +21,38 @@
 .heartIcon {
     stroke: var(--primary-grey);
     fill: var(--primary-white);
-
     stroke-width: 2px;
     stroke-linejoin: round;
     fill: none;
-
     transition: transform 100ms ease-in-out, fill 200ms ease-in-out;
 }
 
-.heartIcon:hover {
+.heartIcon[data-authorized="true"]:hover {
     stroke: var(--primary-red);
     transform: scale(1.15);
     cursor: pointer;
 }
 
 .heartIcon:active {
-    /* Click animation */
     cursor: pointer;
     transform: scale(0.5);
 }
 
-.heartIconClicked {
+.heartIcon[data-clicked="true"] {
     fill: var(--primary-red);
     stroke: none;
 }
 
-.heartIconDeactivated {
-    pointer-events: none;
+.heartIcon[data-authorized="false"] {
     opacity: 0.5;
     stroke: var(--primary-grey);
     fill: var(--primary-grey);
     cursor: default;
+}
+
+.heartIcon[data-authorized="false"]:hover {
+    cursor: pointer;
+    stroke: none;
 }
 
 /*  -----------------Comment Icon section ----------------- */
@@ -107,6 +108,5 @@
     border-radius: 0.375rem;
     font-size: 0.875rem;
     width: 100%;
-
     transition: opacity 300ms ease-in-out;
 }

@@ -2,7 +2,6 @@ import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
 export async function GET(req: Request) {
-    console.log("Here atleast");
     const url = new URL(req.url);
     const userId = url.searchParams.get("userId");
     const pachikuId = url.searchParams.get("pachikuId");

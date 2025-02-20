@@ -13,6 +13,7 @@ import { getAuthor } from "@/utils/getAuthor";
 import { PachikuWithDetails } from "@/types/pachiku";
 import UserImage from "../UserImage/UserImage";
 import { getUserLikesPachiku } from "@/utils/getUserLikesPachiku";
+import { useSession } from "next-auth/react";
 
 type PachikuProps = {
     pachiku: PachikuWithDetails;
@@ -24,6 +25,16 @@ export default function Pachiku({ pachiku }: PachikuProps) {
     const [initialHeartState, setInitialHeartState] = useState<boolean | null>(
         null
     );
+    const { data: session } = useSession();
+
+    // Authorization
+    useEffect(() => {
+        // If the user signs out, we want the heart state to revert back to false
+        // This does that
+        if (!session || !session.user) {
+            setInitialHeartState(false);
+        }
+    }, [session]);
 
     // Fetch author
     useEffect(() => {
