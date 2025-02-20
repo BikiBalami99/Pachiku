@@ -3,6 +3,7 @@ import { User } from "@prisma/client";
 import { getUserLikesPachiku } from "./getUserLikesPachiku";
 
 export async function getSpecificPachiku(pachikuId: string) {
+    // Get specific pachiku when provided a pachikuId
     const url = `${process.env.NEXTAUTH_URL}/api/pachiku?pachikuId=${pachikuId}`;
     try {
         const response = await fetch(url);
@@ -21,6 +22,7 @@ export async function getSpecificPachiku(pachikuId: string) {
 }
 export async function getSpecificPachikuClient(pachikuId: string) {
     // client side only
+    // Get specific pachiku when provided a pachikuId
     const url = `${process.env.NEXT_PUBLIC_API_URL}/api/pachiku?pachikuId=${pachikuId}`;
     try {
         const response = await fetch(url);
@@ -45,12 +47,11 @@ export async function getAllPachikus() {
 
     try {
         const response = await fetch(url);
-
         if (!response.ok) {
             throw new Error("Failed to fetch Pachikus");
         }
-
-        return response.json();
+        const data = await response.json();
+        return data;
     } catch (error) {
         console.error(`Error fetching Pachikus from ${url}:`, error);
         return null;

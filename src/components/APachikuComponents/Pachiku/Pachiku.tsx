@@ -4,29 +4,26 @@ import { useEffect, useState } from "react";
 import styles from "./Pachiku.module.css";
 import { type User } from "@prisma/client";
 import { getTimeSince } from "@/utils/getTimeSince";
-import {
-    HeartIcon,
-    CommentIcon,
-    ShareIcon,
-} from "@/components/APachikuComponents/LikeCommentShareComponents/LikeCommentShareComponents";
+
+import HeartIcon from "../LikeCommentShareComponents/HeartIcon";
+import CommentIcon from "../LikeCommentShareComponents/CommentIcon";
+import ShareIcon from "../LikeCommentShareComponents/ShareIcon";
+
 import { getAuthor } from "@/utils/getAuthor";
 import { PachikuWithDetails } from "@/types/pachiku";
-import { useUserContext } from "@/contexts/UserContext";
 import UserImage from "../UserImage/UserImage";
+import { getUserLikesPachiku } from "@/utils/getUserLikesPachiku";
 
 type PachikuProps = {
     pachiku: PachikuWithDetails;
-    userLikesThisPachiku: boolean;
 };
 
 // This component is the Pachiku that comes in the feed without any comments and is used in PachikuPost as the top part of the Pachiku.
-
-export default function Pachiku({
-    pachiku,
-    userLikesThisPachiku,
-}: PachikuProps) {
+export default function Pachiku({ pachiku }: PachikuProps) {
     const [author, setAuthor] = useState<User | null>(null);
-    const { user: currentUser } = useUserContext();
+    const [initialHeartState, setInitialHeartState] = useState<boolean | null>(
+        null
+    );
 
     // Fetch author
     useEffect(() => {
@@ -40,12 +37,17 @@ export default function Pachiku({
         };
     }, [pachiku]);
 
-    // if ( !currentUser) return null;
-    // Return null if author or currentUser is not available
-
-    if (!author) return null;
+    useEffect(() => {
+        if (author) {
+            getUserLikesPachiku(author.id, pachiku.id).then((data) => {
+                setInitialHeartState(data);
+            });
+        }
+    }, [author, pachiku]);
 
     const timeSince = getTimeSince(pachiku.createdAt);
+
+    if (!author) return null;
     const imageLink = author.image || "/icons/no-image-icon.svg";
 
     return (
@@ -72,11 +74,13 @@ export default function Pachiku({
 
             {/* Likes comments and share */}
             <section className={styles.likesCommentsShare}>
-                <HeartIcon
-                    pachikuId={pachiku.id}
-                    initialHeartState={userLikesThisPachiku}
-                    initialNumOfLikes={pachiku.likes}
-                />
+                {initialHeartState !== null && (
+                    <HeartIcon
+                        pachikuId={pachiku.id}
+                        initialHeartState={initialHeartState}
+                        initialNumOfLikes={pachiku.likes}
+                    />
+                )}
                 <CommentIcon
                     pachikuId={pachiku.id}
                     allComments={pachiku.comments}

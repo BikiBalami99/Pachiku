@@ -6,8 +6,7 @@ import { PachikuWithDetails } from "@/types/pachiku";
 import styles from "./AllPachikusList.module.css";
 import { useSession } from "next-auth/react";
 import { useUserContext } from "@/contexts/UserContext";
-import { getAllPachikuData } from "@/utils/getAllPachikuData";
-import { getPachikuOfUser } from "@/utils/getPachiku";
+import { getAllPachikus, getPachikuOfUser } from "@/utils/getPachiku";
 import { User } from "@prisma/client";
 
 interface PachikuListProps {
@@ -15,6 +14,10 @@ interface PachikuListProps {
 }
 
 export default function AllPachikusList({ user }: PachikuListProps) {
+    // This is used in either the homepage or the dashboard.
+    // If user is provided, in the dashboard the pachiku of only the user
+    // Else all pachikus in feed
+
     const { data: session } = useSession();
     const { user: currentUser } = useUserContext();
     const [pachikus, setPachikus] = useState<PachikuWithDetails[]>([]);
@@ -32,28 +35,17 @@ export default function AllPachikusList({ user }: PachikuListProps) {
                     data = await getPachikuOfUser(user, currentUser!);
                 } else {
                     // Fetch all Pachikus
-                    data = await getAllPachikuData(currentUser);
+                    data = await getAllPachikus();
                 }
-
-                setPachikus(data.pachikus);
-                setUserLikes(data.userLikes);
+                setPachikus(data);
             } catch (error) {
                 console.error("Error loading pachiku data:", error);
             } finally {
                 setLoading(false);
             }
         }
-
         loadData();
     }, [user, currentUser]);
-
-    // if (!currentUser) {
-    //     return <h2>Please sign in</h2>;
-    // }
-
-    // if (!session || !currentUser) {
-    //     return <h2>Please sign in</h2>;
-    // }
 
     if (loading) {
         return <h2>Loading Pachikus...</h2>;
@@ -66,11 +58,7 @@ export default function AllPachikusList({ user }: PachikuListProps) {
     return (
         <ul className={styles.allPachikusList}>
             {pachikus.map((pachiku) => (
-                <Pachiku
-                    key={pachiku.id}
-                    pachiku={pachiku}
-                    userLikesThisPachiku={userLikes[pachiku.id] || false}
-                />
+                <Pachiku key={pachiku.id} pachiku={pachiku} />
             ))}
         </ul>
     );
