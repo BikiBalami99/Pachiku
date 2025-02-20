@@ -14,6 +14,7 @@ import { PachikuWithDetails } from "@/types/pachiku";
 import UserImage from "../UserImage/UserImage";
 import { getUserLikesPachiku } from "@/utils/getUserLikesPachiku";
 import { useSession } from "next-auth/react";
+import { useUserContext } from "@/contexts/UserContext";
 
 type PachikuProps = {
     pachiku: PachikuWithDetails;
@@ -26,6 +27,7 @@ export default function Pachiku({ pachiku }: PachikuProps) {
         null
     );
     const { data: session } = useSession();
+    const { user: currentUser } = useUserContext();
 
     // Authorization
     useEffect(() => {
@@ -49,12 +51,12 @@ export default function Pachiku({ pachiku }: PachikuProps) {
     }, [pachiku]);
 
     useEffect(() => {
-        if (author) {
-            getUserLikesPachiku(author.id, pachiku.id).then((data) => {
+        if (author && currentUser) {
+            getUserLikesPachiku(currentUser.id, pachiku.id).then((data) => {
                 setInitialHeartState(data);
             });
         }
-    }, [author, pachiku]);
+    }, [author, pachiku, currentUser]);
 
     const timeSince = getTimeSince(pachiku.createdAt);
 
