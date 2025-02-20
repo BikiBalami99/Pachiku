@@ -33,7 +33,7 @@
     cursor: pointer;
 }
 
-.heartIcon:active {
+.heartIcon[data-authorized="true"]:active {
     cursor: pointer;
     transform: scale(0.5);
 }
