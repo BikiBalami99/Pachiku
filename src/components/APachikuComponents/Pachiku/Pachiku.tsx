@@ -40,7 +40,10 @@ export default function Pachiku({
         };
     }, [pachiku]);
 
-    if (!author || !currentUser) return null; // Return null if author or currentUser is not available
+    // if ( !currentUser) return null;
+    // Return null if author or currentUser is not available
+
+    if (!author) return null;
 
     const timeSince = getTimeSince(pachiku.createdAt);
     const imageLink = author.image || "/icons/no-image-icon.svg";

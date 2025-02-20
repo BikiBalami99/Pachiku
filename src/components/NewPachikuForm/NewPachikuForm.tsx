@@ -4,12 +4,19 @@ import { submitPachiku } from "./submitPachiku";
 import styles from "./NewPachikuForm.module.css";
 import { useSession } from "next-auth/react";
 import UserImage from "../APachikuComponents/UserImage/UserImage";
+import SignUpForm from "../SignUpForm/SignUpForm";
 
 export default function NewPachikuForm() {
     const [feedback, setFeedback] = useState<string | null>(null);
     const { data: session } = useSession();
     if (!session || !session.user) {
-        return <h1>Please sign in</h1>;
+        return (
+            <div>
+                <h2>Cant Pachiku just yet!</h2>
+                <p>Please Sign in or Sign Up to start Pachiking!</p>
+                <SignUpForm />
+            </div>
+        );
     }
     const { user } = session;
     const userAvatarLink = user.image || "/icons/no-avatar-icon.svg";

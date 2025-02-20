@@ -17,6 +17,17 @@ export async function POST(req: Request) {
     const email = `${randomUUID()}@mail.com`;
     const image = "/icons/no-image-icon.svg";
 
+    // Checking if this username is already taken
+    const usernameUnique = await prisma.user.findUnique({
+        where: { username },
+    });
+    if (usernameUnique) {
+        return NextResponse.json(
+            { error: "Username already taken" },
+            { status: 409 }
+        );
+    }
+
     try {
         const user = await prisma.user.create({
             data: {

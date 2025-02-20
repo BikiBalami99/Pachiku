@@ -47,13 +47,13 @@ export default function AllPachikusList({ user }: PachikuListProps) {
         loadData();
     }, [user, currentUser]);
 
-    if (!currentUser) {
-        return <h2>Please sign in</h2>;
-    }
+    // if (!currentUser) {
+    //     return <h2>Please sign in</h2>;
+    // }
 
-    if (!session || !currentUser) {
-        return <h2>Please sign in</h2>;
-    }
+    // if (!session || !currentUser) {
+    //     return <h2>Please sign in</h2>;
+    // }
 
     if (loading) {
         return <h2>Loading Pachikus...</h2>;
