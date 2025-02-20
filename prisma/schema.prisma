@@ -14,6 +14,7 @@ model User {
     lastName      String
     image         String
     username      String    @unique
+    password      String?
     createdAt     DateTime  @default(now())
     updatedAt     DateTime  @updatedAt
     pachikus      Pachiku[]
@@ -21,6 +22,7 @@ model User {
     likedPachikus Like[]
 
     @@index([email]) // Optimize lookups when signing in with email
+    @@index([username])
 }
 
 model Pachiku {
