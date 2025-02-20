@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import Pachiku from "../APachikuComponents/Pachiku/Pachiku";
 import { PachikuWithDetails } from "@/types/pachiku";
 import styles from "./AllPachikusList.module.css";
-import { useSession } from "next-auth/react";
 import { useUserContext } from "@/contexts/UserContext";
 import { getAllPachikus, getPachikuOfUser } from "@/utils/getPachiku";
 import { User } from "@prisma/client";
@@ -18,12 +17,8 @@ export default function AllPachikusList({ user }: PachikuListProps) {
     // If user is provided, in the dashboard the pachiku of only the user
     // Else all pachikus in feed
 
-    const { data: session } = useSession();
     const { user: currentUser } = useUserContext();
     const [pachikus, setPachikus] = useState<PachikuWithDetails[]>([]);
-    const [userLikes, setUserLikes] = useState<{
-        [pachikuId: string]: boolean;
-    }>({});
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {

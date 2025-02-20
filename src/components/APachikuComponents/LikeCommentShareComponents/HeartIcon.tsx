@@ -23,13 +23,6 @@ export default function HeartIcon({
     const { data: session } = useSession();
     const router = useRouter();
 
-    // Class name that shows whether we hearted the pachiku or not
-    const [heartClassName, setHeartClassName] = useState(
-        initialHeartState
-            ? `${styles.heartIcon} ${styles.heartIconClicked}`
-            : `${styles.heartIcon}`
-    );
-
     // Authorization
     useEffect(() => {
         if (!session || !session.user) {
@@ -86,25 +79,6 @@ export default function HeartIcon({
             setIsSubmitting(false);
         }
     };
-
-    // Dynamic heart icon class
-    useEffect(() => {
-        if (authorized) {
-            if (heartClicked) {
-                setHeartClassName(
-                    `${styles.heartIcon} ${styles.heartIconClicked}`
-                );
-            } else {
-                setHeartClassName(`${styles.heartIcon}`);
-            }
-        }
-        if (!authorized) {
-            // Setting the heart icon to gray when authorized
-            setHeartClassName(
-                `${styles.heartIcon} ${styles.heartIconDeactivated}`
-            );
-        }
-    }, [heartClicked]);
 
     return (
         <div className={styles.container}>
