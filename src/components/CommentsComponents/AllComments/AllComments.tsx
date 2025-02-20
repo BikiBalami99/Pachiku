@@ -55,7 +55,11 @@ export default async function AllComments({
                     })}
                 </ul>
             )}
-            {session && <NewCommentForm pachiku={pachiku} />}
+            {session ? (
+                <NewCommentForm pachiku={pachiku} />
+            ) : (
+                <h2>Please sign in to comment</h2>
+            )}
         </section>
     );
 }
