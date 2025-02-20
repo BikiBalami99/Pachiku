@@ -2,6 +2,10 @@
 
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import styles from "./SignUpForm.module.css";
+import Link from "next/link";
+import Image from "next/image";
+import { signIn } from "next-auth/react";
 
 export default function SignUpForm() {
     const [username, setUsername] = useState("");
@@ -15,7 +19,7 @@ export default function SignUpForm() {
     async function handleSignUp(event: React.FormEvent) {
         event.preventDefault();
         setLoading(true);
-        setStatus("");
+        setStatus("Signin Up..");
 
         const formData = new FormData(event.target as HTMLFormElement);
         const username = formData.get("username");
@@ -48,60 +52,115 @@ export default function SignUpForm() {
         }
 
         setStatus("Signed up successfully.");
-        router.push("/api/auth/signin");
+
+        if (response.ok) {
+            // Automatically signing in the user with that info
+
+            const signInResponse = await signIn("credentials", {
+                redirect: false,
+                username: username.toString(),
+                password: password.toString(),
+            });
+
+            if (signInResponse?.ok) {
+                router.push("/");
+            } else {
+                setStatus(
+                    "Could not sign in automatically, please try manually."
+                );
+            }
+        }
     }
 
     return (
-        <form onSubmit={handleSignUp}>
-            <label htmlFor="firstname">First Name</label>
-            <input
-                type="text"
-                name="firstname"
-                id="firstname"
-                placeholder="Firstname"
-                required
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-            />
+        <form onSubmit={handleSignUp} className={styles.signUpForm}>
+            <div className={styles.heading}>
+                <h3>Sign up without an email</h3>
+                <p>
+                    We wont store your email, but password recovery will be
+                    impossible.
+                </p>
+            </div>
 
-            <label htmlFor="lastname">Last Name</label>
-            <input
-                type="text"
-                name="lastname"
-                id="lastname"
-                placeholder="Lastname"
-                required
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
-            />
+            <div className={styles.inputFields}>
+                <div className={styles.inputAndLabel}>
+                    <label htmlFor="firstname">First Name</label>
+                    <input
+                        type="text"
+                        name="firstname"
+                        id="firstname"
+                        placeholder="Firstname"
+                        required
+                        value={firstName}
+                        onChange={(e) => setFirstName(e.target.value)}
+                        className={styles.inputForm}
+                    />
+                </div>
+                <div className={styles.inputAndLabel}>
+                    <label htmlFor="lastname">Last Name</label>
+                    <input
+                        type="text"
+                        name="lastname"
+                        id="lastname"
+                        placeholder="Lastname"
+                        required
+                        value={lastName}
+                        onChange={(e) => setLastName(e.target.value)}
+                        className={styles.inputForm}
+                    />
+                </div>
+            </div>
+            <div className={styles.inputFields}>
+                <div className={styles.inputAndLabel}>
+                    <label htmlFor="username">Username</label>
+                    <input
+                        type="text"
+                        name="username"
+                        placeholder="Username"
+                        required
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        autoComplete="off"
+                        className={styles.inputForm}
+                    />
+                </div>
+                <div className={styles.inputAndLabel}>
+                    <label htmlFor="password">Password</label>
+                    <input
+                        type="password"
+                        name="password"
+                        id="password"
+                        placeholder="Password"
+                        required
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        autoComplete="off"
+                        className={styles.inputForm}
+                    />
+                </div>
+            </div>
 
-            <label htmlFor="username">Username</label>
-            <input
-                type="text"
-                name="username"
-                placeholder="Username"
-                required
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                autoComplete="off"
-            />
-
-            <label htmlFor="password">Password</label>
-            <input
-                type="password"
-                name="password"
-                id="password"
-                placeholder="Password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                autoComplete="off"
-            />
-            <div>
-                <p>{status}</p>
-                <button type="submit" disabled={loading}>
-                    {loading ? "Signing up..." : "Sign up"}
+            <div className={styles.feedbackAndButton}>
+                <button
+                    className="button primaryButton"
+                    type="submit"
+                    disabled={loading}
+                >
+                    {loading ? status : "Sign up"}
                 </button>
+                <hr className={styles.horizontalLine} />
+                <Link
+                    className={`button primaryButton ${styles.googleButton}`}
+                    href="/api/auth/signin"
+                >
+                    <Image
+                        src="/icons/google_Icons.webp"
+                        alt="Google logo"
+                        height={24}
+                        width={24}
+                    />
+                    <p>Sign up with Google</p>
+                </Link>
             </div>
         </form>
     );

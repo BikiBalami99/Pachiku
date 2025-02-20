@@ -11,9 +11,10 @@ export default function NewPachikuForm() {
     const { data: session } = useSession();
     if (!session || !session.user) {
         return (
-            <div>
+            <div className={styles.notSignedInNotice}>
                 <h2>Cant Pachiku just yet!</h2>
-                <p>Please Sign in or Sign Up to start Pachiking!</p>
+
+                <hr />
                 <SignUpForm />
             </div>
         );

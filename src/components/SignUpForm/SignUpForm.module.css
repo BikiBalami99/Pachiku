@@ -1,0 +1,68 @@
+.signUpForm {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+
+    width: 100%;
+    border-radius: 0.75rem;
+}
+
+.heading {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.inputFields {
+    display: flex;
+    width: 100%;
+}
+
+.inputForm {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 3rem;
+    width: 100%;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 0.75rem;
+    background: var(--primary-white);
+    color: var(--primary-black);
+    font-size: 1.25rem;
+    font-weight: 400;
+}
+
+.inputForm:focus {
+    outline: 0px;
+}
+
+.inputFields {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.inputAndLabel {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.feedbackAndButton {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+.feedbackAndButton p {
+    color: var(--primary-white);
+    font-size: large;
+}
+
+.googleButton img {
+    background-color: var(--secondary-black);
+    border-radius: 50px;
+    border: 1px solid white;
+    margin-right: 0.75rem;
+}
