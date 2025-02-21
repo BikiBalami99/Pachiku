@@ -24,8 +24,8 @@ export default function RootLayout({
                     <UserProvider>
                         <Navbar />
                         <main className={styles.main}>
-                            {children}
                             {modal}
+                            {children}
                         </main>
                     </UserProvider>
                 </AuthProvider>

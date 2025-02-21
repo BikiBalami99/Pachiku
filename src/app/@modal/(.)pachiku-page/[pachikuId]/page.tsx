@@ -16,7 +16,6 @@ export default async function PachikuPage({
         const pachiku = await getSpecificPachiku(pachikuId);
         if (pachiku === null) {
             notFound();
-            return null; // Ensure the function exits after calling notFound
         }
 
         return (
@@ -27,6 +26,5 @@ export default async function PachikuPage({
     } catch (error) {
         console.error("Error rendering PachikuPage:", error);
         notFound();
-        return null; // Ensure the function exits after calling notFound
     }
 }

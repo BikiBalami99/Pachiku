@@ -20,14 +20,36 @@ export default function PachikuModal({
     }, []);
 
     const handleClose = () => {
-        dialogRef.current?.close();
-        router.back();
+        if (dialogRef.current) {
+            dialogRef.current.classList.add(styles.close);
+            dialogRef.current.addEventListener(
+                "animationend",
+                () => {
+                    dialogRef.current?.close();
+                    router.back();
+                },
+                { once: true }
+            );
+        }
     };
+
+    // Closing the modal on esp keydown
+    useEffect(() => {
+        const handleEsc = (event: KeyboardEvent) => {
+            if (event.key === "Escape") {
+                handleClose();
+            }
+        };
+        document.addEventListener("keydown", handleEsc);
+        return () => {
+            document.removeEventListener("keydown", handleEsc);
+        };
+    }, [handleClose]);
 
     return (
         <dialog ref={dialogRef} className={styles.modal}>
             <button className={styles.closeButton} onClick={handleClose}>
-                &times;
+                &#x2794;
             </button>
             {children}
         </dialog>

@@ -1,28 +1,38 @@
 .modal {
-    height: 100svh;
     width: 90%;
     max-width: 700px;
     min-width: 300px;
     height: 80%;
     margin: auto;
+    overflow: visible;
 
     display: flex;
     position: relative;
     border: none;
     border-radius: 0.75rem;
     padding: 0.75rem;
+    background-color: var(--primary-sky-blue-color);
+}
+
+.modal[open] {
+    animation: slide-in-from-top 0.35s ease-out;
+}
+
+.modal.close {
+    animation: slide-out-to-top 0.35s ease-in;
 }
 
 .modal::backdrop {
-    background-color: var(--secondary-white);
+    background: var(--primary-black);
     opacity: 0.9;
 }
 
 .closeButton {
     position: absolute;
     top: 0;
-    right: 0;
-    margin: 1rem;
+    left: 0;
+    transform-origin: center;
+    transform: rotate(180deg) translate(0%, 140%);
 
     display: flex;
     justify-content: center;
@@ -31,24 +41,46 @@
     height: 3rem;
     width: 3rem;
 
-    border-radius: 100rem;
+    border-radius: 500px;
     font-size: 2rem;
     color: var(--primary-white);
-    border: 2px solid white;
-    background-color: var(--primary-sky-blue);
+    background-color: var(--primary-sky-blue-color);
+    border: none;
 
     scale: 1;
-    transition: scale ease-in-out 100ms;
+    transition: background-color ease-in-out 200ms;
 }
 
-.closeButton:focus,
+.closeButton:focus-visible,
 .closeButton:active {
-    background-color: var(--secondary-sky-blue);
+    background-color: var(--secondary-black);
 }
 
 @media (hover: hover) {
     .closeButton:hover {
-        scale: 1.1;
+        background-color: var(--secondary-black);
         cursor: pointer;
+    }
+}
+
+@keyframes slide-in-from-top {
+    0% {
+        transform: translateY(-15%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slide-out-to-top {
+    0% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-15%);
+        opacity: 0;
     }
 }
