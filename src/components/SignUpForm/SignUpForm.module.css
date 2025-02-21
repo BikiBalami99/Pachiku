@@ -1,7 +1,7 @@
 .signUpForm {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 1.25rem;
 
     width: 100%;
     border-radius: 0.75rem;
@@ -15,6 +15,13 @@
 
 .inputFields {
     display: flex;
+    gap: 0.75rem;
+    width: 100%;
+}
+.inputAndLabel {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
     width: 100%;
 }
 
@@ -37,17 +44,6 @@
     outline: 0px;
 }
 
-.inputFields {
-    display: flex;
-    gap: 0.75rem;
-}
-
-.inputAndLabel {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-}
-
 .feedbackAndButton {
     display: flex;
     flex-direction: column;
@@ -58,6 +54,7 @@
 .feedbackAndButton p {
     color: var(--primary-white);
     font-size: large;
+    font-size: 0.8rem;
 }
 
 .googleButton img {

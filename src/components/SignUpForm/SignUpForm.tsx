@@ -74,14 +74,6 @@ export default function SignUpForm() {
 
     return (
         <form onSubmit={handleSignUp} className={styles.signUpForm}>
-            <div className={styles.heading}>
-                <h3>Sign up without an email</h3>
-                <p>
-                    We wont store your email, but password recovery will be
-                    impossible.
-                </p>
-            </div>
-
             <div className={styles.inputFields}>
                 <div className={styles.inputAndLabel}>
                     <label htmlFor="firstname">First Name</label>
@@ -148,6 +140,10 @@ export default function SignUpForm() {
                 >
                     {loading ? status : "Sign up"}
                 </button>
+                <p>
+                    We wont store your email for security reasons, but password
+                    recovery will be impossible.
+                </p>
                 <hr className={styles.horizontalLine} />
                 <Link
                     className={`button primaryButton ${styles.googleButton}`}
@@ -159,8 +155,12 @@ export default function SignUpForm() {
                         height={24}
                         width={24}
                     />
-                    <p>Sign up with Google</p>
+                    <p>Sign in with Google</p>
                 </Link>
+                <p>
+                    No Sign up required. Your email will be stored in our
+                    database.
+                </p>
             </div>
         </form>
     );

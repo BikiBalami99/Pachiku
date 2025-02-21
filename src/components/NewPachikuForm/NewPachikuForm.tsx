@@ -12,9 +12,6 @@ export default function NewPachikuForm() {
     if (!session || !session.user) {
         return (
             <div className={styles.notSignedInNotice}>
-                <h2>Cant Pachiku just yet!</h2>
-
-                <hr />
                 <SignUpForm />
             </div>
         );

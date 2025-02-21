@@ -4,6 +4,7 @@
     flex-direction: column;
     align-items: center;
     overflow-y: scroll;
+    overflow-x: hidden;
 
     border-radius: 0.75rem;
     background: var(--slightly-dark-white, #f0f0f0);
@@ -11,18 +12,25 @@
     padding: 0.75rem;
     margin-top: 0.75rem;
 
-    /* Scrollbar styling */
-    scrollbar-width: thin; /* Firefox: makes the scrollbar thinner */
-    scrollbar-color: rgba(0, 0, 0, 0.7);
-    /* Firefox: thumb is semi-transparent, track is hidden */
+    /* For Firefox */
+    scrollbar-color: #7878783b transparent;
+    scrollbar-track-color: transparent;
 }
 
-/* Chrome, Edge, Safari */
+/* Safari */
+/* Hide the scrollbar track and only show the thumb */
+.main::-webkit-scrollbar {
+    width: 8px;
+}
+
 .main::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.7); /* Semi-transparent thumb */
+    background: transparent; /* Hide the track background */
+    margin: 1rem;
 }
 
 .main::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.7); /* Semi-transparent thumb */
-    border-radius: 10px; /* Makes the thumb fully rounded */
+    background-color: #ffffff; /* Color of the scrollbar thumb */
+    border-radius: 10px; /* Rounded corners for the thumb */
+    box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.25) inset;
+    margin-top: 1rem;
 }
