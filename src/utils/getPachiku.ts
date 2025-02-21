@@ -1,9 +1,10 @@
 import { PachikuWithDetails } from "@/types/pachiku";
 import { User } from "@prisma/client";
-import { getUserLikesPachiku } from "./getUserLikesPachiku";
 
+// This file has all the functions that relates to providing the pachikus of any kind
+
+// Get specific pachiku when provided a pachikuId (server side only)
 export async function getSpecificPachiku(pachikuId: string) {
-    // Get specific pachiku when provided a pachikuId
     const url = `${process.env.NEXTAUTH_URL}/api/pachiku?pachikuId=${pachikuId}`;
     try {
         const response = await fetch(url);
@@ -20,9 +21,11 @@ export async function getSpecificPachiku(pachikuId: string) {
         return null;
     }
 }
-export async function getSpecificPachikuClient(pachikuId: string) {
-    // client side only
-    // Get specific pachiku when provided a pachikuId
+
+// Get specific pachiku when provided a pachikuId (client side only)
+export async function getSpecificPachikuClient(
+    pachikuId: string
+): Promise<PachikuWithDetails | null> {
     const url = `${process.env.NEXT_PUBLIC_API_URL}/api/pachiku?pachikuId=${pachikuId}`;
     try {
         const response = await fetch(url);
@@ -41,7 +44,8 @@ export async function getSpecificPachikuClient(pachikuId: string) {
     }
 }
 
-export async function getAllPachikus() {
+// Get all pachikus in our database
+export async function getAllPachikus(): Promise<PachikuWithDetails[] | null> {
     // client side only
     const url = `${process.env.NEXT_PUBLIC_API_URL}/api/all-pachikus`;
 
@@ -50,7 +54,7 @@ export async function getAllPachikus() {
         if (!response.ok) {
             throw new Error("Failed to fetch Pachikus");
         }
-        const data = await response.json();
+        const data: PachikuWithDetails[] = await response.json();
         return data;
     } catch (error) {
         console.error(`Error fetching Pachikus from ${url}:`, error);
@@ -58,55 +62,20 @@ export async function getAllPachikus() {
     }
 }
 
-// Used only in user's dashboard or another user's dashboard
+// Used only in user's dashboard or another user's dashboard (in the future)
 export async function getPachikuOfUser(
-    user: User,
-    currentUser: User
-): Promise<{
-    pachikus: PachikuWithDetails[];
-    userLikes: { [pachikuId: string]: boolean };
-}> {
+    user: User
+): Promise<PachikuWithDetails[]> {
     // client side only
     const url = `${process.env.NEXT_PUBLIC_API_URL}/api/all-pachikus-of-user?userId=${user.id}`;
-    const response = await fetch(url);
-    if (!response.ok) {
-        throw new Error("Failed to fetch all pachikus of user.");
-    }
 
     try {
-        const pachikus: PachikuWithDetails[] = await response.json();
-        let userLikes: { [pachikuId: string]: boolean } = {};
-
-        if (currentUser) {
-            const likes = await Promise.all(
-                pachikus.map((pachiku: PachikuWithDetails) =>
-                    getUserLikesPachiku(currentUser.id, pachiku.id).catch(
-                        (error) => {
-                            console.error(
-                                `Error fetching like status for pachiku ${pachiku.id}: ${error}`
-                            );
-                        }
-                    )
-                )
-            );
-
-            // populates the userLikes with objects with each key being a pachikuId and its value as boolean whether current user likes that pachiku or not
-            userLikes = pachikus.reduce(
-                (
-                    acc: { [pachikuId: string]: boolean },
-                    pachiku: PachikuWithDetails,
-                    index: number
-                ) => {
-                    if (likes[index] !== null) {
-                        acc[pachiku.id] = !!likes[index];
-                    }
-                    return acc;
-                },
-                {} as { [pachikuId: string]: boolean } // Explicit initial value type
-            );
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error("Failed to fetch all pachikus of user.");
         }
-
-        return { pachikus, userLikes };
+        const pachikus: PachikuWithDetails[] = await response.json();
+        return pachikus;
     } catch (error) {
         console.error("Error fetching pachikus:", error);
         throw error; // Re-throw the error to be handled by the component
