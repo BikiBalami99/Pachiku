@@ -150,10 +150,12 @@ export default function Pachiku({ pachiku }: PachikuProps) {
 
                     <div className={styles.threeDotsMenuContainer}>
                         {/* We need the container for positioning */}
-                        <ThreeDotsMenu
-                            actionForEdit={() => setEditFormVisible(true)}
-                            actionForDelete={deletePachiku}
-                        />
+                        {currentUser!.id === author.id && (
+                            <ThreeDotsMenu
+                                actionForEdit={() => setEditFormVisible(true)}
+                                actionForDelete={deletePachiku}
+                            />
+                        )}
                     </div>
                 </div>
 
@@ -168,6 +170,7 @@ export default function Pachiku({ pachiku }: PachikuProps) {
                             name="editedPachikuText"
                             value={editedPachiku}
                             onChange={(e) => setEditedPachiku(e.target.value)}
+                            required
                         />
                         <input
                             type="hidden"
