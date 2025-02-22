@@ -4,7 +4,7 @@ import { User } from "@prisma/client";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import styles from "./page.module.css";
-import AllPachikusList from "@/components/AllPachikusList/AllPachikus";
+import AllUserPachikus from "@/components/AllUserPachikus/AllUserPachikus";
 import UserUpdateForm from "@/components/UserUpdateForm/UserUpdateForm";
 
 export default async function Dashboard() {
@@ -22,7 +22,7 @@ export default async function Dashboard() {
         <section className={styles.dashboardPage}>
             <UserUpdateForm user={user} />
             <h2>Your Pachikus</h2>
-            <AllPachikusList user={user} />
+            <AllUserPachikus user={user} />
         </section>
     );
 }

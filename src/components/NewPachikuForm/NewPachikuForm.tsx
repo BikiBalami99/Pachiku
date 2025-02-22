@@ -1,14 +1,19 @@
 "use client";
+
 import { useState } from "react";
-import { submitPachiku } from "./submitPachiku";
 import styles from "./NewPachikuForm.module.css";
-import { useSession } from "next-auth/react";
 import UserImage from "../APachikuComponents/UserImage/UserImage";
 import SignUpForm from "../SignUpForm/SignUpForm";
+import { useSession } from "next-auth/react";
+import { submitPachiku } from "./submitPachiku";
+import { redirect } from "next/navigation";
+import { usePachikuContext } from "@/contexts/PachikuContext";
 
 export default function NewPachikuForm() {
     const [feedback, setFeedback] = useState<string | null>(null);
     const { data: session } = useSession();
+    const { refreshPachikuData } = usePachikuContext();
+
     if (!session || !session.user) {
         return (
             <div className={styles.notSignedInNotice}>
@@ -27,6 +32,13 @@ export default function NewPachikuForm() {
             setFeedback(response.error);
         } else if (response.success) {
             setFeedback("Pachiku submitted successfully!");
+            // Call the revalidation API route
+            await fetch("/api/revalidate", {
+                method: "POST",
+            });
+            // Refresh the data in PachikuContext
+            refreshPachikuData();
+            redirect(`/pachiku-page/${response.data}`);
         }
     };
 
@@ -44,6 +56,7 @@ export default function NewPachikuForm() {
                     placeholder="How was your day?"
                     className={styles.inputForm}
                     maxLength={256}
+                    required
                 />
             </div>
             <div className={styles.feedbackAndButton}>

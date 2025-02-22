@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar/Navbar";
 import AuthProvider from "./AuthProvider";
 import { UserProvider } from "@/contexts/UserContext";
 import styles from "./layout.module.css";
+import { PachikuProvider } from "@/contexts/PachikuContext";
 
 export const metadata: Metadata = {
     title: "Twitter Clone",
@@ -22,11 +23,13 @@ export default function RootLayout({
             <body>
                 <AuthProvider>
                     <UserProvider>
-                        <Navbar />
-                        <main className={styles.main}>
-                            {modal}
-                            {children}
-                        </main>
+                        <PachikuProvider>
+                            <Navbar />
+                            <main className={styles.main}>
+                                {modal}
+                                {children}
+                            </main>
+                        </PachikuProvider>
                     </UserProvider>
                 </AuthProvider>
             </body>

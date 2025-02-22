@@ -1,51 +1,42 @@
 "use server";
 import { authOptions } from "@/lib/auth";
-import { Pachiku } from "@prisma/client";
 import { getServerSession } from "next-auth";
-import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
-interface SubmitPachikuResponseType {
-    success?: boolean;
-    error?: string;
-    data?: Pachiku;
-}
-
-// This is the server-action for submitting a pachiku
-export async function submitPachiku(
-    formdata: FormData
-): Promise<SubmitPachikuResponseType> {
-    const pachikuText = formdata.get("newPachiku")!.toString();
-
+export async function submitPachiku(formData: FormData) {
     try {
+        // Validation of the input
+        if (!(formData instanceof FormData)) {
+            throw new Error("Error, only formdata type allowed");
+        }
+        const pachikuText = formData.get("newPachiku");
+        if (!pachikuText) throw new Error("New Pachiku Required");
+
+        // Validating again if user is signed in
         const session = await getServerSession(authOptions);
 
-        // Edge cases handling
-        if (!session) {
-            return { success: false, error: "Please sign in" };
+        if (!session) redirect("/api/auth/signin");
+        if (!session.user || !session.user.email) {
+            throw new Error("Unauthorized account.");
         }
 
-        if (!session.user) {
-            return {
-                success: false,
-                error: "Session.user does not exist",
-            };
-        }
-        const email = session.user.email;
+        const currentUserEmail = session.user.email;
 
-        const createPachikuResponse = await fetch(
+        // Contacting the API
+        const createNewPachikuResponse = await fetch(
             `${process.env.NEXTAUTH_URL}/api/pachiku`,
             {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ pachikuText, email }),
+                body: JSON.stringify({ pachikuText, email: currentUserEmail }),
             }
         );
 
         // If failed response
-        if (!createPachikuResponse.ok) {
-            const errorData = await createPachikuResponse.json();
+        if (!createNewPachikuResponse.ok) {
+            const errorData = await createNewPachikuResponse.json();
             return {
                 success: false,
                 error:
@@ -55,15 +46,18 @@ export async function submitPachiku(
         }
 
         // If OK response
-        const responseData = await createPachikuResponse.json();
-        revalidatePath("/");
+        const responseData = await createNewPachikuResponse.json();
+
+        // used for redirect
+        const newPachiuId = responseData.data.id;
 
         return {
             success: true,
-            data: responseData,
+            data: newPachiuId,
+            error: null,
         };
     } catch (error) {
-        console.error("Error creating pachiku:", error);
-        return { error: "Error creating pachiku" };
+        console.log("Error creating new pachiku:");
+        return { success: false, data: null, error: error };
     }
 }

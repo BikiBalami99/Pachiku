@@ -18,10 +18,6 @@
     animation: slide-in-from-top 0.35s ease-out;
 }
 
-.modal.close {
-    animation: slide-out-to-top 0.35s ease-in;
-}
-
 .modal::backdrop {
     background: var(--primary-black);
     opacity: 0.9;
