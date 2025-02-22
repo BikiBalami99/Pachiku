@@ -109,7 +109,8 @@ body {
 
 .whiteButton {
     background: var(--primary-white);
-    color: #fff;
+
+    color: var(--secondary-sky-blue);
 }
 
 .whiteButton:hover {
