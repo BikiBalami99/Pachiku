@@ -14,6 +14,7 @@ import ShareIcon from "../LikeCommentShareComponents/ShareIcon";
 import UserImage from "../UserImage/UserImage";
 import styles from "./Pachiku.module.css";
 import ThreeDotsMenu from "@/components/UtilityComponents/ThreeDotsMenu/ThreeDotsMenu";
+import { usePachikuContext } from "@/contexts/PachikuContext";
 
 // Props type definition
 type PachikuProps = {
@@ -39,6 +40,7 @@ export default function Pachiku({ pachiku }: PachikuProps) {
     // Get the current session and user context
     const { data: session } = useSession();
     const { user: currentUser } = useUserContext();
+    const { refreshPachikuData } = usePachikuContext();
 
     // Authorization: If the user signs out, revert the heart state to false
     useEffect(() => {
@@ -84,35 +86,14 @@ export default function Pachiku({ pachiku }: PachikuProps) {
             throw new Error("Invalid input");
         }
 
-        // if (
-        //     !session ||
-        //     !session.user ||
-        //     !currentUser ||
-        //     !author ||
-        //     currentUser.id !== author.id
-        // ) {
-        //     throw new Error("Unauthorized action");
-        // }
-
-        if (!session) {
-            throw new Error("Unauthorized action: No session");
-        }
-        if (!session.user) {
-            throw new Error("Unauthorized action: No session user");
-        }
-        if (!currentUser) {
-            throw new Error("Unauthorized action: No current user");
-        }
-        if (!author) {
-            throw new Error("Unauthorized action: No author");
-        }
-        if (currentUser.id !== author.id) {
-            console.log(
-                `Unauthorized action: User ID (${currentUser.id}) does not match author ID (${author.id})`
-            );
-            throw new Error(
-                `Unauthorized action: User ID (${currentUser.id}) does not match author ID (${author.id})`
-            );
+        if (
+            !session ||
+            !session.user ||
+            !currentUser ||
+            !author ||
+            currentUser.id !== author.id
+        ) {
+            throw new Error("Unauthorized action");
         }
 
         const pachikuId = formData.get("pachikuId");
@@ -143,6 +124,9 @@ export default function Pachiku({ pachiku }: PachikuProps) {
             console.log("Pachiku updated successfully:", data);
         } catch (error) {
             console.error("Error updating Pachiku:", error);
+        } finally {
+            setEditFormVisible(false);
+            refreshPachikuData();
         }
     }
     function deletePachiku() {}
@@ -167,9 +151,7 @@ export default function Pachiku({ pachiku }: PachikuProps) {
                     <div className={styles.threeDotsMenuContainer}>
                         {/* We need the container for positioning */}
                         <ThreeDotsMenu
-                            actionForEdit={() =>
-                                setEditFormVisible((prev) => !prev)
-                            }
+                            actionForEdit={() => setEditFormVisible(true)}
                             actionForDelete={deletePachiku}
                         />
                     </div>
@@ -199,8 +181,11 @@ export default function Pachiku({ pachiku }: PachikuProps) {
                             >
                                 Update
                             </button>
-                            <button className="button whiteButton">
-                                <span>Cancel</span>
+                            <button
+                                onClick={() => setEditFormVisible(false)}
+                                className="button whiteButton"
+                            >
+                                Cancel
                             </button>
                         </div>
                     </form>

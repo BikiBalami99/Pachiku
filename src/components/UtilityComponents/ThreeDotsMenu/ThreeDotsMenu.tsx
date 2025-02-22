@@ -19,6 +19,11 @@ export default function ThreeDotsMenu({
         setFullMenuVisibility((prev) => !prev);
     }
 
+    function onClickEdit() {
+        actionForEdit();
+        setFullMenuVisibility(false);
+    }
+
     return (
         <div>
             <div
@@ -33,7 +38,9 @@ export default function ThreeDotsMenu({
                 data-visibility={fullMenuVisibility ? "visible" : "invisible"}
                 className={styles.fullMenu}
             >
-                <div onClick={actionForEdit}>Edit</div>
+                <div className={styles.editButton} onClick={onClickEdit}>
+                    Edit
+                </div>
                 <div onClick={actionForDelete}>Delete</div>
             </div>
         </div>
