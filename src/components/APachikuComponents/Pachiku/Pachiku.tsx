@@ -1,44 +1,53 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import styles from "./Pachiku.module.css";
-import { type User } from "@prisma/client";
+import { useSession } from "next-auth/react";
+import { useUserContext } from "@/contexts/UserContext";
 import { getTimeSince } from "@/utils/getTimeSince";
-
+import { getAuthor } from "@/utils/getAuthor";
+import { getUserLikesPachiku } from "@/utils/getUserLikesPachiku";
+import { type User } from "@prisma/client";
+import { type PachikuWithDetails } from "@/types/pachiku";
 import HeartIcon from "../LikeCommentShareComponents/HeartIcon";
 import CommentIcon from "../LikeCommentShareComponents/CommentIcon";
 import ShareIcon from "../LikeCommentShareComponents/ShareIcon";
-
-import { getAuthor } from "@/utils/getAuthor";
-import { PachikuWithDetails } from "@/types/pachiku";
 import UserImage from "../UserImage/UserImage";
-import { getUserLikesPachiku } from "@/utils/getUserLikesPachiku";
-import { useSession } from "next-auth/react";
-import { useUserContext } from "@/contexts/UserContext";
+import styles from "./Pachiku.module.css";
+import ThreeDotsMenu from "@/components/UtilityComponents/ThreeDotsMenu/ThreeDotsMenu";
 
+// Props type definition
 type PachikuProps = {
     pachiku: PachikuWithDetails;
 };
 
-// This component is the Pachiku that comes in the feed without any comments and is used in PachikuPost as the top part of the Pachiku.
+// Pachiku Component
+// This component represents a single Pachiku post in the feed without any comments.
+// It is used in PachikuPost as the top part of the Pachiku.
 export default function Pachiku({ pachiku }: PachikuProps) {
+    // State to store the author information
     const [author, setAuthor] = useState<User | null>(null);
+
+    // State to store the initial heart (like) state
     const [initialHeartState, setInitialHeartState] = useState<boolean | null>(
         null
     );
+
+    // States for editing the pachiku
+    const [editFormVisible, setEditFormVisible] = useState(false);
+    const [editedPachiku, setEditedPachiku] = useState(pachiku.pachiku);
+
+    // Get the current session and user context
     const { data: session } = useSession();
     const { user: currentUser } = useUserContext();
 
-    // Authorization
+    // Authorization: If the user signs out, revert the heart state to false
     useEffect(() => {
-        // If the user signs out, we want the heart state to revert back to false
-        // This does that
         if (!session || !session.user) {
             setInitialHeartState(false);
         }
     }, [session]);
 
-    // Fetch author
+    // Fetch the author information
     useEffect(() => {
         let isMounted = true;
         getAuthor(pachiku).then((authorData) => {
@@ -50,6 +59,7 @@ export default function Pachiku({ pachiku }: PachikuProps) {
         };
     }, [pachiku]);
 
+    // Fetch the initial heart (like) state
     useEffect(() => {
         if (author && currentUser) {
             getUserLikesPachiku(currentUser.id, pachiku.id).then((data) => {
@@ -58,21 +68,94 @@ export default function Pachiku({ pachiku }: PachikuProps) {
         }
     }, [author, pachiku, currentUser]);
 
+    // Calculate the time since the Pachiku was created
     const timeSince = getTimeSince(pachiku.createdAt);
 
     if (!author) return null;
+
     const imageLink = author.image || "/icons/no-image-icon.svg";
+
+    async function updatePachiku(formData: FormData) {
+        if (
+            !(formData instanceof FormData) ||
+            !formData.has("pachikuId") ||
+            !formData.has("editedPachikuText")
+        ) {
+            throw new Error("Invalid input");
+        }
+
+        // if (
+        //     !session ||
+        //     !session.user ||
+        //     !currentUser ||
+        //     !author ||
+        //     currentUser.id !== author.id
+        // ) {
+        //     throw new Error("Unauthorized action");
+        // }
+
+        if (!session) {
+            throw new Error("Unauthorized action: No session");
+        }
+        if (!session.user) {
+            throw new Error("Unauthorized action: No session user");
+        }
+        if (!currentUser) {
+            throw new Error("Unauthorized action: No current user");
+        }
+        if (!author) {
+            throw new Error("Unauthorized action: No author");
+        }
+        if (currentUser.id !== author.id) {
+            console.log(
+                `Unauthorized action: User ID (${currentUser.id}) does not match author ID (${author.id})`
+            );
+            throw new Error(
+                `Unauthorized action: User ID (${currentUser.id}) does not match author ID (${author.id})`
+            );
+        }
+
+        const pachikuId = formData.get("pachikuId");
+        const editedPachikuText = formData.get("editedPachikuText");
+
+        if (!pachikuId || !editedPachikuText) {
+            throw new Error("Invalid input");
+        }
+
+        try {
+            const response = await fetch(
+                `${process.env.NEXT_PUBLIC_API_URL}/api/pachiku`,
+                {
+                    method: "PATCH",
+                    headers: { "content-type": "application/json" },
+                    body: JSON.stringify({
+                        pachikuId: pachikuId.toString(),
+                        editedPachikuText: editedPachikuText.toString(),
+                    }),
+                }
+            );
+
+            if (!response.ok) {
+                throw new Error("Failed to update Pachiku");
+            }
+
+            const data = await response.json();
+            console.log("Pachiku updated successfully:", data);
+        } catch (error) {
+            console.error("Error updating Pachiku:", error);
+        }
+    }
+    function deletePachiku() {}
 
     return (
         <li className={styles.pachiku} key={pachiku.id}>
-            {/* Body of the pachiku, name, username, time and the pachiku itself */}
+            {/* Body of the Pachiku: name, username, time, and the Pachiku text */}
             <section className={styles.body}>
                 <div className={styles.userInfoContainer}>
                     <UserImage
                         src={imageLink}
                         userFirstName={author.firstName}
                     />
-
                     <div className={styles.textInfo}>
                         <h3 className={styles.fullName}>
                             {author.firstName} {author.lastName}
@@ -80,12 +163,53 @@ export default function Pachiku({ pachiku }: PachikuProps) {
                         <h4 className={styles.username}>@{author.username}</h4>
                         <p className={styles.timeSince}>{timeSince}</p>
                     </div>
+
+                    <div className={styles.threeDotsMenuContainer}>
+                        {/* We need the container for positioning */}
+                        <ThreeDotsMenu
+                            actionForEdit={() =>
+                                setEditFormVisible((prev) => !prev)
+                            }
+                            actionForDelete={deletePachiku}
+                        />
+                    </div>
                 </div>
 
-                <p className={styles.pachikuText}>{pachiku.pachiku}</p>
+                {editFormVisible ? (
+                    <form
+                        action={updatePachiku}
+                        className={styles.editPachikuForm}
+                    >
+                        <input
+                            className={styles.editPachikuInput}
+                            type="text"
+                            name="editedPachikuText"
+                            value={editedPachiku}
+                            onChange={(e) => setEditedPachiku(e.target.value)}
+                        />
+                        <input
+                            type="hidden"
+                            name="pachikuId"
+                            value={pachiku.id}
+                        />
+                        <div className={styles.editPachikuButtons}>
+                            <button
+                                type="submit"
+                                className="button primaryButton"
+                            >
+                                Update
+                            </button>
+                            <button className="button whiteButton">
+                                <span>Cancel</span>
+                            </button>
+                        </div>
+                    </form>
+                ) : (
+                    <p className={styles.pachikuText}>{pachiku.pachiku}</p>
+                )}
             </section>
 
-            {/* Likes comments and share */}
+            {/* Likes, comments, and share section */}
             <section className={styles.likesCommentsShare}>
                 {initialHeartState !== null && (
                     <HeartIcon

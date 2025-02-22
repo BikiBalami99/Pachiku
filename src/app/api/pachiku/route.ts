@@ -76,3 +76,28 @@ export async function POST(request: Request) {
         return NextResponse.json({ error }, { status: 500 });
     }
 }
+
+export async function PATCH(req: Request) {
+    const { pachikuId, editedPachikuText } = await req.json();
+
+    if (!pachikuId)
+        return NextResponse.json({ error: "Pachiku Id is required" });
+
+    if (!editedPachikuText)
+        return NextResponse.json({ error: "New Pachiku Text is required." });
+
+    try {
+        const updatedPachiku = await prisma.pachiku.update({
+            where: { id: pachikuId },
+            data: { pachiku: editedPachikuText },
+        });
+
+        return NextResponse.json(
+            { message: "Pachiku updated successfully", data: updatedPachiku },
+            { status: 200 }
+        );
+    } catch (error) {
+        console.error(error);
+        return NextResponse.json({ error }, { status: 500 });
+    }
+}
