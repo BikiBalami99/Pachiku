@@ -109,7 +109,6 @@ body {
 
 .whiteButton {
     background: var(--primary-white);
-
     color: var(--secondary-sky-blue);
 }
 
