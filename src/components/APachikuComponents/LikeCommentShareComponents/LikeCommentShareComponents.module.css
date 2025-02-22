@@ -100,6 +100,7 @@
 
 .linkCopiedAlert {
     position: absolute;
+    pointer-events: none;
     bottom: 200%;
     margin-top: 0.5rem;
     background-color: var(--secondary-black);
