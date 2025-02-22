@@ -150,7 +150,7 @@ export default function Pachiku({ pachiku }: PachikuProps) {
 
                     <div className={styles.threeDotsMenuContainer}>
                         {/* We need the container for positioning */}
-                        {currentUser!.id === author.id && (
+                        {currentUser?.id === author.id && (
                             <ThreeDotsMenu
                                 actionForEdit={() => setEditFormVisible(true)}
                                 actionForDelete={deletePachiku}
@@ -159,10 +159,12 @@ export default function Pachiku({ pachiku }: PachikuProps) {
                     </div>
                 </div>
 
+                {/* Update pachiku form */}
                 {editFormVisible ? (
                     <form
                         action={updatePachiku}
                         className={styles.editPachikuForm}
+                        data-visible={editFormVisible ? "true" : "false"}
                     >
                         <input
                             className={styles.editPachikuInput}
