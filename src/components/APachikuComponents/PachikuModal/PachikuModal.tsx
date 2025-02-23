@@ -1,8 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { redirect } from "next/navigation";
 import styles from "./PachikuModal.module.css";
+import { useRouter } from "next/navigation";
 
 export default function PachikuModal({
     children,
@@ -11,40 +11,26 @@ export default function PachikuModal({
 }) {
     const dialogRef = useRef<HTMLDialogElement>(null);
     const [isOpen, setIsOpen] = useState(true);
+    const router = useRouter();
 
-    // Show modal when mounted
     useEffect(() => {
-        if (dialogRef.current && isOpen) {
-            dialogRef.current.showModal();
-        }
+        dialogRef.current?.showModal();
     }, [isOpen]);
 
-    const handleClose = useCallback(() => {
+    function handleClose() {
         dialogRef.current?.close();
-        setIsOpen(false);
-        redirect("/");
-    }, []);
+        router.back();
+    }
 
-    // Closing the modal on esc keydown
-    useEffect(() => {
-        const handleEsc = (event: KeyboardEvent) => {
-            if (event.key === "Escape") {
-                handleClose();
-            }
-        };
-        document.addEventListener("keydown", handleEsc);
-        return () => {
-            document.removeEventListener("keydown", handleEsc);
-        };
-    }, [handleClose]);
-
-    if (!isOpen) return null;
+    console.log("IsOpen:", isOpen);
 
     return (
         <dialog ref={dialogRef} className={styles.modal}>
-            <button className={styles.closeButton} onClick={handleClose}>
-                &#x2794;
-            </button>
+            <form method="dialog">
+                <button className={styles.closeButton} onClick={handleClose}>
+                    &#x2794;
+                </button>
+            </form>
             {children}
         </dialog>
     );
