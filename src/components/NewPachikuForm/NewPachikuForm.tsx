@@ -8,13 +8,18 @@ import { useSession } from "next-auth/react";
 import { submitPachiku } from "./submitPachiku";
 import { usePachikuContext } from "@/contexts/PachikuContext";
 import { useRouter } from "next/navigation";
+import PachikuFormSkeleton from "../UtilityComponents/PachikuFormSkeleton/PachikuFormSkeleton";
 
 export default function NewPachikuForm() {
     const [feedback, setFeedback] = useState<string | null>(null);
     const [newPachiku, setNewPachiku] = useState("");
-    const { data: session } = useSession();
+    const { data: session, status } = useSession();
     const { refreshPachikuData } = usePachikuContext();
     const router = useRouter();
+
+    if (status === "loading") {
+        return <PachikuFormSkeleton />;
+    }
 
     if (!session || !session.user) {
         return <SignUpForm />;
