@@ -8,11 +8,13 @@ import { useSession } from "next-auth/react";
 import { submitPachiku } from "./submitPachiku";
 import { redirect } from "next/navigation";
 import { usePachikuContext } from "@/contexts/PachikuContext";
+import { useRouter } from "next/navigation";
 
 export default function NewPachikuForm() {
     const [feedback, setFeedback] = useState<string | null>(null);
     const { data: session } = useSession();
     const { refreshPachikuData } = usePachikuContext();
+    const router = useRouter();
 
     if (!session || !session.user) {
         return (
@@ -38,7 +40,8 @@ export default function NewPachikuForm() {
             });
             // Refresh the data in PachikuContext
             refreshPachikuData();
-            redirect(`/pachiku-page/${response.data}`);
+            router.refresh();
+            router.push(`/pachiku-page/${response.data}`);
         }
     };
 
