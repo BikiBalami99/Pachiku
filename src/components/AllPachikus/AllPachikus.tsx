@@ -12,7 +12,7 @@ export default function AllPachikus() {
         return <PachikuSkeleton />;
     }
     if (!Array.isArray(allPachikus) || allPachikus.length === 0) {
-        return <h2>No one's pachiku yet.</h2>;
+        return <h2>No one has pachikud yet.</h2>;
     }
 
     return (
