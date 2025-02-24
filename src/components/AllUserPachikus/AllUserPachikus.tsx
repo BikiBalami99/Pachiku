@@ -6,6 +6,7 @@ import { User } from "@prisma/client";
 import React, { useEffect, useState } from "react";
 import Pachiku from "../APachikuComponents/Pachiku/Pachiku";
 import styles from "../AllPachikus/AllPachikus.module.css";
+import PachikuSkeleton from "../UtilityComponents/PachikuSkeleton/PachikuSkeleton";
 
 export default function AllUserPachikus({ user }: { user: User }) {
     const [allUserPachikus, setAllUserPachikus] = useState<
@@ -31,11 +32,7 @@ export default function AllUserPachikus({ user }: { user: User }) {
     }, [user]);
 
     if (loading) {
-        return (
-            <h2>
-                Hi {user.firstName}, we are loading your pachikus. Please wait.
-            </h2>
-        );
+        return <PachikuSkeleton />;
     }
 
     return (
