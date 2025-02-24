@@ -17,11 +17,7 @@ export default function NewPachikuForm() {
     const router = useRouter();
 
     if (!session || !session.user) {
-        return (
-            <div className={styles.notSignedInNotice}>
-                <SignUpForm />
-            </div>
-        );
+        return <SignUpForm />;
     }
     const { user } = session;
     const userAvatarLink = user.image || "/icons/no-avatar-icon.svg";

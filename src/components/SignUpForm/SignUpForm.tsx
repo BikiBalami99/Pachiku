@@ -74,65 +74,73 @@ export default function SignUpForm() {
 
     return (
         <form onSubmit={handleSignUp} className={styles.signUpForm}>
-            <div className={styles.inputFields}>
-                <div className={styles.inputAndLabel}>
-                    <label htmlFor="firstname">First Name</label>
-                    <input
-                        type="text"
-                        name="firstname"
-                        id="firstname"
-                        placeholder="Firstname"
-                        required
-                        value={firstName}
-                        onChange={(e) => setFirstName(e.target.value)}
-                        className={styles.inputForm}
-                    />
+            <div className={styles.signUp}>
+                <div className={styles.title}>
+                    <h1>Sign Up</h1>
+                    <h2>No email sign up</h2>
+                    <p>
+                        We wont store your email for security reasons, but
+                        password recovery will be impossible.
+                    </p>
                 </div>
-                <div className={styles.inputAndLabel}>
-                    <label htmlFor="lastname">Last Name</label>
-                    <input
-                        type="text"
-                        name="lastname"
-                        id="lastname"
-                        placeholder="Lastname"
-                        required
-                        value={lastName}
-                        onChange={(e) => setLastName(e.target.value)}
-                        className={styles.inputForm}
-                    />
+                <div className={styles.inputFieldsRow}>
+                    <div className={styles.inputAndLabel}>
+                        <label htmlFor="firstname">First Name</label>
+                        <input
+                            type="text"
+                            name="firstname"
+                            id="firstname"
+                            placeholder="Firstname"
+                            required
+                            value={firstName}
+                            onChange={(e) => setFirstName(e.target.value)}
+                            className={styles.inputForm}
+                        />
+                    </div>
+                    <div className={styles.inputAndLabel}>
+                        <label htmlFor="lastname">Last Name</label>
+                        <input
+                            type="text"
+                            name="lastname"
+                            id="lastname"
+                            placeholder="Lastname"
+                            required
+                            value={lastName}
+                            onChange={(e) => setLastName(e.target.value)}
+                            className={styles.inputForm}
+                        />
+                    </div>
                 </div>
-            </div>
-            <div className={styles.inputFields}>
-                <div className={styles.inputAndLabel}>
-                    <label htmlFor="username">Username</label>
-                    <input
-                        type="text"
-                        name="username"
-                        placeholder="Username"
-                        required
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        autoComplete="off"
-                        className={styles.inputForm}
-                    />
+                <div className={styles.inputFieldsRow}>
+                    <div className={styles.inputAndLabel}>
+                        <label htmlFor="username">Username</label>
+                        <input
+                            type="text"
+                            name="username"
+                            placeholder="Username"
+                            required
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                            autoComplete="off"
+                            className={styles.inputForm}
+                        />
+                    </div>
+                    <div className={styles.inputAndLabel}>
+                        <label htmlFor="password">Password</label>
+                        <input
+                            type="password"
+                            name="password"
+                            id="password"
+                            placeholder="Password"
+                            required
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            autoComplete="off"
+                            className={styles.inputForm}
+                        />
+                    </div>
                 </div>
-                <div className={styles.inputAndLabel}>
-                    <label htmlFor="password">Password</label>
-                    <input
-                        type="password"
-                        name="password"
-                        id="password"
-                        placeholder="Password"
-                        required
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        autoComplete="off"
-                        className={styles.inputForm}
-                    />
-                </div>
-            </div>
 
-            <div className={styles.feedbackAndButton}>
                 <button
                     className="button primaryButton"
                     type="submit"
@@ -140,11 +148,18 @@ export default function SignUpForm() {
                 >
                     {loading ? status : "Sign up"}
                 </button>
-                <p>
-                    We wont store your email for security reasons, but password
-                    recovery will be impossible.
-                </p>
-                <hr className={styles.horizontalLine} />
+            </div>
+
+            <hr className={styles.horizontalLine} />
+
+            <div className={styles.googleOAuth}>
+                <div className={styles.title}>
+                    <h2>Sign in With Google</h2>
+                    <p>
+                        No Sign up required. Your email will be stored in our
+                        database. (recommended)
+                    </p>
+                </div>
                 <Link
                     className={`button primaryButton ${styles.googleButton}`}
                     href="/api/auth/signin"
@@ -157,10 +172,6 @@ export default function SignUpForm() {
                     />
                     <p>Sign in with Google</p>
                 </Link>
-                <p>
-                    No Sign up required. Your email will be stored in our
-                    database.
-                </p>
             </div>
         </form>
     );

@@ -1,60 +1,145 @@
 .signUpForm {
     display: flex;
+    padding: 3rem 1.5rem;
     flex-direction: column;
-    gap: 1.25rem;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
 
-    width: 100%;
-    border-radius: 0.75rem;
+    border-radius: 1rem;
+    background: var(
+        --primary-sky-blue,
+        linear-gradient(180deg, #00a1ff 0%, #0090e4 100%)
+    );
+    box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.3) inset;
 }
 
-.heading {
+@media screen and (min-width: 600px) {
+    .signUpForm {
+        padding: 7rem 5rem;
+    }
+}
+
+.signUpForm h1 {
+    text-align: center;
+    width: 100%;
+    color: var(--primary-white);
+    text-align: center;
+    font-family: Roboto;
+    font-size: 4rem;
+    font-style: normal;
+    font-weight: 900;
+    line-height: 1.2;
+    margin: 0;
+}
+
+.signUp {
     display: flex;
     flex-direction: column;
-    gap: 0.35rem;
+    align-items: center;
+    gap: 1rem;
+    align-self: stretch;
 }
 
-.inputFields {
+.title {
     display: flex;
-    gap: 0.75rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.title h2 {
+    text-align: center;
+    width: 100%;
+    color: var(--primary-white);
+    text-align: center;
+    font-family: Roboto;
+    font-size: 1.625rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 0;
+}
+
+.title p {
+    text-align: center;
+    width: 100%;
+    color: #fff;
+    text-align: center;
+    font-family: Roboto;
+    font-size: 0.875rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin: 0;
+}
+
+.inputFieldsRow {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
     width: 100%;
 }
+
 .inputAndLabel {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    justify-content: center;
+    align-items: center;
     width: 100%;
+    gap: 0.2rem;
+}
+
+.inputAndLabel label {
+    display: flex;
+    padding: 0.25rem;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+
+    color: #fff;
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
 }
 
 .inputForm {
     display: flex;
-    flex-direction: column;
+    padding: 0.875rem;
+    align-items: center;
     justify-content: center;
+    gap: 1rem;
     height: 3rem;
     width: 100%;
-    padding: 0.75rem;
+
     border: none;
     border-radius: 0.75rem;
     background: var(--primary-white);
-    color: var(--primary-black);
+    color: var(--primary-black, #181818);
     font-size: 1.25rem;
+    font-style: normal;
     font-weight: 400;
+    line-height: normal;
 }
 
 .inputForm:focus {
     outline: 0px;
 }
 
-.feedbackAndButton {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    align-items: center;
+.horizontalLine {
+    outline: none;
+    border: none;
+    background-color: var(--primary-white);
+    height: 1px;
+    border-radius: 1rem;
 }
 
-.feedbackAndButton p {
-    color: var(--primary-white);
-    font-size: large;
-    font-size: 0.8rem;
+.googleOAuth {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
 }
 
 .googleButton img {
