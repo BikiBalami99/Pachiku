@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useRef, useEffect } from "react";
 import { PachikuContext } from "@/components/APachikuComponents/Pachiku/Pachiku";
 import styles from "./ThreeDotsMenu.module.css";
 import { useUserContext } from "@/contexts/UserContext";
@@ -8,6 +8,7 @@ import { deletePachiku } from "@/components/APachikuComponents/Pachiku/deletePac
 import { usePachikuContext } from "@/contexts/PachikuContext";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import UserImage from "../../UserImage/UserImage";
 
 // ALWAYS use this inside a container with the css, position absolute where you want to put this component
 
@@ -22,6 +23,22 @@ export default function ThreeDotsMenu({
     const { user: currentUser } = useUserContext();
     const { refreshPachikuData } = usePachikuContext();
     const router = useRouter();
+    const dialogRef = useRef<HTMLDialogElement>(null);
+    const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+
+    useEffect(() => {
+        const dialog = dialogRef.current;
+        if (dialog) dialogRef.current?.addEventListener("keydown", handleEsc);
+        return () => {
+            dialogRef.current?.removeEventListener("keydown", handleEsc);
+        };
+    }, [handleEsc]);
+
+    function handleEsc(event: KeyboardEvent) {
+        if (event.key === "Escape") {
+            hideDeleteModal();
+        }
+    }
 
     function toggleFullMenuVisibility() {
         setFullMenuVisibility((prev) => !prev);
@@ -30,6 +47,20 @@ export default function ThreeDotsMenu({
     function onClickEdit() {
         actionForEdit();
         setFullMenuVisibility(false);
+    }
+
+    function showDeleteModal() {
+        if (dialogRef.current) {
+            setIsDialogOpen(false);
+            dialogRef.current.showModal();
+        }
+    }
+
+    function hideDeleteModal() {
+        if (dialogRef.current) {
+            setIsDialogOpen(false);
+            dialogRef.current.close();
+        }
     }
 
     // The delete handler is placed here instead of with the edit handler in the main Pachiku component because it doesn't need to be shared like the edit handler.
@@ -75,20 +106,47 @@ export default function ThreeDotsMenu({
                 <div className={styles.editButton} onClick={onClickEdit}>
                     Edit
                 </div>
-                <form action={handleDeletePachiku}>
-                    <input
-                        type="hidden"
-                        name="pachikuId"
-                        value={pachikuContext?.id}
-                    />
-                    <input
-                        type="hidden"
-                        name="currentUserId"
-                        value={currentUser?.id}
-                    />
-                    <button type="submit">Delete</button>
-                </form>
+                <div onClick={showDeleteModal}>Delete</div>
             </div>
+
+            {/* Confirm delete modal */}
+            <dialog
+                ref={dialogRef}
+                className={styles.deleteModal}
+                open={isDialogOpen}
+            >
+                <div className={styles.modalContent}>
+                    <h1>Are you sure you want to delete this Pachiku?</h1>
+                    <p>{pachikuContext?.pachiku}</p>
+
+                    <div className={styles.buttons}>
+                        <form method="dialog">
+                            <button
+                                className="button primaryButton"
+                                onClick={hideDeleteModal}
+                                aria-label="Cancel"
+                            >
+                                Cancel
+                            </button>
+                        </form>
+                        <form action={handleDeletePachiku}>
+                            <input
+                                type="hidden"
+                                name="pachikuId"
+                                value={pachikuContext?.id}
+                            />
+                            <input
+                                type="hidden"
+                                name="currentUserId"
+                                value={currentUser?.id}
+                            />
+                            <button className="button redButton" type="submit">
+                                Delete
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </dialog>
         </div>
     );
 }

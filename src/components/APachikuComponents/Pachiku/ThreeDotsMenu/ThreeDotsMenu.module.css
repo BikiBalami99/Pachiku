@@ -68,3 +68,80 @@
 .fullMenu[data-visibility="visible"] {
     transform: scale(1);
 }
+
+/* Delete modal */
+
+.deleteModal {
+    width: 90%;
+    max-width: 700px;
+    min-width: 300px;
+    max-height: 80%;
+    margin: auto;
+    overflow: visible;
+
+    border: none;
+    border-radius: 0.75rem;
+    padding: 0.75rem;
+    background: var(--slightly-dark-white, #f6f6f6);
+    box-shadow: 0px 0px 8px 2px rgba(0, 0, 0, 0.15) inset;
+}
+
+.deleteModal[open] {
+    animation: slide-in-from-top 0.35s ease-out;
+}
+
+.deleteModal::backdrop {
+    background: var(--primary-black);
+    opacity: 0.9;
+}
+
+.modalContent {
+    padding: 1rem;
+    line-height: 1.1;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.modalContent h1 {
+    color: var(--secondary-black);
+
+    font-size: 2rem;
+}
+
+.modalContent p {
+    color: var(--secondary-black);
+    font-size: 1.5rem;
+
+    border-radius: 0.5rem;
+    padding: 1rem;
+    background: var(--slightly-dark-white, #f6f6f6);
+    box-shadow: 0px 0px 8px 2px rgba(0, 0, 0, 0.15) inset;
+}
+
+.buttons {
+    display: flex;
+    gap: 1rem;
+}
+
+@keyframes slide-in-from-top {
+    0% {
+        transform: translateY(-15%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slide-out-to-top {
+    0% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-15%);
+        opacity: 0;
+    }
+}

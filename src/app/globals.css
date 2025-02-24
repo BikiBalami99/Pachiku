@@ -61,8 +61,8 @@ body {
     --slightly-dark-white: #f6f6f6;
     --secondary-white: #eeeeee;
     --primary-grey: #525252;
-    --primary-red: #f02626;
-    --secondary-red: #c00202;
+    --primary-red: #d81919;
+    --secondary-red: #9c0000;
 }
 
 /* Global CSS styles */
@@ -114,6 +114,16 @@ body {
 
 .whiteButton:hover {
     background-color: var(--secondary-white);
+    cursor: pointer;
+}
+
+.redButton {
+    background: var(--primary-red);
+    color: var(--primary-white);
+}
+
+.redButton:hover {
+    background-color: var(--secondary-red);
     cursor: pointer;
 }
 
