@@ -39,6 +39,7 @@
     border: none;
     border-radius: 0.75rem;
     color: var(--primary-black);
+    font-family: roboto, sans-serif;
     font-size: 1.25rem;
     font-weight: 400;
 }
@@ -49,16 +50,38 @@
 
 .feedbackAndButton {
     display: flex;
+    padding: 0 1rem;
     justify-content: flex-end;
     align-items: center;
+    width: 100%;
 }
 
-.feedbackAndButton p {
+.feedback {
     margin-right: auto;
     color: var(--primary-white);
     font-size: large;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
 }
 
+.feedback[data-visible="true"] {
+    animation: fadeInOut 4s ease-in-out forwards;
+}
+
+@keyframes fadeInOut {
+    0% {
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
 /* Not signed in notice */
 
 .notSignedInNotice {
