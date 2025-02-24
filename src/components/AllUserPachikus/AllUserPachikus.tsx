@@ -6,7 +6,7 @@ import { User } from "@prisma/client";
 import React, { useEffect, useState } from "react";
 import Pachiku from "../APachikuComponents/Pachiku/Pachiku";
 import styles from "../AllPachikus/AllPachikus.module.css";
-import PachikuSkeleton from "../UtilityComponents/PachikuSkeleton/PachikuSkeleton";
+import PachikuSkeleton from "../UtilityComponents/SkeletonLoaders/PachikuSkeleton/PachikuSkeleton";
 
 export default function AllUserPachikus({ user }: { user: User }) {
     const [allUserPachikus, setAllUserPachikus] = useState<

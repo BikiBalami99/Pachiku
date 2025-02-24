@@ -1,0 +1,84 @@
+.dashboardForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.75rem;
+    gap: 0.75rem;
+    width: 100%;
+    border-radius: 0.75rem;
+    background: var(--primary-white, #fff);
+    box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.25);
+}
+
+.imageSkeleton {
+    width: 8rem;
+    height: 8rem;
+    border-radius: 50%;
+    background: linear-gradient(
+        90deg,
+        var(--secondary-grey) 25%,
+        var(--slightly-dark-white) 50%,
+        var(--secondary-grey) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+.formSkeleton {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    padding: 1rem;
+    gap: 1rem;
+    width: 100%;
+    border-radius: 0.75rem;
+    background: var(
+        --primary-sky-blue,
+        linear-gradient(180deg, #00a1ff 0%, #0090e4 100%)
+    );
+    box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.3) inset;
+}
+
+.firstRowSkeleton {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    width: 100%;
+}
+
+.inputSkeleton {
+    width: 100%;
+    height: 2.5rem;
+    border-radius: 0.75rem;
+    background: linear-gradient(
+        90deg,
+        var(--secondary-grey) 25%,
+        var(--slightly-dark-white) 50%,
+        var(--secondary-grey) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+.buttonSkeleton {
+    width: 6rem;
+    height: 2.5rem;
+    border-radius: 0.75rem;
+    background: linear-gradient(
+        90deg,
+        var(--secondary-sky-blue) 25%,
+        var(--primary-sky-blue-color) 50%,
+        var(--secondary-sky-blue) 75%
+    );
+    background-size: 300% 100%;
+    animation: shimmer 2.5s infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -100% 0;
+    }
+    100% {
+        background-position: 100% 0;
+    }
+}

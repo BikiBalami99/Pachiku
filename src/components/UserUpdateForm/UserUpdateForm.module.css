@@ -4,6 +4,7 @@
     flex-direction: column;
     align-items: center;
     gap: 0.75rem;
+    width: 100%;
 
     border-radius: 0.75rem;
     background: var(--primary-white, #fff);
@@ -26,6 +27,7 @@
     flex-direction: column;
     align-items: flex-end;
     gap: 1rem;
+    width: 100%;
 
     border-radius: 0.75rem;
     background: var(
@@ -39,6 +41,7 @@
     display: flex;
     align-items: flex-start;
     gap: 0.75rem;
+    width: 100%;
 }
 
 .form input {
@@ -56,4 +59,52 @@
     font-size: 1.25rem;
     font-style: normal;
     font-weight: 400;
+}
+
+.labelAndForm {
+    width: 100%;
+}
+
+.labelAndForm label {
+    padding-left: 0.3rem;
+    color: #fff;
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.feedbackAndButton {
+    display: flex;
+    padding: 0 1rem;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+}
+
+.feedback {
+    margin-right: auto;
+    color: var(--primary-white);
+    font-size: large;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.feedback[data-visible="true"] {
+    animation: fadeInOut 3s ease-in-out forwards;
+}
+
+@keyframes fadeInOut {
+    0% {
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
 }

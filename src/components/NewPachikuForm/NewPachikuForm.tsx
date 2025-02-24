@@ -8,7 +8,7 @@ import { useSession } from "next-auth/react";
 import { submitPachiku } from "./submitPachiku";
 import { usePachikuContext } from "@/contexts/PachikuContext";
 import { useRouter } from "next/navigation";
-import PachikuFormSkeleton from "../UtilityComponents/PachikuFormSkeleton/PachikuFormSkeleton";
+import PachikuFormSkeleton from "../UtilityComponents/SkeletonLoaders/PachikuFormSkeleton/PachikuFormSkeleton";
 
 export default function NewPachikuForm() {
     const [feedback, setFeedback] = useState<string | null>(null);

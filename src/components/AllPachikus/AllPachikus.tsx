@@ -1,7 +1,7 @@
 "use client";
 
 import Pachiku from "../APachikuComponents/Pachiku/Pachiku";
-import PachikuSkeleton from "../UtilityComponents/PachikuSkeleton/PachikuSkeleton";
+import PachikuSkeleton from "../UtilityComponents/SkeletonLoaders/PachikuSkeleton/PachikuSkeleton";
 import styles from "./AllPachikus.module.css";
 import { usePachikuContext } from "@/contexts/PachikuContext";
 

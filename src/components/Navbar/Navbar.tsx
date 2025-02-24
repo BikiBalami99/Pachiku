@@ -3,11 +3,12 @@ import Link from "next/link";
 import styles from "./Navbar.module.css";
 import Image from "next/image";
 import Hamburger from "../UtilityComponents/Hamburger/Hamburger";
+import LoadingSpinner from "../UtilityComponents/LoadingSpinner/LoadingSpinner";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 export default function Navbar() {
-    const { data: session } = useSession();
+    const { data: session, status } = useSession();
     const [isExpanded, setIsExpanded] = useState(false);
     const [navBarHeight, setNavBarHeight] = useState("4.5rem");
 
@@ -17,11 +18,25 @@ export default function Navbar() {
         // These are calculated values
     }, [isExpanded]);
 
+    if (status === "loading") {
+        return (
+            <nav className={styles.navBar}>
+                <Link href="/" className={styles.logo} onClick={collapseNavBar}>
+                    <h1 className={styles.heading}>Pachiku</h1>
+                </Link>
+
+                <div className={styles.loadingIcon}>
+                    <LoadingSpinner />
+                </div>
+            </nav>
+        );
+    }
+
     // If user is logged out
     if (!session) {
         return (
             <nav className={styles.navBar}>
-                <Link href="/" className={styles.logo}>
+                <Link href="/" className={styles.logo} onClick={collapseNavBar}>
                     <h1 className={styles.heading}>Pachiku</h1>
                 </Link>
 
@@ -29,6 +44,7 @@ export default function Navbar() {
                     style={{ marginTop: "0.25rem" }}
                     className="button primaryButton"
                     href="/api/auth/signin"
+                    onClick={collapseNavBar}
                 >
                     {/* marginTop: "0.25rem" to center the Sign In button without affect the Logo's position*/}
                     Sign in
@@ -37,10 +53,14 @@ export default function Navbar() {
         );
     }
 
+    function collapseNavBar() {
+        setIsExpanded(false);
+    }
+
     // If user is logged in
     return (
         <nav className={styles.navBar} style={{ height: navBarHeight }}>
-            <Link href="/" className={styles.logo}>
+            <Link href="/" className={styles.logo} onClick={collapseNavBar}>
                 <h1 className={styles.heading}>Pachiku</h1>
             </Link>
             <ul className={styles.navLinks}>
@@ -48,7 +68,11 @@ export default function Navbar() {
                     <Hamburger toggleNavBarView={setIsExpanded} />
                 </li>
                 <li>
-                    <Link className={styles.icon} href="/">
+                    <Link
+                        className={styles.icon}
+                        href="/"
+                        onClick={collapseNavBar}
+                    >
                         <Image
                             src="/icons/home-icon.svg"
                             width={20}
@@ -58,26 +82,34 @@ export default function Navbar() {
                     </Link>
                 </li>
                 <li>
-                    <Link className={styles.icon} href="/dashboard">
+                    <Link
+                        className={styles.icon}
+                        href="/dashboard"
+                        onClick={collapseNavBar}
+                    >
                         <Image
                             src="/icons/profile-icon.svg"
                             width={14}
                             height={25}
-                            alt="Home Icon"
+                            alt="Profile Icon"
                         />
                     </Link>
                 </li>
 
                 {session && (
                     <li>
-                        <Link className={styles.icon} href="/api/auth/signout">
+                        <Link
+                            className={styles.icon}
+                            href="/api/auth/signout"
+                            onClick={collapseNavBar}
+                        >
                             {/* PaddingLeft is set .2rem because the icon looked a bit off */}
                             <Image
                                 className={styles.signOutIcon}
                                 src="/icons/sign-out-icon.svg"
                                 width={25}
                                 height={25}
-                                alt="Home Icon"
+                                alt="Sign Out Icon"
                             />
                         </Link>
                     </li>
