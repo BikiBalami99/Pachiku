@@ -1,6 +1,11 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
+// Helper function for error responses
+function errorResponse(message: string, status: number) {
+    return NextResponse.json({ error: message }, { status });
+}
+
 // Fetch a specific Pachiku by ID from the URL. Ensure the link includes the Pachiku ID.
 export async function GET(request: Request) {
     // Extract pachikuId from query parameters
@@ -8,10 +13,7 @@ export async function GET(request: Request) {
     const pachikuId = url.searchParams.get("pachikuId");
 
     if (!pachikuId) {
-        return NextResponse.json(
-            { error: "pachikuId is required" },
-            { status: 400 }
-        );
+        return errorResponse("pachikuId is required", 400);
     }
 
     const pachiku = await prisma.pachiku.findUnique({
@@ -20,10 +22,7 @@ export async function GET(request: Request) {
     });
 
     if (!pachiku) {
-        return NextResponse.json(
-            { error: "Pachiku not found" },
-            { status: 404 }
-        );
+        return errorResponse("Pachiku not found", 404);
     }
 
     return NextResponse.json(pachiku);
@@ -35,17 +34,11 @@ export async function POST(request: Request) {
 
     // Error handling
     if (!pachikuText) {
-        return NextResponse.json(
-            { error: "No pachikuText provided in POST request." },
-            { status: 400 }
-        );
+        return errorResponse("No pachikuText provided in POST request.", 400);
     }
 
     if (!email) {
-        return NextResponse.json(
-            { error: "No email provided in POST request" },
-            { status: 400 }
-        );
+        return errorResponse("No email provided in POST request", 400);
     }
 
     // Check if the userId exists in the User table
@@ -54,10 +47,7 @@ export async function POST(request: Request) {
     });
 
     if (!author) {
-        return NextResponse.json(
-            { error: "That user does not exist" },
-            { status: 400 }
-        );
+        return errorResponse("That user does not exist", 400);
     }
 
     try {
@@ -73,18 +63,25 @@ export async function POST(request: Request) {
             { status: 201 }
         );
     } catch (error) {
-        return NextResponse.json({ error }, { status: 500 });
+        const errorMessage =
+            error instanceof Error ? error.message : "Unknown error";
+        return errorResponse(
+            `An error occurred while creating the pachiku: ${errorMessage}`,
+            500
+        );
     }
 }
 
 export async function PATCH(req: Request) {
     const { pachikuId, editedPachikuText } = await req.json();
 
-    if (!pachikuId)
-        return NextResponse.json({ error: "Pachiku Id is required" });
+    if (!pachikuId) {
+        return errorResponse("Pachiku Id is required", 400);
+    }
 
-    if (!editedPachikuText)
-        return NextResponse.json({ error: "New Pachiku Text is required." });
+    if (!editedPachikuText) {
+        return errorResponse("New Pachiku Text is required.", 400);
+    }
 
     try {
         const updatedPachiku = await prisma.pachiku.update({
@@ -98,6 +95,58 @@ export async function PATCH(req: Request) {
         );
     } catch (error) {
         console.error(error);
-        return NextResponse.json({ error }, { status: 500 });
+        const errorMessage =
+            error instanceof Error ? error.message : "Unknown error";
+        return errorResponse(
+            `An error occurred while updating the pachiku: ${errorMessage}`,
+            500
+        );
+    }
+}
+
+export async function DELETE(req: Request) {
+    const { pachikuId, currentUserId } = await req.json();
+
+    if (!pachikuId) {
+        return errorResponse("Pachiku Id is required.", 400);
+    }
+    if (!currentUserId) {
+        return errorResponse("CurrentUser is required.", 400);
+    }
+
+    try {
+        // Fetch the Pachiku and its author
+        const pachiku = await prisma.pachiku.findUnique({
+            where: { id: pachikuId },
+            include: { user: true },
+        });
+
+        if (!pachiku) {
+            return errorResponse("That pachiku does not exist.", 404);
+        }
+        if (pachiku.user.id !== currentUserId) {
+            return errorResponse("Unauthorized action.", 403);
+        }
+
+        // Delete the comments and likes first
+        await prisma.comment.deleteMany({ where: { pachikuId: pachiku.id } });
+        await prisma.like.deleteMany({ where: { pachikuId: pachiku.id } });
+
+        // Delete the Pachiku
+        const deletedPachiku = await prisma.pachiku.delete({
+            where: { id: pachikuId },
+        });
+
+        return NextResponse.json(
+            { message: "Successfully deleted.", data: deletedPachiku },
+            { status: 200 }
+        );
+    } catch (error) {
+        const errorMessage =
+            error instanceof Error ? error.message : "Unknown error";
+        return errorResponse(
+            `An error occurred while deleting the pachiku: ${errorMessage}`,
+            500
+        );
     }
 }

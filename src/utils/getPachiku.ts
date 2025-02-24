@@ -7,7 +7,7 @@ import { User } from "@prisma/client";
 export async function getSpecificPachiku(pachikuId: string) {
     const url = `${process.env.NEXTAUTH_URL}/api/pachiku?pachikuId=${pachikuId}`;
     try {
-        const response = await fetch(url);
+        const response = await fetch(url, { cache: "no-store" });
 
         if (!response.ok) {
             if (response.status === 404) {
@@ -28,7 +28,7 @@ export async function getSpecificPachikuClient(
 ): Promise<PachikuWithDetails | null> {
     const url = `${process.env.NEXT_PUBLIC_API_URL}/api/pachiku?pachikuId=${pachikuId}`;
     try {
-        const response = await fetch(url);
+        const response = await fetch(url, { cache: "no-store" });
         console.log("Response:", response);
         if (!response.ok) {
             if (response.status === 404) {
@@ -50,7 +50,7 @@ export async function getAllPachikus(): Promise<PachikuWithDetails[] | null> {
     const url = `${process.env.NEXT_PUBLIC_API_URL}/api/all-pachikus`;
 
     try {
-        const response = await fetch(url);
+        const response = await fetch(url, { cache: "no-store" });
         if (!response.ok) {
             throw new Error("Failed to fetch Pachikus");
         }
@@ -70,7 +70,7 @@ export async function getPachikuOfUser(
     const url = `${process.env.NEXT_PUBLIC_API_URL}/api/all-pachikus-of-user?userId=${user.id}`;
 
     try {
-        const response = await fetch(url);
+        const response = await fetch(url, { cache: "no-store" });
         if (!response.ok) {
             throw new Error("Failed to fetch all pachikus of user.");
         }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useUserContext } from "@/contexts/UserContext";
 import { getTimeSince } from "@/utils/getTimeSince";
@@ -8,84 +8,56 @@ import { getAuthor } from "@/utils/getAuthor";
 import { getUserLikesPachiku } from "@/utils/getUserLikesPachiku";
 import { type User } from "@prisma/client";
 import { type PachikuWithDetails } from "@/types/pachiku";
-import HeartIcon from "../LikeCommentShareComponents/HeartIcon";
-import CommentIcon from "../LikeCommentShareComponents/CommentIcon";
-import ShareIcon from "../LikeCommentShareComponents/ShareIcon";
-import UserImage from "../UserImage/UserImage";
 import styles from "./Pachiku.module.css";
-import ThreeDotsMenu from "@/components/UtilityComponents/ThreeDotsMenu/ThreeDotsMenu";
 import { usePachikuContext } from "@/contexts/PachikuContext";
+import UserInfoContainer from "./UserInfoContainer";
+import EditPachikuForm from "./EditPachikuForm";
+import LikesCommentsShare from "./LikesCommentsShare";
+import { updatePachiku } from "./updatePachiku";
+import { deletePachiku } from "./deletePachiku";
 
-// Props type definition
+// Create a context for Pachiku actions
+const PachikuContext = createContext<PachikuWithDetails | null>(null);
+
 type PachikuProps = {
     pachiku: PachikuWithDetails;
-};
+}; // Props type definition
 
 // Pachiku Component
-// This component represents a single Pachiku post in the feed without any comments.
-// It is used in PachikuPost as the top part of the Pachiku.
 export default function Pachiku({ pachiku }: PachikuProps) {
-    // State to store the author information
-    const [author, setAuthor] = useState<User | null>(null);
-
-    // State to store the initial heart (like) state
+    const [author, setAuthor] = useState<User | null>(null); // State to store the author information
     const [initialHeartState, setInitialHeartState] = useState<boolean | null>(
         null
-    );
+    ); // State to store the initial heart (like) state
+    const [editFormVisible, setEditFormVisible] = useState(false); // States for editing the pachiku
+    const [editedPachiku, setEditedPachiku] = useState(pachiku.pachiku); // States for editing the pachiku
 
-    // States for editing the pachiku
-    const [editFormVisible, setEditFormVisible] = useState(false);
-    const [editedPachiku, setEditedPachiku] = useState(pachiku.pachiku);
+    const { data: session } = useSession(); // Get the current session and user context
+    const { user: currentUser } = useUserContext(); // Get the current session and user context
+    const { refreshPachikuData } = usePachikuContext(); // Get the current session and user context
 
-    // Get the current session and user context
-    const { data: session } = useSession();
-    const { user: currentUser } = useUserContext();
-    const { refreshPachikuData } = usePachikuContext();
-
-    // Authorization: If the user signs out, revert the heart state to false
     useEffect(() => {
-        if (!session || !session.user) {
-            setInitialHeartState(false);
-        }
-    }, [session]);
+        (!session || !session.user) && setInitialHeartState(false);
+    }, [session]); // Authorization: If the user signs out, revert the heart state to false
 
-    // Fetch the author information
     useEffect(() => {
-        let isMounted = true;
-        getAuthor(pachiku).then((authorData) => {
-            if (isMounted) setAuthor(authorData);
-        });
+        getAuthor(pachiku).then((authorData) => setAuthor(authorData));
+    }, [pachiku]); // Fetch the author information
 
-        return () => {
-            isMounted = false;
-        };
-    }, [pachiku]);
-
-    // Fetch the initial heart (like) state
     useEffect(() => {
         if (author && currentUser) {
             getUserLikesPachiku(currentUser.id, pachiku.id).then((data) => {
                 setInitialHeartState(data);
             });
         }
-    }, [author, pachiku, currentUser]);
+    }, [author, pachiku, currentUser]); // Fetch the initial heart (like) state
 
-    // Calculate the time since the Pachiku was created
-    const timeSince = getTimeSince(pachiku.createdAt);
-
+    const timeSince = getTimeSince(pachiku.createdAt); // Calculate the time since the Pachiku was created
     if (!author) return null;
-
     const imageLink = author.image || "/icons/no-image-icon.svg";
 
-    async function updatePachiku(formData: FormData) {
-        if (
-            !(formData instanceof FormData) ||
-            !formData.has("pachikuId") ||
-            !formData.has("editedPachikuText")
-        ) {
-            throw new Error("Invalid input");
-        }
-
+    // The update handler is defined here instead of within the Three Dots Menu component because it needs to interact with the visibility state of the edit form.
+    async function handleUpdatePachiku(formData: FormData) {
         if (
             !session ||
             !session.user ||
@@ -94,126 +66,54 @@ export default function Pachiku({ pachiku }: PachikuProps) {
             currentUser.id !== author.id
         ) {
             throw new Error("Unauthorized action");
-        }
-
-        const pachikuId = formData.get("pachikuId");
-        const editedPachikuText = formData.get("editedPachikuText");
-
-        if (!pachikuId || !editedPachikuText) {
-            throw new Error("Invalid input");
-        }
-
+        } // Authorization
         try {
-            const response = await fetch(
-                `${process.env.NEXT_PUBLIC_API_URL}/api/pachiku`,
-                {
-                    method: "PATCH",
-                    headers: { "content-type": "application/json" },
-                    body: JSON.stringify({
-                        pachikuId: pachikuId.toString(),
-                        editedPachikuText: editedPachikuText.toString(),
-                    }),
-                }
-            );
-
-            if (!response.ok) {
-                throw new Error("Failed to update Pachiku");
-            }
-
-            const data = await response.json();
-            console.log("Pachiku updated successfully:", data);
+            await updatePachiku(formData);
         } catch (error) {
-            console.error("Error updating Pachiku:", error);
+            console.error(error);
         } finally {
             setEditFormVisible(false);
             refreshPachikuData();
         }
     }
-    function deletePachiku() {}
 
     return (
-        <li className={styles.pachiku} key={pachiku.id}>
-            {/* Body of the Pachiku: name, username, time, and the Pachiku text */}
-            <section className={styles.body}>
-                <div className={styles.userInfoContainer}>
-                    <UserImage
-                        src={imageLink}
-                        userFirstName={author.firstName}
+        <PachikuContext.Provider value={pachiku}>
+            <li className={styles.pachiku} key={pachiku.id}>
+                {/* Body of the Pachiku: name, username, time, and the Pachiku text */}
+                <section className={styles.body}>
+                    <UserInfoContainer
+                        author={author}
+                        imageLink={imageLink}
+                        timeSince={timeSince}
+                        currentUser={currentUser}
+                        setEditFormVisible={setEditFormVisible}
                     />
-                    <div className={styles.textInfo}>
-                        <h3 className={styles.fullName}>
-                            {author.firstName} {author.lastName}
-                        </h3>
-                        <h4 className={styles.username}>@{author.username}</h4>
-                        <p className={styles.timeSince}>{timeSince}</p>
-                    </div>
 
-                    <div className={styles.threeDotsMenuContainer}>
-                        {/* We need the container for positioning */}
-                        {currentUser?.id === author.id && (
-                            <ThreeDotsMenu
-                                actionForEdit={() => setEditFormVisible(true)}
-                                actionForDelete={deletePachiku}
-                            />
-                        )}
-                    </div>
-                </div>
-
-                {/* Update pachiku form */}
-                {editFormVisible ? (
-                    <form
-                        action={updatePachiku}
-                        className={styles.editPachikuForm}
-                        data-visible={editFormVisible ? "true" : "false"}
-                    >
-                        <input
-                            className={styles.editPachikuInput}
-                            type="text"
-                            name="editedPachikuText"
-                            value={editedPachiku}
-                            onChange={(e) => setEditedPachiku(e.target.value)}
-                            required
+                    {/* Update pachiku form */}
+                    {editFormVisible ? (
+                        <EditPachikuForm
+                            updatePachiku={handleUpdatePachiku}
+                            editFormVisible={editFormVisible}
+                            editedPachiku={editedPachiku}
+                            setEditedPachiku={setEditedPachiku}
+                            pachikuId={pachiku.id}
+                            setEditFormVisible={setEditFormVisible}
                         />
-                        <input
-                            type="hidden"
-                            name="pachikuId"
-                            value={pachiku.id}
-                        />
-                        <div className={styles.editPachikuButtons}>
-                            <button
-                                type="submit"
-                                className="button primaryButton"
-                            >
-                                Update
-                            </button>
-                            <button
-                                onClick={() => setEditFormVisible(false)}
-                                className="button whiteButton"
-                            >
-                                Cancel
-                            </button>
-                        </div>
-                    </form>
-                ) : (
-                    <p className={styles.pachikuText}>{pachiku.pachiku}</p>
-                )}
-            </section>
+                    ) : (
+                        <p className={styles.pachikuText}>{pachiku.pachiku}</p>
+                    )}
+                </section>
 
-            {/* Likes, comments, and share section */}
-            <section className={styles.likesCommentsShare}>
-                {initialHeartState !== null && (
-                    <HeartIcon
-                        pachikuId={pachiku.id}
-                        initialHeartState={initialHeartState}
-                        initialNumOfLikes={pachiku.likes}
-                    />
-                )}
-                <CommentIcon
-                    pachikuId={pachiku.id}
-                    allComments={pachiku.comments}
+                {/* Likes, comments, and share section */}
+                <LikesCommentsShare
+                    initialHeartState={initialHeartState}
+                    pachiku={pachiku}
                 />
-                <ShareIcon pachikuId={pachiku.id} />
-            </section>
-        </li>
+            </li>
+        </PachikuContext.Provider>
     );
 }
+
+// Export the context for use in other components
+export { PachikuContext };

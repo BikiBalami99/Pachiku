@@ -1,0 +1,94 @@
+"use client";
+
+import React, { useState, useContext } from "react";
+import { PachikuContext } from "@/components/APachikuComponents/Pachiku/Pachiku";
+import styles from "./ThreeDotsMenu.module.css";
+import { useUserContext } from "@/contexts/UserContext";
+import { deletePachiku } from "@/components/APachikuComponents/Pachiku/deletePachiku";
+import { usePachikuContext } from "@/contexts/PachikuContext";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+
+// ALWAYS use this inside a container with the css, position absolute where you want to put this component
+
+export default function ThreeDotsMenu({
+    actionForEdit,
+}: {
+    actionForEdit: () => void;
+}) {
+    const [fullMenuVisibility, setFullMenuVisibility] = useState(false);
+    const pachikuContext = useContext(PachikuContext);
+    const { data: session } = useSession();
+    const { user: currentUser } = useUserContext();
+    const { refreshPachikuData } = usePachikuContext();
+    const router = useRouter();
+
+    function toggleFullMenuVisibility() {
+        setFullMenuVisibility((prev) => !prev);
+    }
+
+    function onClickEdit() {
+        actionForEdit();
+        setFullMenuVisibility(false);
+    }
+
+    // The delete handler is placed here instead of with the edit handler in the main Pachiku component because it doesn't need to be shared like the edit handler.
+    async function handleDeletePachiku(formData: FormData) {
+        if (
+            !session ||
+            !session.user ||
+            !currentUser ||
+            !pachikuContext ||
+            currentUser.id !== pachikuContext.userId
+        ) {
+            console.log("session", session);
+            console.log("currentUser", currentUser);
+            console.log("pachikuContext", pachikuContext);
+            throw new Error("Unauthorized action");
+        } // Authorization
+
+        try {
+            await deletePachiku(formData);
+            refreshPachikuData();
+            router.refresh();
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setFullMenuVisibility(false);
+        }
+    }
+
+    return (
+        <div>
+            <div
+                onClick={toggleFullMenuVisibility}
+                className={styles.threeDotsMenu}
+            >
+                <span>&bull;</span>
+                <span>&bull;</span>
+                <span>&bull;</span>
+            </div>
+            <div
+                data-visibility={fullMenuVisibility ? "visible" : "invisible"}
+                className={styles.fullMenu}
+            >
+                <div className={styles.editButton} onClick={onClickEdit}>
+                    Edit
+                </div>
+                <form action={handleDeletePachiku}>
+                    <input
+                        type="hidden"
+                        name="pachikuId"
+                        value={pachikuContext?.id}
+                    />
+                    <input
+                        type="hidden"
+                        name="currentUserId"
+                        value={currentUser?.id}
+                    />
+                    <button type="submit">Delete</button>
+                </form>
+            </div>
+        </div>
+    );
+}

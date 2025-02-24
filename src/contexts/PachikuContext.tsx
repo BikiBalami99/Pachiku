@@ -26,6 +26,7 @@ export function PachikuProvider({ children }: { children: React.ReactNode }) {
             if (data === null || !data) {
                 throw new Error("Failed loading Pachiku data.");
             }
+
             setAllPachikus(data);
         } catch (error) {
             console.error(error);
