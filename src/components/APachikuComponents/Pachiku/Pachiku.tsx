@@ -14,7 +14,6 @@ import UserInfoContainer from "./UserInfoContainer";
 import EditPachikuForm from "./EditPachikuForm";
 import LikesCommentsShare from "./LikesCommentsShare";
 import { updatePachiku } from "./updatePachiku";
-import { deletePachiku } from "./deletePachiku";
 
 // Create a context for Pachiku actions
 const PachikuContext = createContext<PachikuWithDetails | null>(null);
@@ -37,7 +36,9 @@ export default function Pachiku({ pachiku }: PachikuProps) {
     const { refreshPachikuData } = usePachikuContext(); // Get the current session and user context
 
     useEffect(() => {
-        (!session || !session.user) && setInitialHeartState(false);
+        if (!session || !session.user) {
+            setInitialHeartState(false);
+        }
     }, [session]); // Authorization: If the user signs out, revert the heart state to false
 
     useEffect(() => {

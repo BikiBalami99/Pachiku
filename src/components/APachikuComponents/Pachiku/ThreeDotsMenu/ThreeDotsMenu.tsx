@@ -1,6 +1,12 @@
 "use client";
 
-import React, { useState, useContext, useRef, useEffect } from "react";
+import React, {
+    useState,
+    useContext,
+    useRef,
+    useEffect,
+    useCallback,
+} from "react";
 import { PachikuContext } from "@/components/APachikuComponents/Pachiku/Pachiku";
 import styles from "./ThreeDotsMenu.module.css";
 import { useUserContext } from "@/contexts/UserContext";
@@ -8,7 +14,6 @@ import { deletePachiku } from "@/components/APachikuComponents/Pachiku/deletePac
 import { usePachikuContext } from "@/contexts/PachikuContext";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import UserImage from "../../UserImage/UserImage";
 
 // ALWAYS use this inside a container with the css, position absolute where you want to put this component
 
@@ -26,19 +31,27 @@ export default function ThreeDotsMenu({
     const dialogRef = useRef<HTMLDialogElement>(null);
     const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
 
+    const hideDeleteModal = useCallback(() => {
+        if (dialogRef.current) {
+            setIsDialogOpen(false);
+            dialogRef.current.close();
+        }
+    }, []);
+
     useEffect(() => {
         const dialog = dialogRef.current;
-        if (dialog) dialogRef.current?.addEventListener("keydown", handleEsc);
-        return () => {
-            dialogRef.current?.removeEventListener("keydown", handleEsc);
-        };
-    }, [handleEsc]);
 
-    function handleEsc(event: KeyboardEvent) {
-        if (event.key === "Escape") {
-            hideDeleteModal();
+        function handleEsc(event: KeyboardEvent) {
+            if (event.key === "Escape") {
+                hideDeleteModal();
+            }
         }
-    }
+
+        if (dialog) dialog.addEventListener("keydown", handleEsc);
+        return () => {
+            if (dialog) dialog.removeEventListener("keydown", handleEsc);
+        };
+    }, [hideDeleteModal]);
 
     function toggleFullMenuVisibility() {
         setFullMenuVisibility((prev) => !prev);
@@ -53,13 +66,7 @@ export default function ThreeDotsMenu({
         if (dialogRef.current) {
             setIsDialogOpen(false);
             dialogRef.current.showModal();
-        }
-    }
-
-    function hideDeleteModal() {
-        if (dialogRef.current) {
-            setIsDialogOpen(false);
-            dialogRef.current.close();
+            setFullMenuVisibility(false);
         }
     }
 

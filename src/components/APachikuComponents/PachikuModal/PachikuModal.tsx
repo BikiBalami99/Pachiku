@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import styles from "./PachikuModal.module.css";
 import { useRouter } from "next/navigation";
 
@@ -17,29 +17,30 @@ export default function PachikuModal({
         openModal();
     }, []);
 
+    const closeModal = useCallback(() => {
+        setIsOpen(false);
+        dialogRef.current?.close();
+        router.back();
+    }, [router]);
+
     useEffect(() => {
         const dialog = dialogRef.current;
-        if (dialog) dialogRef.current?.addEventListener("keydown", handleEsc);
-        return () => {
-            dialogRef.current?.removeEventListener("keydown", handleEsc);
-        };
-    }, [handleEsc]);
 
-    function handleEsc(event: KeyboardEvent) {
-        if (event.key === "Escape") {
-            closeModal();
+        function handleEsc(event: KeyboardEvent) {
+            if (event.key === "Escape") {
+                closeModal();
+            }
         }
-    }
+
+        if (dialog) dialog.addEventListener("keydown", handleEsc);
+        return () => {
+            if (dialog) dialog.removeEventListener("keydown", handleEsc);
+        };
+    }, [closeModal]);
 
     function openModal() {
         setIsOpen(true);
         dialogRef.current?.showModal();
-    }
-
-    function closeModal() {
-        setIsOpen(false);
-        dialogRef.current?.close();
-        router.back();
     }
 
     return (
