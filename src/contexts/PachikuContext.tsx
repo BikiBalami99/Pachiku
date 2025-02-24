@@ -9,18 +9,22 @@ import { createContext, useContext, useEffect, useState } from "react";
 // Context creation
 type PachikuContextType = {
     allPachikus: PachikuWithDetails[];
+    loading: boolean;
     refreshPachikuData: () => void;
 };
 const PachikuContext = createContext<PachikuContextType>({
     allPachikus: [],
+    loading: false,
     refreshPachikuData: () => {},
 });
 
 // Context provider
 export function PachikuProvider({ children }: { children: React.ReactNode }) {
     const [allPachikus, setAllPachikus] = useState<PachikuWithDetails[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
 
     const loadData = async () => {
+        setLoading(true);
         try {
             const data = await getAllPachikus();
             if (data === null || !data) {
@@ -30,6 +34,8 @@ export function PachikuProvider({ children }: { children: React.ReactNode }) {
             setAllPachikus(data);
         } catch (error) {
             console.error(error);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -42,7 +48,9 @@ export function PachikuProvider({ children }: { children: React.ReactNode }) {
     };
 
     return (
-        <PachikuContext.Provider value={{ allPachikus, refreshPachikuData }}>
+        <PachikuContext.Provider
+            value={{ allPachikus, loading, refreshPachikuData }}
+        >
             {children}
         </PachikuContext.Provider>
     );

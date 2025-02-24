@@ -6,14 +6,13 @@ import styles from "./AllPachikus.module.css";
 import { usePachikuContext } from "@/contexts/PachikuContext";
 
 export default function AllPachikus() {
-    const { allPachikus } = usePachikuContext();
+    const { allPachikus, loading } = usePachikuContext();
 
-    if (!Array.isArray(allPachikus)) {
-        return <h2>No Pachikus available</h2>;
-    }
-
-    if (allPachikus.length === 0) {
+    if (loading) {
         return <PachikuSkeleton />;
+    }
+    if (!Array.isArray(allPachikus) || allPachikus.length === 0) {
+        return <h2>No one's pachiku yet.</h2>;
     }
 
     return (
