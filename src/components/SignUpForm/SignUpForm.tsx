@@ -16,12 +16,10 @@ export default function SignUpForm() {
     const [loading, setLoading] = useState(false);
     const router = useRouter();
 
-    async function handleSignUp(event: React.FormEvent) {
-        event.preventDefault();
+    async function handleSignUp(formData: FormData) {
         setLoading(true);
         setStatus("Signin Up..");
 
-        const formData = new FormData(event.target as HTMLFormElement);
         const username = formData.get("username");
         const firstName = formData.get("firstname");
         const lastName = formData.get("lastname");
@@ -73,7 +71,7 @@ export default function SignUpForm() {
     }
 
     return (
-        <form onSubmit={handleSignUp} className={styles.signUpForm}>
+        <form action={handleSignUp} className={styles.signUpForm}>
             <h1>Sign Up</h1>
             <div className={styles.signUpOption}>
                 <div className={styles.title}>

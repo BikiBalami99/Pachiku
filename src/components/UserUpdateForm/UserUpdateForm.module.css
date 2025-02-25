@@ -74,37 +74,20 @@
     line-height: normal;
 }
 
-.feedbackAndButton {
-    display: flex;
-    padding: 0 1rem;
-    justify-content: flex-end;
-    align-items: center;
-    width: 100%;
+.spinner {
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-top: 4px solid #fff;
+    border-radius: 50%;
+    width: 20px; 
+    height: 20px;
+    animation: spin 0.5s linear infinite;
 }
 
-.feedback {
-    margin-right: auto;
-    color: var(--primary-white);
-    font-size: large;
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out;
-}
-
-.feedback[data-visible="true"] {
-    animation: fadeInOut 3s ease-in-out forwards;
-}
-
-@keyframes fadeInOut {
+@keyframes spin {
     0% {
-        opacity: 0;
-    }
-    10% {
-        opacity: 1;
-    }
-    90% {
-        opacity: 1;
+        transform: rotate(0deg);
     }
     100% {
-        opacity: 0;
+        transform: rotate(360deg);
     }
 }

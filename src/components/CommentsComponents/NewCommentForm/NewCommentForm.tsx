@@ -12,6 +12,9 @@ import { usePachikuContext } from "@/contexts/PachikuContext";
 export default function NewCommentForm({ pachiku }: { pachiku: PachikuType }) {
     const { data: session } = useSession();
     const [currentUser, setCurrentUser] = useState<User | null>(null);
+    const [submitting, setSubmitting] = useState(false);
+    const [message, setMessage] = useState<React.ReactNode>("Comment");
+    const [success, setSuccess] = useState(false);
     const { refreshPachikuData } = usePachikuContext();
 
     useEffect(() => {
@@ -32,12 +35,29 @@ export default function NewCommentForm({ pachiku }: { pachiku: PachikuType }) {
         );
 
     async function submitCommentHandler(formData: FormData) {
+        await setSubmitting(true);
+        setMessage(
+            <>
+                <div className={styles.spinner}></div>
+                <span>Commenting...</span>
+            </>
+        );
         try {
             await createComment(formData);
-
             refreshPachikuData();
+            setSubmitting(false);
+            setMessage("Commented!");
+            setSuccess(true);
         } catch (error) {
             console.log(error);
+            setSubmitting(false);
+            setMessage("Error");
+        } finally {
+            setSubmitting(false);
+            setTimeout(() => {
+                setMessage("Comment");
+                setSuccess(false);
+            }, 3000);
         }
     }
 
@@ -58,8 +78,30 @@ export default function NewCommentForm({ pachiku }: { pachiku: PachikuType }) {
                 />
             </div>
 
-            <button className="button primaryButton" type="submit">
-                Comment
+            <button
+                className="button primaryButton"
+                type="submit"
+                disabled={submitting}
+            >
+                {success ? (
+                    <>
+                        <svg
+                            className={styles.successTick}
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="white"
+                            strokeWidth="3"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        >
+                            <path d="M20 6L9 17l-5-5" />
+                        </svg>
+                        Commented!
+                    </>
+                ) : (
+                    message
+                )}
             </button>
         </form>
     );

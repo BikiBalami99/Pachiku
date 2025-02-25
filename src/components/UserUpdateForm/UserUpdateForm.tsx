@@ -7,27 +7,35 @@ import styles from "./UserUpdateForm.module.css";
 import UserImage from "../MainPachikuComponents/UserImage/UserImage";
 
 export default function UserUpdateForm({ user }: { user: User }) {
-    const [alertMessage, setAlertMessage] = useState("");
+    const [submitting, setSubmitting] = useState(false);
+    const [message, setMessage] = useState("Update");
+
+    useEffect(() => {
+        if (submitting) {
+            setMessage("Updating...");
+        }
+    }, [submitting]);
 
     async function clientUpdateUser(formData: FormData) {
         const result = await updateUser(formData);
-        setAlertMessage(result.success ? result.message : result.error);
+        setSubmitting(false);
+        setMessage(result.success ? result.message : result.error);
+        setTimeout(() => {
+            setMessage("Update");
+        }, 3000);
     }
 
-    useEffect(() => {
-        if (!alertMessage) return; // Only set timeout when there is a message
-
-        const timeoutId = setTimeout(() => {
-            setAlertMessage("");
-        }, 5000);
-
-        return () => clearTimeout(timeoutId); // Clear timeout on re-run
-    }, [alertMessage]);
+    function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+        setSubmitting(true);
+        event.preventDefault();
+        const formData = new FormData(event.currentTarget);
+        clientUpdateUser(formData);
+    }
 
     return (
         <section className={styles.dashboardForm}>
             <UserImage src={user.image} userFirstName={user.firstName} />
-            <form action={clientUpdateUser} className={styles.form}>
+            <form onSubmit={handleSubmit} className={styles.form}>
                 <div className={styles.firstRow}>
                     <div className={styles.labelAndForm}>
                         <label htmlFor="firstName">Firstname</label>
@@ -58,17 +66,17 @@ export default function UserUpdateForm({ user }: { user: User }) {
                     />
                 </div>
                 <input type="hidden" name="id" value={user.id} />
-                <div className={styles.feedbackAndButton}>
-                    <p
-                        className={styles.feedback}
-                        data-visible={!!alertMessage}
-                    >
-                        {alertMessage}
-                    </p>
-                    <button type="submit" className="button primaryButton">
-                        Update
-                    </button>
-                </div>
+
+                <button type="submit" className="button primaryButton">
+                    {submitting ? (
+                        <>
+                            <div className={styles.spinner}></div>
+                            {message}
+                        </>
+                    ) : (
+                        message
+                    )}
+                </button>
             </form>
         </section>
     );
