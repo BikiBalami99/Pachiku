@@ -4,7 +4,7 @@ import { updateUser } from "@/app/actions";
 import { User } from "@prisma/client";
 import { useEffect, useState } from "react";
 import styles from "./UserUpdateForm.module.css";
-import UserImage from "../APachikuComponents/UserImage/UserImage";
+import UserImage from "../MainPachikuComponents/UserImage/UserImage";
 
 export default function UserUpdateForm({ user }: { user: User }) {
     const [alertMessage, setAlertMessage] = useState("");

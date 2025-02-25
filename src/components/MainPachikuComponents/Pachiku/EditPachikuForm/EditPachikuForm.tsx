@@ -1,4 +1,4 @@
-import styles from "./Pachiku.module.css";
+import styles from "./EditPachikuForm.module.css";
 
 type EditPachikuFormProps = {
     updatePachiku: (formData: FormData) => void;

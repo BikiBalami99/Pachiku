@@ -1,7 +1,7 @@
-import UserImage from "../UserImage/UserImage";
-import ThreeDotsMenu from "@/components/APachikuComponents/Pachiku/ThreeDotsMenu/ThreeDotsMenu";
+import UserImage from "../../UserImage/UserImage";
+import ThreeDotsMenu from "@/components/MainPachikuComponents/Pachiku/ThreeDotsMenu/ThreeDotsMenu";
 import { type User } from "@prisma/client";
-import styles from "./Pachiku.module.css";
+import styles from "./UserInfoContainer.module.css";
 
 type UserInfoContainerProps = {
     author: User;

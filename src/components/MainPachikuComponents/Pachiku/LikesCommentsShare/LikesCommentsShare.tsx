@@ -1,8 +1,8 @@
-import HeartIcon from "../LikeCommentShareComponents/HeartIcon";
-import CommentIcon from "../LikeCommentShareComponents/CommentIcon";
-import ShareIcon from "../LikeCommentShareComponents/ShareIcon";
+import HeartIcon from "./IconComponents/HeartIcon";
+import CommentIcon from "./IconComponents/CommentIcon";
+import ShareIcon from "./IconComponents/ShareIcon";
 import { type PachikuWithDetails } from "@/types/pachiku";
-import styles from "./Pachiku.module.css";
+import styles from "./LikesCommentsShare.module.css";
 
 type LikesCommentsShareProps = {
     initialHeartState: boolean | null;

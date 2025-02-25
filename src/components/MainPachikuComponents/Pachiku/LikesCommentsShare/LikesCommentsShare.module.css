@@ -1,0 +1,13 @@
+.likesCommentsShare {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Styles for the individual icons within the likes, comments, and share section */
+.likesCommentsShare div {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+}

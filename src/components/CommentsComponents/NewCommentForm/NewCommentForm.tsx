@@ -3,7 +3,7 @@ import { User, type Pachiku as PachikuType } from "@prisma/client";
 import { getServerSession } from "next-auth";
 import styles from "./NewCommentForm.module.css";
 import { getUserByEmail } from "@/utils/getUser";
-import UserImage from "@/components/APachikuComponents/UserImage/UserImage";
+import UserImage from "@/components/MainPachikuComponents/UserImage/UserImage";
 
 export default async function NewCommentForm({
     pachiku,

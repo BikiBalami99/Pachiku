@@ -10,10 +10,10 @@ import { type User } from "@prisma/client";
 import { type PachikuWithDetails } from "@/types/pachiku";
 import styles from "./Pachiku.module.css";
 import { usePachikuContext } from "@/contexts/PachikuContext";
-import UserInfoContainer from "./UserInfoContainer";
-import EditPachikuForm from "./EditPachikuForm";
-import LikesCommentsShare from "./LikesCommentsShare";
-import { updatePachiku } from "./updatePachiku";
+import UserInfoContainer from "./UserInfoContainer/UserInfoContainer";
+import EditPachikuForm from "./EditPachikuForm/EditPachikuForm";
+import LikesCommentsShare from "./LikesCommentsShare/LikesCommentsShare";
+import { updatePachiku } from "./pachikuActions/updatePachiku";
 
 // Create a context for Pachiku actions
 const PachikuContext = createContext<PachikuWithDetails | null>(null);

@@ -1,7 +1,7 @@
 import { getSpecificPachiku } from "@/utils/getPachiku";
 import { notFound } from "next/navigation";
-import PachikuPost from "@/components/APachikuComponents/PachikuPost/PachikuPost";
-import PachikuModal from "@/components/APachikuComponents/PachikuModal/PachikuModal";
+import PachikuPost from "@/components/MainPachikuComponents/PachikuPost/PachikuPost";
+import PachikuModal from "@/components/MainPachikuComponents/PachikuModal/PachikuModal";
 
 // Page to view specific pachiku only in one page.
 export default async function PachikuPage({

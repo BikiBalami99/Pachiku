@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import styles from "./NewPachikuForm.module.css";
-import UserImage from "../APachikuComponents/UserImage/UserImage";
+import UserImage from "../MainPachikuComponents/UserImage/UserImage";
 import SignUpForm from "../SignUpForm/SignUpForm";
 import { useSession } from "next-auth/react";
 import { submitPachiku } from "./submitPachiku";

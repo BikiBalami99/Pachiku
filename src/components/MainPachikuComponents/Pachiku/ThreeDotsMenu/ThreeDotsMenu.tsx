@@ -7,10 +7,10 @@ import React, {
     useEffect,
     useCallback,
 } from "react";
-import { PachikuContext } from "@/components/APachikuComponents/Pachiku/Pachiku";
+import { PachikuContext } from "@/components/MainPachikuComponents/Pachiku/Pachiku";
 import styles from "./ThreeDotsMenu.module.css";
 import { useUserContext } from "@/contexts/UserContext";
-import { deletePachiku } from "@/components/APachikuComponents/Pachiku/deletePachiku";
+import { deletePachiku } from "@/components/MainPachikuComponents/Pachiku/pachikuActions/deletePachiku";
 import { usePachikuContext } from "@/contexts/PachikuContext";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";

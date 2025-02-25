@@ -1,0 +1,44 @@
+.userInfoContainer {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+/* Text information within the user info container */
+.textInfo {
+    line-height: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.4rem;
+    padding: 0.5rem 0;
+    width: 100%;
+}
+
+/* Full name of the user */
+.fullName {
+    color: var(--primary-black);
+    font-size: 1.375rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+/* Username and time since the Pachiku was created */
+.username,
+.timeSince {
+    color: var(--secondary-black, #1b1b1b);
+    font-size: 0.875rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+/* Three Dots Menu Container */
+.threeDotsMenuContainer {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0.6rem;
+    width: fit-content;
+}

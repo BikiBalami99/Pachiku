@@ -4,7 +4,7 @@ import { PachikuWithDetails } from "@/types/pachiku";
 import { getPachikuOfUser } from "@/utils/getPachiku";
 import { User } from "@prisma/client";
 import React, { useEffect, useState } from "react";
-import Pachiku from "../APachikuComponents/Pachiku/Pachiku";
+import Pachiku from "../MainPachikuComponents/Pachiku/Pachiku";
 import styles from "../AllPachikus/AllPachikus.module.css";
 import PachikuSkeleton from "../UtilityComponents/SkeletonLoaders/PachikuSkeleton/PachikuSkeleton";
 
