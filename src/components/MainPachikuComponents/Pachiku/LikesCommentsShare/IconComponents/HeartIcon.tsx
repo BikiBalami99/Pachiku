@@ -25,7 +25,6 @@ export default function HeartIcon({
     const [authorized, setAuthorized] = useState(false);
     const [likedBy, setLikedBy] = useState<User[]>([]);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
-    console.log(isDialogOpen);
     const dialogRef = useRef<HTMLDialogElement>(null);
     const { data: session } = useSession();
     const router = useRouter();
@@ -83,7 +82,7 @@ export default function HeartIcon({
             const likeData = await likeRes.json();
             if (likeData.error) throw new Error(likeData.error);
 
-            // Update with server's actual count, optimistically nothing will change because of the optimistic state
+            // Update with server's actual count
             setNumOfLikes(likeData.newLikesCount);
 
             // Refreshing the likedBy data
