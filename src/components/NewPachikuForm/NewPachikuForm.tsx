@@ -27,9 +27,7 @@ export default function NewPachikuForm() {
     const { user } = session;
     const userAvatarLink = user.image || "/icons/no-avatar-icon.svg";
 
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        const formData = new FormData(event.currentTarget);
+    async function handleSubmit(formData: FormData) {
         const response = await submitPachiku(formData);
         if (response.error) {
             setFeedback("Something went wrong, please try again.");
@@ -42,10 +40,10 @@ export default function NewPachikuForm() {
             refreshPachikuData();
             router.push(`/pachiku-page/${response.data}`);
         }
-    };
+    }
 
     return (
-        <form onSubmit={handleSubmit} className={styles.newPachikuForm}>
+        <form action={handleSubmit} className={styles.newPachikuForm}>
             <div className={styles.imageAndForm}>
                 <UserImage
                     src={userAvatarLink}
