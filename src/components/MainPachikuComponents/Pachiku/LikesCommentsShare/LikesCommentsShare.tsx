@@ -1,3 +1,5 @@
+"use client";
+
 import HeartIcon from "./IconComponents/HeartIcon";
 import CommentIcon from "./IconComponents/CommentIcon";
 import ShareIcon from "./IconComponents/ShareIcon";

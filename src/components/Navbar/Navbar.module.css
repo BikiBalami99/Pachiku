@@ -57,14 +57,14 @@
     background-color: var(--secondary-black);
 }
 
-.hamburgerIcon {
-    display: none;
-}
-
 @media (hover: hover) {
     .icon:hover {
         background-color: var(--secondary-black);
     }
+}
+
+.hamburgerIcon {
+    display: none;
 }
 
 .navLinks {
