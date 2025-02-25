@@ -14,12 +14,6 @@
     box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.3) inset;
 }
 
-@media screen and (min-width: 600px) {
-    .signUpForm {
-        padding: 7rem 5rem;
-    }
-}
-
 .signUpForm h1 {
     text-align: center;
     color: var(--primary-white);
@@ -138,4 +132,38 @@
     border-radius: 50px;
     border: 1px solid white;
     margin-right: 0.75rem;
+}
+
+@media screen and (min-width: 768px) {
+    .signUpForm {
+        padding: 2rem 2rem 4rem;
+        gap: 1rem;
+    }
+
+    .signUpOption {
+        gap: 1rem;
+    }
+    .signUpForm h1 {
+        font-size: 2.7rem;
+    }
+
+    .inputFieldsRow {
+        flex-direction: row;
+    }
+
+    .inputAndLabel {
+        gap: 0.5rem;
+    }
+
+    .title h2 {
+        font-size: 1.8rem;
+    }
+    .title p {
+        font-size: 1rem;
+    }
+
+    .inputForm {
+        height: 3.5rem;
+        font-size: 1.4rem;
+    }
 }
