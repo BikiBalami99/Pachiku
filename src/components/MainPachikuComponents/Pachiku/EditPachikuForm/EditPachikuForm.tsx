@@ -33,14 +33,14 @@ export default function EditPachikuForm({
             />
             <input type="hidden" name="pachikuId" value={pachikuId} />
             <div className={styles.editPachikuButtons}>
-                <button type="submit" className="button primaryButton">
-                    Update
-                </button>
                 <button
                     onClick={() => setEditFormVisible(false)}
                     className="button whiteButton"
                 >
                     Cancel
+                </button>
+                <button type="submit" className="button primaryButton">
+                    Update
                 </button>
             </div>
         </form>
