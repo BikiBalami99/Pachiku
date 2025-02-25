@@ -74,9 +74,9 @@ export default function SignUpForm() {
 
     return (
         <form onSubmit={handleSignUp} className={styles.signUpForm}>
-            <div className={styles.signUp}>
+            <h1>Sign Up</h1>
+            <div className={styles.signUpOption}>
                 <div className={styles.title}>
-                    <h1>Sign Up</h1>
                     <h2>No email sign up</h2>
                     <p>
                         We wont store your email for security reasons, but
@@ -152,7 +152,7 @@ export default function SignUpForm() {
 
             <hr className={styles.horizontalLine} />
 
-            <div className={styles.googleOAuth}>
+            <div className={styles.signUpOption}>
                 <div className={styles.title}>
                     <h2>Sign in With Google</h2>
                     <p>
