@@ -1,22 +1,19 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import styles from "./loading.module.css";
 
-export default function loading() {
+export default function Loading() {
     const dialogRef = useRef<HTMLDialogElement>(null);
-    const [isOpen, setIsOpen] = useState(false);
 
     useEffect(() => {
         openModal();
     }, []);
 
     function openModal() {
-        setIsOpen(true);
         dialogRef.current?.showModal();
     }
 
     function closeModal() {
-        setIsOpen(false);
         dialogRef.current?.close();
     }
     return (
