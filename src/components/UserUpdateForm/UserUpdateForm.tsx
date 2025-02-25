@@ -1,6 +1,6 @@
 "use client";
 
-import { updateUser } from "@/app/actions";
+import { updateUser } from "@/components/UserUpdateForm/updateUserAction";
 import { User } from "@prisma/client";
 import { useEffect, useState } from "react";
 import styles from "./UserUpdateForm.module.css";

@@ -4,7 +4,7 @@ import Image from "next/image";
 import React from "react";
 import styles from "./CommentComponent.module.css";
 import { getTimeSince } from "@/utils/getTimeSince";
-import { deleteComment } from "@/app/actions";
+import { deleteComment } from "../commentActions/commentActions";
 
 export default function CommentComponent({
     comment,
