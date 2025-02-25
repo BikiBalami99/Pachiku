@@ -15,6 +15,7 @@ export default function PachikuModal({
 
     useEffect(() => {
         openModal();
+        detectBackdropSupport();
     }, []);
 
     const closeModal = useCallback(() => {
@@ -41,6 +42,13 @@ export default function PachikuModal({
     function openModal() {
         setIsOpen(true);
         dialogRef.current?.showModal();
+    }
+
+    function detectBackdropSupport() {
+        const dialog = document.createElement("dialog");
+        if (!("backdrop" in dialog)) {
+            dialogRef.current?.classList.add(styles.noBackdropSupport);
+        }
     }
 
     return (

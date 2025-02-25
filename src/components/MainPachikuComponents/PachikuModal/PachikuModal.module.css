@@ -23,6 +23,25 @@
     opacity: 0.9;
 }
 
+/* Webkit prefix for browsers that support it */
+.modal::-webkit-backdrop {
+    background: var(--primary-black);
+    opacity: 0.9;
+}
+
+/* Backup for devices that do not support ::backdrop */
+.noBackdropSupport::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: var(--primary-black);
+    opacity: 0.2;
+    z-index: -1;
+}
+
 .closeButton {
     position: absolute;
     top: 0;
