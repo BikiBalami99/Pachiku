@@ -27,7 +27,7 @@ export default function Pachiku({ pachiku }: PachikuProps) {
     const [author, setAuthor] = useState<User | null>(null); // State to store the author information
     const [initialHeartState, setInitialHeartState] = useState<boolean | null>(
         null
-    ); // State to store the initial heart (like) state
+    ); // State to store the initial heart (like) state. make sure it starts with null the logic depends on that.
     const [editFormVisible, setEditFormVisible] = useState(false); // States for editing the pachiku
     const [editedPachiku, setEditedPachiku] = useState(pachiku.pachiku); // States for editing the pachiku
 
