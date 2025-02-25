@@ -52,3 +52,27 @@
 .imageAndInput input:focus {
     outline: 2px solid var(--secondary-sky-blue);
 }
+
+@media screen and (max-width: 500px) {
+    .commentForm {
+        padding: 0.7rem;
+    }
+
+    .imageAndInput img {
+        height: 2.5rem;
+        width: 2.5rem;
+        aspect-ratio: 1/1;
+    }
+
+    .imageAndInput input {
+        height: 2.5rem;
+        font-size: 1rem;
+        border-radius: 0.5rem;
+    }
+
+    .commentForm button {
+        font-size: 1rem;
+        height: 2rem;
+        padding: 0.7rem 2rem;
+    }
+}

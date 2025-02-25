@@ -58,3 +58,15 @@
         cursor: pointer;
     }
 }
+
+@media screen and (max-width: 500px) {
+    .modal {
+        margin-top: 4rem;
+        width: 95%;
+        height: 89svh;
+    }
+    .closeButton {
+        z-index: 1000;
+        transform: rotate(180deg) translate(0%, 110%);
+    }
+}
