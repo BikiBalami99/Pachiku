@@ -67,6 +67,12 @@ export default function Navbar() {
     return (
         <nav className={styles.navBar} style={{ height: navBarHeight }}>
             <Link href="/" className={styles.logo} onClick={collapseNavBar}>
+                <Image
+                    src="/logo/logo.webp"
+                    height={28}
+                    width={28}
+                    alt="Pachiku Logo"
+                />
                 <h1 className={styles.heading}>Pachiku</h1>
             </Link>
             <ul className={styles.navLinks}>
