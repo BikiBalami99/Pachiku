@@ -7,7 +7,7 @@ import styles from "./layout.module.css";
 import { PachikuProvider } from "@/contexts/PachikuContext";
 
 export const metadata: Metadata = {
-    title: "Twitter Clone",
+    title: "Pachiku",
     description: "A Twitter clone made with Next.js and Prisma",
 };
 
