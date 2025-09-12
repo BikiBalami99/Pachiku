@@ -13,7 +13,7 @@ type UserContextType = {
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
-	const { data: session, status } = useSession();
+	const { data: session } = useSession();
 	const [user, setUser] = useState<User | null>(null);
 
 	// When the session data is available, fetch the user by email
