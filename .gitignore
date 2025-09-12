@@ -42,3 +42,6 @@ next-env.d.ts
 
 # private assets
 /privateAssets/
+
+# cursor configuration
+.cursorignore
