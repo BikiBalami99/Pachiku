@@ -8,169 +8,155 @@ import Image from "next/image";
 import { signIn } from "next-auth/react";
 
 export default function SignUpForm() {
-    const [username, setUsername] = useState("");
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [password, setPassword] = useState("");
-    const [status, setStatus] = useState("");
-    const [loading, setLoading] = useState(false);
-    const router = useRouter();
+	const [username, setUsername] = useState("");
+	const [firstName, setFirstName] = useState("");
+	const [lastName, setLastName] = useState("");
+	const [password, setPassword] = useState("");
+	const [status, setStatus] = useState("");
+	const [loading, setLoading] = useState(false);
+	const router = useRouter();
 
-    async function handleSignUp(formData: FormData) {
-        setLoading(true);
-        setStatus("Signin Up..");
+	async function handleSignUp(formData: FormData) {
+		setLoading(true);
+		setStatus("Signin Up..");
 
-        const username = formData.get("username");
-        const firstName = formData.get("firstname");
-        const lastName = formData.get("lastname");
-        const password = formData.get("password");
+		const username = formData.get("username");
+		const firstName = formData.get("firstname");
+		const lastName = formData.get("lastname");
+		const password = formData.get("password");
 
-        if (!username || !firstName || !lastName || !password) {
-            setStatus("All fields are required.");
-            setLoading(false);
-            return;
-        }
+		if (!username || !firstName || !lastName || !password) {
+			setStatus("All fields are required.");
+			setLoading(false);
+			return;
+		}
 
-        const response = await fetch(`/api/sign-up`, {
-            method: "POST",
-            headers: { "content-type": "application/json" },
-            body: JSON.stringify({
-                firstName: firstName.toString(),
-                lastName: lastName.toString(),
-                username: username.toString(),
-                password: password.toString(),
-            }),
-        });
+		const response = await fetch(`/api/sign-up`, {
+			method: "POST",
+			headers: { "content-type": "application/json" },
+			body: JSON.stringify({
+				firstName: firstName.toString(),
+				lastName: lastName.toString(),
+				username: username.toString(),
+				password: password.toString(),
+			}),
+		});
 
-        setLoading(false);
+		setLoading(false);
 
-        if (!response.ok) {
-            setStatus("Could not sign up. Please try again.");
-            return;
-        }
+		if (!response.ok) {
+			setStatus("Could not sign up. Please try again.");
+			return;
+		}
 
-        setStatus("Signed up successfully.");
+		setStatus("Signed up successfully.");
 
-        if (response.ok) {
-            // Automatically signing in the user with that info
+		if (response.ok) {
+			// Automatically signing in the user with that info
 
-            const signInResponse = await signIn("credentials", {
-                redirect: false,
-                username: username.toString(),
-                password: password.toString(),
-            });
+			const signInResponse = await signIn("credentials", {
+				redirect: false,
+				username: username.toString(),
+				password: password.toString(),
+			});
 
-            if (signInResponse?.ok) {
-                router.push("/");
-            } else {
-                setStatus(
-                    "Could not sign in automatically, please try manually."
-                );
-            }
-        }
-    }
+			if (signInResponse?.ok) {
+				router.push("/");
+			} else {
+				setStatus("Could not sign in automatically, please try manually.");
+			}
+		}
+	}
 
-    return (
-        <form action={handleSignUp} className={styles.signUpForm}>
-            <h1>Sign Up</h1>
-            <div className={styles.signUpOption}>
-                <div className={styles.title}>
-                    <h2>No email sign up</h2>
-                    <p>
-                        We wont store your email for security reasons, but
-                        password recovery will be impossible.
-                    </p>
-                </div>
-                <div className={styles.inputFieldsRow}>
-                    <div className={styles.inputAndLabel}>
-                        <label htmlFor="firstname">First Name</label>
-                        <input
-                            type="text"
-                            name="firstname"
-                            id="firstname"
-                            placeholder="Firstname"
-                            required
-                            value={firstName}
-                            onChange={(e) => setFirstName(e.target.value)}
-                            className={styles.inputForm}
-                        />
-                    </div>
-                    <div className={styles.inputAndLabel}>
-                        <label htmlFor="lastname">Last Name</label>
-                        <input
-                            type="text"
-                            name="lastname"
-                            id="lastname"
-                            placeholder="Lastname"
-                            required
-                            value={lastName}
-                            onChange={(e) => setLastName(e.target.value)}
-                            className={styles.inputForm}
-                        />
-                    </div>
-                </div>
-                <div className={styles.inputFieldsRow}>
-                    <div className={styles.inputAndLabel}>
-                        <label htmlFor="username">Username</label>
-                        <input
-                            type="text"
-                            name="username"
-                            placeholder="Username"
-                            required
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                            autoComplete="off"
-                            className={styles.inputForm}
-                        />
-                    </div>
-                    <div className={styles.inputAndLabel}>
-                        <label htmlFor="password">Password</label>
-                        <input
-                            type="password"
-                            name="password"
-                            id="password"
-                            placeholder="Password"
-                            required
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            autoComplete="off"
-                            className={styles.inputForm}
-                        />
-                    </div>
-                </div>
+	return (
+		<form action={handleSignUp} className={styles.compactSignUpForm}>
+			{/* Header */}
+			<div className={styles.header}>
+				<h1 className={styles.title}>Sign Up</h1>
+				<p className={styles.subtitle}>Create your account to get started</p>
+			</div>
 
-                <button
-                    className="button primaryButton"
-                    type="submit"
-                    disabled={loading}
-                >
-                    {loading ? status : "Sign up"}
-                </button>
-            </div>
+			{/* Input Grid - 2x2 layout */}
+			<div className={styles.inputGrid}>
+				<div className={styles.inputField}>
+					<label htmlFor="firstname">First Name</label>
+					<input
+						type="text"
+						name="firstname"
+						id="firstname"
+						placeholder="John"
+						required
+						value={firstName}
+						onChange={(e) => setFirstName(e.target.value)}
+						className={styles.inputForm}
+					/>
+				</div>
+				<div className={styles.inputField}>
+					<label htmlFor="lastname">Last Name</label>
+					<input
+						type="text"
+						name="lastname"
+						id="lastname"
+						placeholder="Doe"
+						required
+						value={lastName}
+						onChange={(e) => setLastName(e.target.value)}
+						className={styles.inputForm}
+					/>
+				</div>
+				<div className={styles.inputField}>
+					<label htmlFor="username">Username</label>
+					<input
+						type="text"
+						name="username"
+						placeholder="johndoe"
+						required
+						value={username}
+						onChange={(e) => setUsername(e.target.value)}
+						autoComplete="off"
+						className={styles.inputForm}
+					/>
+				</div>
+				<div className={styles.inputField}>
+					<label htmlFor="password">Password</label>
+					<input
+						type="password"
+						name="password"
+						id="password"
+						placeholder="••••••••"
+						required
+						value={password}
+						onChange={(e) => setPassword(e.target.value)}
+						autoComplete="off"
+						className={styles.inputForm}
+					/>
+				</div>
+			</div>
 
-            <hr className={styles.horizontalLine} />
+			{/* Action Buttons */}
+			<div className={styles.actionsRow}>
+				<button className={styles.primaryButton} type="submit" disabled={loading}>
+					{loading ? status : "Sign Up"}
+				</button>
+			</div>
 
-            <div className={styles.signUpOption}>
-                <div className={styles.title}>
-                    <h2>Sign in With Google</h2>
-                    <p>
-                        No Sign up required. Your email will be stored in our
-                        database. (recommended)
-                    </p>
-                </div>
-                <Link
-                    className={`button primaryButton ${styles.googleButton}`}
-                    href="/api/auth/signin"
-                >
-                    <Image
-                        src="/icons/google_Icons.webp"
-                        alt="Google logo"
-                        height={24}
-                        width={24}
-                    />
-                    <p>Sign in with Google</p>
-                </Link>
-            </div>
-        </form>
-    );
+			{/* Status Message */}
+			{status && <div className={styles.status}>{status}</div>}
+
+			{/* Divider */}
+			<hr className={styles.divider} />
+
+			{/* Google Sign In */}
+			<Link className={styles.googleSignIn} href="/api/auth/signin">
+				<Image
+					src="/icons/google_Icons.webp"
+					alt="Google logo"
+					height={16}
+					width={16}
+					className={styles.googleIcon}
+				/>
+				Sign in with Google
+			</Link>
+		</form>
+	);
 }
