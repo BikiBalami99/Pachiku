@@ -33,14 +33,15 @@
 	transform: scale(0.95);
 }
 
-.themePicker:focus {
+/* Only show focus outline for keyboard navigation, not mouse clicks */
+.themePicker:focus-visible {
 	outline: 2px solid rgba(255, 255, 255, 0.5);
 	outline-offset: 2px;
 }
 
-/* Icon styling */
+/* Icon styling - always white regardless of theme */
 .icon {
-	color: var(--primary-white);
+	color: oklch(1 0 0); /* Pure white, not themed */
 	transition: transform var(--transition-fast);
 }
 

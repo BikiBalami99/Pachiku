@@ -246,23 +246,35 @@ body {
 }
 
 /* ========== VIEW TRANSITIONS ========== */
-/* Smooth circle reveal when switching themes */
+/* Smooth crossfade for theme switching and page navigation */
+
 ::view-transition-old(root) {
-	animation: none;
-	mix-blend-mode: normal;
+	animation: fade-out 200ms ease-out forwards;
 }
 
 ::view-transition-new(root) {
-	animation: theme-circle-in 400ms ease-out;
-	mix-blend-mode: normal;
+	animation: fade-in 300ms ease-out forwards;
 }
 
-@keyframes theme-circle-in {
+@keyframes fade-out {
 	from {
-		clip-path: circle(0% at 50% 0%);
+		opacity: 1;
+		transform: scale(1);
 	}
 	to {
-		clip-path: circle(150% at 50% 0%);
+		opacity: 0;
+		transform: scale(0.98);
+	}
+}
+
+@keyframes fade-in {
+	from {
+		opacity: 0;
+		transform: scale(1.02);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1);
 	}
 }
 
