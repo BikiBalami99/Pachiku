@@ -4,19 +4,34 @@ import styles from "./Navbar.module.css";
 import Image from "next/image";
 import Hamburger from "../UtilityComponents/Hamburger/Hamburger";
 import LoadingSpinner from "../UtilityComponents/LoadingSpinner/LoadingSpinner";
+import ThemeToggle from "../UtilityComponents/ThemeToggle/ThemeToggle";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 
 export default function Navbar() {
 	const { data: session, status } = useSession();
 	const [isExpanded, setIsExpanded] = useState(false);
 	const [navBarHeight, setNavBarHeight] = useState("4.5rem");
+	const pathname = usePathname();
 
 	useEffect(() => {
 		if (isExpanded) setNavBarHeight("21.5rem");
 		if (!isExpanded) setNavBarHeight("5rem");
 		// These are calculated values
 	}, [isExpanded]);
+
+	function collapseNavBar() {
+		setIsExpanded(false);
+	}
+
+	// Helper to check if link is active
+	function isActive(path: string) {
+		if (path === "/") {
+			return pathname === "/" || pathname?.startsWith("/pachiku-page");
+		}
+		return pathname?.startsWith(path);
+	}
 
 	if (status === "loading") {
 		return (
@@ -32,8 +47,11 @@ export default function Navbar() {
 					<h1 className={styles.heading}>Pachiku</h1>
 				</Link>
 
-				<div className={styles.loadingIcon}>
-					<LoadingSpinner />
+				<div className={styles.navActions}>
+					<ThemeToggle />
+					<div className={styles.loadingIcon}>
+						<LoadingSpinner />
+					</div>
 				</div>
 			</nav>
 		);
@@ -48,24 +66,22 @@ export default function Navbar() {
 					<h1 className={styles.heading}>Pachiku</h1>
 				</Link>
 
-				<Link
-					style={{ marginTop: "0.25rem" }}
-					className="button primaryButton"
-					href="/api/auth/signin"
-					onClick={collapseNavBar}
-				>
-					{/* marginTop: "0.25rem" to center the Sign In button without affect the Logo's position*/}
-					Sign in
-				</Link>
+				<div className={styles.navActions}>
+					<ThemeToggle />
+					<Link
+						className="button primaryButton"
+						href="/api/auth/signin"
+						onClick={collapseNavBar}
+					>
+						Sign in
+					</Link>
+				</div>
 			</nav>
 		);
 	}
 
-	function collapseNavBar() {
-		setIsExpanded(false);
-	}
-
 	// If user is logged in
+	// Order: Hamburger (mobile), Home, Profile, Theme Toggle, Sign Out
 	return (
 		<nav className={styles.navBar} style={{ height: navBarHeight }}>
 			<Link href="/" className={styles.logo} onClick={collapseNavBar}>
@@ -76,13 +92,23 @@ export default function Navbar() {
 				<li className={`${styles.icon} ${styles.hamburgerIcon}`}>
 					<Hamburger toggleNavBarView={setIsExpanded} />
 				</li>
+				{/* Home Icon */}
 				<li>
-					<Link className={styles.icon} href="/" onClick={collapseNavBar}>
+					<Link
+						className={`${styles.icon} ${isActive("/") ? styles.activeIcon : ""}`}
+						href="/"
+						onClick={collapseNavBar}
+					>
 						<Image src="/icons/home-icon.svg" width={20} height={26} alt="Home Icon" />
 					</Link>
 				</li>
+				{/* Profile Icon */}
 				<li>
-					<Link className={styles.icon} href="/dashboard" onClick={collapseNavBar}>
+					<Link
+						className={`${styles.icon} ${isActive("/dashboard") ? styles.activeIcon : ""}`}
+						href="/dashboard"
+						onClick={collapseNavBar}
+					>
 						<Image
 							src="/icons/profile-icon.svg"
 							width={14}
@@ -91,7 +117,11 @@ export default function Navbar() {
 						/>
 					</Link>
 				</li>
-
+				{/* Theme Toggle */}
+				<li>
+					<ThemeToggle />
+				</li>
+				{/* Sign Out */}
 				{session && (
 					<li>
 						<Link
@@ -99,7 +129,6 @@ export default function Navbar() {
 							href="/api/auth/signout"
 							onClick={collapseNavBar}
 						>
-							{/* PaddingLeft is set .2rem because the icon looked a bit off */}
 							<Image
 								className={styles.signOutIcon}
 								src="/icons/sign-out-icon.svg"

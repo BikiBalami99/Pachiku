@@ -1,91 +1,97 @@
 .modal {
-    width: 90%;
-    max-width: 700px;
-    min-width: 300px;
-    height: 80%;
-    margin: auto;
-    overflow: visible;
+	width: 90%;
+	max-width: 700px;
+	min-width: 300px;
+	height: 80%;
+	margin: auto;
+	overflow: visible;
 
-    display: flex;
-    position: relative;
-    border: none;
-    border-radius: 0.75rem;
-    padding: 0.75rem;
-    background-color: var(--primary-sky-blue-color);
+	display: flex;
+	position: relative;
+	border: none;
+	border-radius: 0.75rem;
+	padding: 0.75rem;
+	background-color: var(--primary-sky-blue-color);
+	box-shadow: var(--shadow-l);
+
+	/* Theme transition */
+	transition:
+		background-color var(--transition-theme),
+		box-shadow var(--transition-theme);
 }
 
 .modal[open] {
-    animation: slide-in-from-top 0.35s ease-out;
+	animation: slide-in-from-top 0.35s ease-out;
 }
 
 .modal::backdrop {
-    background: var(--primary-black);
-    opacity: 0.9;
+	background: var(--primary-black);
+	opacity: 0.9;
 }
 
 /* Webkit prefix for browsers that support it */
 .modal::-webkit-backdrop {
-    background: var(--primary-black);
-    opacity: 0.9;
+	background: var(--primary-black);
+	opacity: 0.9;
 }
 
 /* Backup for devices that do not support ::backdrop */
 .noBackdropSupport::before {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: var(--primary-black);
-    opacity: 0.2;
-    z-index: -1;
+	content: "";
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	background: var(--primary-black);
+	opacity: 0.2;
+	z-index: -1;
 }
 
 .closeButton {
-    position: absolute;
-    top: 0;
-    left: 0;
-    transform-origin: center;
-    transform: rotate(180deg) translate(0%, 140%);
+	position: absolute;
+	top: 0;
+	left: 0;
+	transform-origin: center;
+	transform: rotate(180deg) translate(0%, 140%);
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 
-    height: 3rem;
-    width: 3rem;
+	height: 3rem;
+	width: 3rem;
 
-    border-radius: 500px;
-    font-size: 2rem;
-    color: var(--primary-white);
-    background-color: var(--primary-sky-blue-color);
-    border: none;
+	border-radius: 500px;
+	font-size: 2rem;
+	color: var(--primary-white);
+	background-color: var(--primary-sky-blue-color);
+	border: none;
 
-    scale: 1;
-    transition: background-color ease-in-out 200ms;
+	scale: 1;
+	transition: background-color ease-in-out 200ms;
 }
 
 .closeButton:focus-visible,
 .closeButton:active {
-    background-color: var(--secondary-black);
+	background-color: var(--secondary-black);
 }
 
 @media (hover: hover) {
-    .closeButton:hover {
-        background-color: var(--secondary-black);
-        cursor: pointer;
-    }
+	.closeButton:hover {
+		background-color: var(--secondary-black);
+		cursor: pointer;
+	}
 }
 
 @media screen and (max-width: 500px) {
-    .modal {
-        margin-top: 4rem;
-        width: 95%;
-        height: 89svh;
-    }
-    .closeButton {
-        z-index: 1000;
-        transform: rotate(180deg) translate(0%, 110%);
-    }
+	.modal {
+		margin-top: 4rem;
+		width: 95%;
+		height: 89svh;
+	}
+	.closeButton {
+		z-index: 1000;
+		transform: rotate(180deg) translate(0%, 110%);
+	}
 }

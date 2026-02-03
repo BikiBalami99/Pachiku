@@ -2,153 +2,267 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
 }
 
 html,
 body {
-    font-family: "Roboto", serif;
-    font-optical-sizing: auto;
+	font-family: "Roboto", serif;
+	font-optical-sizing: auto;
 }
 
 /* Additional Global Styles */
 
 /* Styling for Links */
 a {
-    text-decoration: none; /* Remove underline from links */
-    color: inherit; /* Inherit color from parent element */
+	text-decoration: none; /* Remove underline from links */
+	color: inherit; /* Inherit color from parent element */
 }
 
 /* Reset for Lists */
 ul,
 ol {
-    list-style: none; /* Remove default list styling */
+	list-style: none; /* Remove default list styling */
 }
 
 /* Reset for Tables */
 table {
-    border-collapse: collapse; /* Collapse table borders for consistency */
-    width: 100%; /* Ensure tables take full width */
+	border-collapse: collapse; /* Collapse table borders for consistency */
+	width: 100%; /* Ensure tables take full width */
 }
 
 /* -------- Reset Ends Here ------------------ */
 
 /* Layout for body */
 body {
-    display: grid;
-    grid-template-rows: auto auto 1fr; /* First and second rows auto, extra space at the bottom */
-    min-height: 100svh;
-    max-height: 100svh;
+	display: grid;
+	grid-template-rows: auto auto 1fr; /* First and second rows auto, extra space at the bottom */
+	min-height: 100svh;
+	max-height: 100svh;
 
-    line-height: 1.6;
-    width: 100vw;
-    padding: 0.75rem;
-    overflow: hidden;
+	line-height: 1.6;
+	width: 100vw;
+	padding: 0.75rem;
+	overflow: hidden;
+
+	/* Page background - darkest layer */
+	background-color: var(--bg-dark);
+	color: var(--text);
+
+	/* Smooth theme transition */
+	transition:
+		background-color var(--transition-theme),
+		color var(--transition-theme);
 }
 
-/* Variables for colors */
+/* ========== DESIGN SYSTEM VARIABLES ========== */
 :root {
-    --primary-sky-blue: linear-gradient(180deg, #00a1ff 0%, #0090e4 100%);
-    --primary-sky-blue-color: #00a1ff;
-    --secondary-sky-blue: #004b77;
-    --light-sky-blue: #f1faff;
-    --dark-sky-blue: #092433;
-    --primary-black: #181818;
-    --secondary-black: #1b1b1b;
-    --primary-white: #ffffff;
-    --slightly-dark-white: #f6f6f6;
-    --secondary-white: #eeeeee;
-    --primary-grey: #525252;
-    --secondary-grey: #b7b7b7;
-    --primary-red: #d81919;
-    --secondary-red: #9c0000;
+	/* ========== BRAND COLORS (Sky Blue) ========== */
+	--primary-sky-blue: linear-gradient(
+		180deg,
+		oklch(0.68 0.15 230) 0%,
+		oklch(0.62 0.14 230) 100%
+	);
+	--primary-sky-blue-color: oklch(0.68 0.15 230);
+	--secondary-sky-blue: oklch(0.35 0.1 230);
+	--light-sky-blue: oklch(0.97 0.02 230);
+	--dark-sky-blue: oklch(0.2 0.04 230);
+
+	/* ========== LAYERED BACKGROUND SYSTEM ========== */
+	/* Pattern: bg-dark (page) → bg (containers) → bg-light (elevated) */
+	--bg-dark: oklch(0.92 0 264);
+	--bg: oklch(0.96 0 264);
+	--bg-light: oklch(1 0 264);
+
+	/* ========== TEXT COLORS ========== */
+	--text: oklch(0.15 0 264);
+	--text-muted: oklch(0.4 0 264);
+
+	/* ========== LEGACY COLORS (maintained for compatibility) ========== */
+	--primary-black: oklch(0.15 0 264);
+	--secondary-black: oklch(0.17 0 264);
+	--primary-white: oklch(1 0 264);
+	--slightly-dark-white: oklch(0.97 0 264);
+	--secondary-white: oklch(0.94 0 264);
+	--primary-grey: oklch(0.4 0 264);
+	--secondary-grey: oklch(0.75 0 264);
+	--primary-red: oklch(0.55 0.22 25);
+	--secondary-red: oklch(0.45 0.2 25);
+
+	/* ========== TIERED SHADOW SYSTEM ========== */
+	/* Each shadow combines: light inset (top highlight) + dark shadows (depth) */
+
+	/* Level 0: No shadow */
+	--shadow-none: none;
+
+	/* Level 1: Small - subtle elevation for cards */
+	--shadow-s:
+		inset 0 1px 2px rgba(255, 255, 255, 0.5), 0 1px 2px rgba(0, 0, 0, 0.12),
+		0 2px 4px rgba(0, 0, 0, 0.08);
+
+	/* Level 2: Medium - standard containers */
+	--shadow-m:
+		inset 0 1px 2px rgba(255, 255, 255, 0.6), 0 2px 4px rgba(0, 0, 0, 0.12),
+		0 4px 8px rgba(0, 0, 0, 0.08);
+
+	/* Level 3: Large - prominent/floating elements */
+	--shadow-l:
+		inset 0 1px 3px rgba(255, 255, 255, 0.7), 0 4px 6px rgba(0, 0, 0, 0.12),
+		0 8px 16px rgba(0, 0, 0, 0.08);
+
+	/* Inset shadow - for recessed/pressed elements */
+	--shadow-inset:
+		inset 0 2px 4px rgba(0, 0, 0, 0.12), inset 0 -1px 2px rgba(255, 255, 255, 0.5);
+
+	/* Brand shadow - for blue elements */
+	--shadow-brand:
+		inset 0 1px 2px rgba(255, 255, 255, 0.3), 0 2px 4px rgba(0, 0, 0, 0.15),
+		0 4px 8px rgba(0, 0, 0, 0.1);
+
+	/* ========== TRANSITIONS ========== */
+	--transition-fast: 150ms ease-in-out;
+	--transition-normal: 200ms ease-in-out;
+	--transition-theme: 300ms ease-in-out;
+}
+
+/* ========== DARK MODE THEME ========== */
+body.dark {
+	/* Layered Background System (inverted) */
+	--bg-dark: oklch(0.12 0 264);
+	--bg: oklch(0.18 0 264);
+	--bg-light: oklch(0.25 0 264);
+
+	/* Text Colors (inverted) */
+	--text: oklch(0.96 0 264);
+	--text-muted: oklch(0.7 0 264);
+
+	/* Legacy colors - dark mode adjustments */
+	/* NOTE: primary-black and secondary-black stay DARK for button hover states */
+	--primary-black: oklch(0.15 0 264);
+	--secondary-black: oklch(0.1 0 264); /* Darker for button hovers */
+	--primary-white: oklch(0.12 0 264);
+	--slightly-dark-white: oklch(0.18 0 264);
+	--secondary-white: oklch(0.22 0 264);
+	--primary-grey: oklch(0.7 0 264);
+	--secondary-grey: oklch(0.5 0 264);
+
+	/* Sky Blue in dark mode - DARKER so white text is readable */
+	--primary-sky-blue: linear-gradient(
+		180deg,
+		oklch(0.45 0.14 230) 0%,
+		oklch(0.38 0.12 230) 100%
+	);
+	--primary-sky-blue-color: oklch(0.45 0.14 230);
+	--secondary-sky-blue: oklch(0.28 0.1 230); /* Darker for good contrast */
+	--light-sky-blue: oklch(0.18 0.02 230);
+	--dark-sky-blue: oklch(0.15 0.04 230);
+
+	/* Dark mode shadows - deeper with subtle highlights */
+	--shadow-s:
+		inset 0 1px 2px rgba(255, 255, 255, 0.08), 0 1px 2px rgba(0, 0, 0, 0.3),
+		0 2px 4px rgba(0, 0, 0, 0.2);
+
+	--shadow-m:
+		inset 0 1px 2px rgba(255, 255, 255, 0.1), 0 2px 4px rgba(0, 0, 0, 0.3),
+		0 4px 8px rgba(0, 0, 0, 0.2);
+
+	--shadow-l:
+		inset 0 1px 3px rgba(255, 255, 255, 0.12), 0 4px 6px rgba(0, 0, 0, 0.3),
+		0 8px 16px rgba(0, 0, 0, 0.2);
+
+	--shadow-inset:
+		inset 0 2px 4px rgba(0, 0, 0, 0.4), inset 0 -1px 2px rgba(255, 255, 255, 0.05);
+
+	--shadow-brand:
+		inset 0 1px 2px rgba(255, 255, 255, 0.15), 0 2px 4px rgba(0, 0, 0, 0.25),
+		0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 /* Global CSS styles */
 .button {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    gap: 0.625rem;
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	gap: 0.625rem;
 
-    max-width: 8.1rem;
-    height: 3rem;
-    min-height: fit-content;
-    min-width: fit-content;
-    padding: 1.1rem 2.5rem;
-    border-radius: 12px;
-    border: none;
-    outline: 0px;
+	max-width: 8.1rem;
+	height: 3rem;
+	min-height: fit-content;
+	min-width: fit-content;
+	padding: 1.1rem 2.5rem;
+	border-radius: 12px;
+	border: none;
+	outline: 0px;
 
-    box-shadow: 0px 0px 16px 0px rgba(255, 255, 255, 0.15) inset;
+	box-shadow: 0px 0px 16px 0px rgba(255, 255, 255, 0.15) inset;
 
-    font-size: 1.25rem;
-    font-weight: 500;
-    font-family: Roboto;
-    font-style: normal;
-    line-height: normal;
-    text-align: center;
-    color: #fff;
+	font-size: 1.25rem;
+	font-weight: 500;
+	font-family: Roboto;
+	font-style: normal;
+	line-height: normal;
+	text-align: center;
+	color: #fff;
 
-    text-wrap: nowrap;
+	text-wrap: nowrap;
 
-    transition: background-color ease-in-out 150ms;
+	transition: background-color ease-in-out 150ms;
 }
 
 /* smaller button for mobile */
 @media screen and (max-width: 500px) {
-    .button {
-        padding: 0.8rem 1.75rem;
-    }
+	.button {
+		padding: 0.8rem 1.75rem;
+	}
 }
 
 .primaryButton {
-    background: var(--secondary-sky-blue);
-    color: #fff;
-    box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.25) inset;
+	background: var(--secondary-sky-blue);
+	color: #fff;
+	box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.25) inset;
 }
 
 .primaryButton:hover {
-    background-color: var(--secondary-black);
-    cursor: pointer;
+	background-color: var(--secondary-black);
+	cursor: pointer;
 }
 
 .secondaryButton {
-    background: var(--primary-sky-blue);
-    color: #fff;
+	background: var(--primary-sky-blue);
+	color: #fff;
 }
 
 .secondaryButton:hover {
-    background-color: var(--secondary-sky-blue);
-    cursor: pointer;
+	background-color: var(--secondary-sky-blue);
+	cursor: pointer;
 }
 
 .whiteButton {
-    background: var(--primary-white);
-    color: var(--secondary-sky-blue);
+	background: var(--primary-white);
+	color: var(--secondary-sky-blue);
 }
 
 .whiteButton:hover {
-    background-color: var(--secondary-white);
-    cursor: pointer;
+	background-color: var(--secondary-white);
+	cursor: pointer;
 }
 
 .redButton {
-    background: var(--primary-red);
-    color: var(--primary-white);
+	background: var(--primary-red);
+	color: var(--primary-white);
 }
 
 .redButton:hover {
-    background-color: var(--secondary-red);
-    cursor: pointer;
+	background-color: var(--secondary-red);
+	cursor: pointer;
 }
 
 /* Universal horizontal line */
 
 hr {
-    width: 100%;
-    border: none;
-    border-top: 1px solid var(--primary-white);
+	width: 100%;
+	border: none;
+	border-top: 1px solid var(--primary-white);
 }

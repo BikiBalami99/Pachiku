@@ -1,14 +1,17 @@
 .allPachikusList {
-    display: flex;
-    padding: 0.75rem;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 3rem;
-    align-self: stretch;
+	display: flex;
+	padding: 0.75rem;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 3rem;
+	align-self: stretch;
 
-    border-radius: 0.75rem;
-    background: var(--primary-white, #fff);
+	border-radius: 0.75rem;
+	background: var(--bg);
+	box-shadow: var(--shadow-m);
 
-    box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.25) inset,
-        0px 0px 4px 2px rgba(255, 255, 255, 1);
+	/* Theme transition */
+	transition:
+		background-color var(--transition-theme),
+		box-shadow var(--transition-theme);
 }

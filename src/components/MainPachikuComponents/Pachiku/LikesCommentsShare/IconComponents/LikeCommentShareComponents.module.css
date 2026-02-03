@@ -1,184 +1,190 @@
 /* Container for all icons */
 .container {
-    display: flex;
-    gap: 0.5rem;
-    align-items: center;
-    line-height: 1;
+	display: flex;
+	gap: 0.5rem;
+	align-items: center;
+	line-height: 1;
 }
 
 /* All text */
 .span {
-    color: var(--secondary-gray);
-    font-family: Roboto;
-    font-size: 1rem;
-    font-style: normal;
-    font-weight: 500;
-    line-height: normal;
-    cursor: pointer;
+	color: var(--secondary-gray);
+	font-family: Roboto;
+	font-size: 1rem;
+	font-style: normal;
+	font-weight: 500;
+	line-height: normal;
+	cursor: pointer;
 }
 
 /* ------------- Heart Icon section ----------------- */
 
 .heartIcon {
-    stroke: var(--primary-grey);
-    fill: var(--primary-white);
-    stroke-width: 2px;
-    stroke-linejoin: round;
-    fill: none;
-    transition: transform 100ms ease-in-out, fill 200ms ease-in-out;
+	stroke: var(--primary-grey);
+	fill: var(--primary-white);
+	stroke-width: 2px;
+	stroke-linejoin: round;
+	fill: none;
+	transition:
+		transform 100ms ease-in-out,
+		fill 200ms ease-in-out;
 }
 
 .heartIcon[data-authorized="true"]:hover {
-    stroke: var(--primary-red);
-    transform: scale(1.15);
-    cursor: pointer;
+	stroke: var(--primary-red);
+	transform: scale(1.15);
+	cursor: pointer;
 }
 
 .heartIcon[data-authorized="true"]:active {
-    cursor: pointer;
-    transform: scale(0.5);
+	cursor: pointer;
+	transform: scale(0.5);
 }
 
 .heartIcon[data-clicked="true"] {
-    fill: var(--primary-red);
-    stroke: none;
+	fill: var(--primary-red);
+	stroke: none;
 }
 
 .heartIcon[data-authorized="false"] {
-    opacity: 0.5;
-    stroke: var(--primary-grey);
-    fill: var(--primary-grey);
-    cursor: default;
+	opacity: 0.5;
+	stroke: var(--primary-grey);
+	fill: var(--primary-grey);
+	cursor: default;
 }
 
 .heartIcon[data-authorized="false"]:hover {
-    cursor: pointer;
-    stroke: none;
+	cursor: pointer;
+	stroke: none;
 }
 
 .likedBy[data-open="true"] {
-    border: none;
-    position: absolute;
-    left: 10px;
-    bottom: 10px;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    width: fit-content;
-    padding: 1rem;
-    border-radius: 0.55rem;
-    color: var(--primary-white);
-    background: var(--primary-sky-blue);
-    box-shadow: 0px 0px 8px 2px rgba(0, 0, 0, 0.15) inset;
+	border: none;
+	position: absolute;
+	left: 10px;
+	bottom: 10px;
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	width: fit-content;
+	padding: 1rem;
+	border-radius: 0.55rem;
+	color: var(--primary-white);
+	background: var(--primary-sky-blue);
+	box-shadow: 0px 0px 8px 2px rgba(0, 0, 0, 0.15) inset;
 
-    transform: scale(1);
-    transform-origin: bottom;
-    transition: transform 100ms ease-in-out;
+	transform: scale(1);
+	transform-origin: bottom;
+	transition: transform 100ms ease-in-out;
 
-    z-index: 1000000;
+	z-index: 1000000;
 }
 .likedBy[data-open="false"] {
-    transform: scale(0);
+	transform: scale(0);
 }
 
 .listOfLikers {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
 }
 
 .liker {
-    display: flex;
-    gap: 0.25rem;
+	display: flex;
+	gap: 0.25rem;
 }
 
 .liker img {
-    border-radius: 2rem;
-    border: 1px solid white;
+	border-radius: 2rem;
+	border: 1px solid white;
 }
 
 .icon {
-    position: absolute;
-    right: 0;
-    top: 0;
-    transform: translate(40%, -40%);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 1.5rem;
-    width: 1.5rem;
-    border-radius: 100rem;
-    border: 2px solid var(--secondary-sky-blue);
-    color: var(--secondary-sky-blue);
-    font-size: 1rem;
-    background-color: var(--primary-white);
-    transition: background-color ease-in-out 150ms;
+	position: absolute;
+	right: 0;
+	top: 0;
+	transform: translate(40%, -40%);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 1.5rem;
+	width: 1.5rem;
+	border-radius: 100rem;
+	border: 2px solid var(--secondary-sky-blue);
+	color: var(--secondary-sky-blue);
+	font-size: 1rem;
+	background-color: var(--primary-white);
+	transition: background-color ease-in-out 150ms;
 }
 
 .icon:focus,
 .icon:active {
-    background-color: var(--secondary-white);
+	background-color: var(--secondary-white);
 }
 @media (hover: hover) {
-    .icon:hover {
-        background-color: var(--secondary-white);
-        cursor: pointer;
-    }
+	.icon:hover {
+		background-color: var(--secondary-white);
+		cursor: pointer;
+	}
 }
 
 /*  -----------------Comment Icon section ----------------- */
 
 .commentIcon {
-    stroke: var(--primary-grey);
-    fill: var(--primary-white);
-    stroke-width: 2px;
-    stroke-linejoin: round;
-    transition: transform 100ms ease-in-out, fill 100ms ease-in-out;
+	stroke: var(--text-muted);
+	fill: none;
+	stroke-width: 2px;
+	stroke-linejoin: round;
+	transition:
+		transform 100ms ease-in-out,
+		stroke 100ms ease-in-out;
 }
 
 .commentIcon:hover {
-    transform: scale(1.2);
-    cursor: pointer;
+	transform: scale(1.2);
+	cursor: pointer;
 }
 
 .commentIcon:active {
-    /* Click animation */
-    cursor: pointer;
-    transform: scale(0.5);
+	/* Click animation */
+	cursor: pointer;
+	transform: scale(0.5);
 }
 
 /* ----------------- Comment Icon section ----------------- */
 
 .shareIcon {
-    stroke: var(--primary-grey);
-    stroke-width: 2px;
-    stroke-linejoin: round;
-    stroke-linecap: round;
-    fill: none;
-    transition: transform 100ms ease-in-out, stroke-width 100ms ease-in-out;
+	stroke: var(--primary-grey);
+	stroke-width: 2px;
+	stroke-linejoin: round;
+	stroke-linecap: round;
+	fill: none;
+	transition:
+		transform 100ms ease-in-out,
+		stroke-width 100ms ease-in-out;
 }
 
 .shareIcon:hover {
-    transform: scale(1.1);
-    cursor: pointer;
+	transform: scale(1.1);
+	cursor: pointer;
 }
 
 .shareIcon:active {
-    /* Click animation */
-    cursor: pointer;
-    transform: scale(0.5);
+	/* Click animation */
+	cursor: pointer;
+	transform: scale(0.5);
 }
 
 .linkCopiedAlert {
-    position: absolute;
-    pointer-events: none;
-    bottom: 200%;
-    margin-top: 0.5rem;
-    background-color: var(--secondary-black);
-    color: var(--primary-white);
-    padding: 0.25rem 0.5rem;
-    border-radius: 0.375rem;
-    font-size: 0.875rem;
-    width: 100%;
-    transition: opacity 300ms ease-in-out;
+	position: absolute;
+	pointer-events: none;
+	bottom: 200%;
+	margin-top: 0.5rem;
+	background-color: var(--secondary-black);
+	color: var(--primary-white);
+	padding: 0.25rem 0.5rem;
+	border-radius: 0.375rem;
+	font-size: 0.875rem;
+	width: 100%;
+	transition: opacity 300ms ease-in-out;
 }
