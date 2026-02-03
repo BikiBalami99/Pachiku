@@ -1,6 +1,5 @@
 "use client";
 import Link from "next/link";
-import ViewTransitionLink from "../UtilityComponents/ViewTransitionLink/ViewTransitionLink";
 import styles from "./Navbar.module.css";
 import Image from "next/image";
 import Hamburger from "../UtilityComponents/Hamburger/Hamburger";
@@ -95,17 +94,17 @@ export default function Navbar() {
 				</li>
 				{/* Home Icon */}
 				<li>
-					<ViewTransitionLink
+					<Link
 						className={`${styles.icon} ${isActive("/") ? styles.activeIcon : ""}`}
 						href="/"
 						onClick={collapseNavBar}
 					>
 						<Image src="/icons/home-icon.svg" width={20} height={26} alt="Home Icon" />
-					</ViewTransitionLink>
+					</Link>
 				</li>
 				{/* Profile Icon */}
 				<li>
-					<ViewTransitionLink
+					<Link
 						className={`${styles.icon} ${isActive("/dashboard") ? styles.activeIcon : ""}`}
 						href="/dashboard"
 						onClick={collapseNavBar}
@@ -116,7 +115,7 @@ export default function Navbar() {
 							height={25}
 							alt="Profile Icon"
 						/>
-					</ViewTransitionLink>
+					</Link>
 				</li>
 				{/* Theme Picker */}
 				<li>
