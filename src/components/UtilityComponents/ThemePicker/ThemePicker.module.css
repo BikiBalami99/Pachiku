@@ -1,7 +1,8 @@
 .themePicker {
-	/* Reset appearance */
-	appearance: none;
-	-webkit-appearance: none;
+	/* Reset button styles */
+	border: none;
+	background: none;
+	cursor: pointer;
 
 	/* Size and shape */
 	display: flex;
@@ -13,24 +14,23 @@
 
 	/* Styling */
 	background-color: var(--secondary-sky-blue);
-	border: none;
 	border-radius: 100rem;
 	box-shadow: var(--shadow-s);
-	cursor: pointer;
-
-	/* Text */
-	font-size: 1.25rem;
-	text-align: center;
-	text-align-last: center;
 
 	/* Transitions */
 	transition:
 		background-color var(--transition-fast),
-		box-shadow var(--transition-fast);
+		box-shadow var(--transition-fast),
+		transform var(--transition-fast);
 }
 
 .themePicker:hover {
 	background-color: var(--dark-sky-blue);
+	transform: scale(1.05);
+}
+
+.themePicker:active {
+	transform: scale(0.95);
 }
 
 .themePicker:focus {
@@ -38,7 +38,25 @@
 	outline-offset: 2px;
 }
 
-/* Hide the default dropdown arrow in all browsers */
-.themePicker::-ms-expand {
-	display: none;
+/* Icon styling */
+.icon {
+	color: var(--primary-white);
+	transition: transform var(--transition-fast);
+}
+
+/* Animation on cycle */
+.animating .icon {
+	animation: icon-spin 300ms ease-out;
+}
+
+@keyframes icon-spin {
+	0% {
+		transform: rotate(0deg) scale(1);
+	}
+	50% {
+		transform: rotate(180deg) scale(0.8);
+	}
+	100% {
+		transform: rotate(360deg) scale(1);
+	}
 }
