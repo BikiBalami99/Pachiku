@@ -4,7 +4,7 @@ import styles from "./Navbar.module.css";
 import Image from "next/image";
 import Hamburger from "../UtilityComponents/Hamburger/Hamburger";
 import LoadingSpinner from "../UtilityComponents/LoadingSpinner/LoadingSpinner";
-import ThemeToggle from "../UtilityComponents/ThemeToggle/ThemeToggle";
+import ThemePicker from "../UtilityComponents/ThemePicker/ThemePicker";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
@@ -48,7 +48,7 @@ export default function Navbar() {
 				</Link>
 
 				<div className={styles.navActions}>
-					<ThemeToggle />
+					<ThemePicker />
 					<div className={styles.loadingIcon}>
 						<LoadingSpinner />
 					</div>
@@ -67,7 +67,7 @@ export default function Navbar() {
 				</Link>
 
 				<div className={styles.navActions}>
-					<ThemeToggle />
+					<ThemePicker />
 					<Link
 						className="button primaryButton"
 						href="/api/auth/signin"
@@ -117,9 +117,9 @@ export default function Navbar() {
 						/>
 					</Link>
 				</li>
-				{/* Theme Toggle */}
+				{/* Theme Picker */}
 				<li>
-					<ThemeToggle />
+					<ThemePicker />
 				</li>
 				{/* Sign Out */}
 				{session && (
